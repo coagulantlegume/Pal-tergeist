@@ -11,6 +11,5 @@ class Object extends scareObj {
     // TODO: custom control variables based on size
     // TODO: manipulation drain variables for moving, resizing, and
     // opening based on size.
-    // TODO: display for controls, including controls to stop posession
     // TODO: update function applying drain values when manipulating
 }

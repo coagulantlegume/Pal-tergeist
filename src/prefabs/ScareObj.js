@@ -11,4 +11,5 @@ class scareObj extends Phaser.Physics.Arcade.Sprite {
     // TODO: manipulation functions to be called when active object being controlled
     // TODO: every frame where manipulation is taking place, call this.scene.kid.scaredBy(this)
     // to check if affecting child
+    // TODO: display controls, including manipulation controls and unpossess controls
 }
