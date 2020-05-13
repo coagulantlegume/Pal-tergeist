@@ -19,13 +19,18 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         // follow mouse if not currently possessing object
-        if(!this.isPossessing) {
+        if(!this.isPossessing && this.scene.pointerIsInCurrentLevel() && 
+           ((typeof this.shiftTimer === 'undefined') || this.shiftTimer.getOverallProgress() == 1)) {
             //let lerpedDirection = direction.lerp(this.body.velocity, 0.2); // Set 0.2 to 0.99 to get very smooth movement
 
             let direction = this.getCenter().subtract(this.target.position);
-            Phaser.Math.Interpolation.SmootherStep(1, this.body.velocity, direction)
+            //Phaser.Math.Interpolation.SmootherStep(1, this.body.velocity, direction)
             direction.scale(this.speed);
             this.setVelocity(-direction.x, -direction.y);
+        }
+        else {
+            this.body.velocity.x *= .9;
+            this.body.velocity.y *= .9;
         }
 
     }

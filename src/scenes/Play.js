@@ -27,6 +27,7 @@ class Play extends Phaser.Scene {
         game.levelParams.renderedLevels.push(new Level(this, 1));
         game.levelParams.renderedLevels.push(new Level(this, 2));
         game.levelParams.currLevel = 1;
+        game.levelParams.currLevelIndex = 0;
 
         // define keyboard keys
         keyLevelUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
@@ -107,5 +108,19 @@ class Play extends Phaser.Scene {
 
         // set active 
         game.levelParams.renderedLevels[1].makeActive();
+        game.levelParams.currLevelIndex = 1;
+    }
+
+    pointerIsInCurrentLevel() {
+        let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
+        let pointer = game.input.mousePointer;
+        if (currLevel.background.x - currLevel.background.width / 2 + currLevel.params.borderWidth > pointer.position.x ||
+            currLevel.background.x + currLevel.background.width / 2 - currLevel.params.borderWidth < pointer.position.x ||
+            currLevel.background.y - currLevel.background.height / 2 + currLevel.params.borderWidth > pointer.position.y ||
+            currLevel.background.y + currLevel.background.height / 2 - currLevel.params.borderWidth < pointer.position.y) {
+                return false;
+                console.log("out of bounds");
+        }
+        return true;
     }
 }
