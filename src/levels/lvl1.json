@@ -1,0 +1,38 @@
+{
+  "backgroundTexture": "lvl1Background",
+  "params": {
+    "name": "lvl1",
+    "borderWidth": 10,
+    "center": {
+      "x": 562.5,
+      "y": 250
+    }
+  },
+  "scareObjects": [
+    {
+      "name": "light",
+      "texture": "./assets/light.png",
+      "scale": 1,
+      "position": {
+        "x": 250,
+        "y": 10
+      },
+      "powerGain": 5,
+      "scareGain": 3
+    }
+  ],
+  "moveObjects": [
+    {
+      "name": "book",
+      "texture": "./assets/book.png",
+      "scale": 1,
+      "position": {
+        "x": 100,
+        "y": 290
+      },
+      "powerGain": 5,
+      "scareGain": 3,
+      "powerLossRate": 1
+    }
+  ]
+}

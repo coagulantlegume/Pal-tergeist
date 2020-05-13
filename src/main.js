@@ -3,13 +3,13 @@
 */
 let config = {
     type: Phaser.CANVAS,
-    width: 800,
-    height: 600,
-    scene: [Menu, Guide, Play, Gameover],
+    width: 1500,
+    height: 700,
+    scene: [Play],
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false, // show bounding boxes
+            debug: true, // show bounding boxes
         }
     }
 };
@@ -18,7 +18,14 @@ let game = new Phaser.Game(config);
 
 // define game settings
 game.settings = {
-    // TODO: add game settings, current level
+    // top of highest currently drawn level
+    ceiling: config.height,
+};
+game.levelParams = {
+    // dynamic array of all currently rendered levels
+    renderedLevels: [],
+    currLevel: 0,
 };
 
-// TODO: reserve keyboard vars                  
+// TODO: reserve keyboard vars
+let keyLevelUp;
