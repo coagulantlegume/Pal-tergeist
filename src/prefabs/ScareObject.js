@@ -12,12 +12,20 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
         // put in front of background layer
         this.setDepth(1);
 
-        // add to scene and physics
+        // add to scene
         scene.add.existing(this);
-        //scene.physics.add.existing(this);
     }
 
-    // TODO: manipulation functions to be called when active object being controlled
+    makeActive() {
+        // add to physics scene (for overlap)
+        this.scene.physics.add.existing(this);
+    }
+
+    makePassive() {
+        // no longer update physics body, save processing power
+        this.body.destroy();
+    }
+
     // TODO: every frame where manipulation is taking place, call this.scene.kid.scaredBy(this)
     // to check if affecting child
     // TODO: display controls, including manipulation controls and unpossess controls

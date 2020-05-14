@@ -43,16 +43,33 @@ class Level {
     // TODO: makeActive(), adds physics objects to physics scene
     makeActive() {
         console.log(this.params.name + " made active");
+        // TODO: smooth out readjustment
+        // readjust current levelBounds
         game.levelParams.levelBounds.setPosition(this.background.x - this.background.width / 2 + this.params.borderWidth, 
                                                  this.background.y - this.background.height / 2 + this.params.borderWidth).
              setSize(this.background.width - 2 * this.params.borderWidth,
                      this.background.height - 2 * this.params.borderWidth);
-        
+
+        // make objects active
+        Phaser.Actions.Call(this.scareGroup, (obj) => {
+            obj.makeActive();
+        });
+        Phaser.Actions.Call(this.moveGroup, (obj) => {
+            obj.makeActive();
+        });
     }
 
     // TODO: makePassive(), removes physics objects from physics scene
     makePassive() {
         console.log(this.params.name + " made passive");
+
+        // make objects passive
+        Phaser.Actions.Call(this.scareGroup, (obj) => {
+            obj.makePassive();
+        });
+        Phaser.Actions.Call(this.moveGroup, (obj) => {
+            obj.makePassive();
+        });
     }
 
     // shift entire level and objects

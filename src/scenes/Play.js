@@ -131,6 +131,8 @@ class Play extends Phaser.Scene {
         game.levelParams.renderedLevels[0].makePassive();
         game.levelParams.changingLevel = true;
 
+        // TODO: smooth out shift
+        // shift levels down to center next level
         this.shiftTimer = this.time.addEvent({
             delay: 25,
             callback: () => {
@@ -140,7 +142,6 @@ class Play extends Phaser.Scene {
                 if(isOffscreen) {
                     offscreenLevel.shift(shiftDistX / 100, shiftDistY / 100);
                 }
-                //for(let level of game.levelParams.renderedLevels) 
                 if(this.shiftTimer.getOverallProgress() > 0.8 && isOffscreen) {
                     offscreenLevel.remove();
                     isOffscreen = false;
