@@ -1,7 +1,16 @@
 // ScareObject prefab, for any object that can scare child
 class ScareObject extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, frame) {
-        super(scene, x, y, texture, frame);
+    constructor(scene, x, y, texture, powerGain, scareGain) {
+        super(scene, x, y, texture, 0);
+
+        // parameters
+        this.params = {
+            power: powerGain,
+            scare: scareGain,
+        };
+
+        // put in front of background layer
+        this.setDepth(1);
 
         // add to scene and physics
         scene.add.existing(this);
