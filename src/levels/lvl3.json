@@ -11,11 +11,11 @@
   "scareObjects": [
     {
       "name": "light",
-      "texture": "./assets/light.png",
+      "texture": "light",
       "scale": 1,
       "position": {
-        "x": 250,
-        "y": 10
+        "x": 100,
+        "y": 30
       },
       "powerGain": 5,
       "scareGain": 3
@@ -24,10 +24,10 @@
   "moveObjects": [
     {
       "name": "book",
-      "texture": "./assets/book.png",
+      "texture": "book",
       "scale": 1,
       "position": {
-        "x": 100,
+        "x": 600,
         "y": 290
       },
       "powerGain": 5,

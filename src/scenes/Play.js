@@ -15,7 +15,9 @@ class Play extends Phaser.Scene {
         this.load.image('lvl2Background', './assets/textures/tb2.png');
         this.load.image('lvl3Background', './assets/textures/tb3.png');
 
-        // TODO: Load level asset images
+        // Load level asset images
+        this.load.image('light', './assets/textures/light.png');
+        this.load.image('book', './assets/textures/book.png');
 
         // load characters' images
         this.load.image('ghost', './assets/textures/ghost.png');
@@ -50,7 +52,7 @@ class Play extends Phaser.Scene {
 
     update() {
         // debug changing level
-        if(!this.changingLevel && Phaser.Input.Keyboard.JustDown(keyLevelUp)) {
+        if(!game.levelParams.changingLevel && Phaser.Input.Keyboard.JustDown(keyLevelUp)) {
             this.nextLevel(this.count % 3 + 1);
             ++this.count;
         }

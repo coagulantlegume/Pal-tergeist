@@ -14,7 +14,27 @@ class Level {
         this.background.setOrigin(this.params.center.x / this.background.width, this.params.center.y / this.background.height);
         this.background.y -= this.background.height / 2;
 
-        // TODO: make objects
+        // set params for new 0,0 coordinate of level
+        this.params.x0 = this.background.x - this.background.width / 2;
+        this.params.y0 = this.background.y - this.background.height / 2;
+
+        // make scare objects
+        this.scareGroup = [];
+        Phaser.Actions.Call(rawData.scareObjects, (obj) => {
+            let newObj = new ScareObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 
+                                         obj.texture, obj.powerGain, obj.scareGain);
+            newObj.setScale(obj.scale);
+            this.scareGroup.push(newObj);
+        });
+
+        // make move objects
+        this.moveGroup = [];
+        Phaser.Actions.Call(rawData.moveObjects, (obj) => {
+            let newObj = new MoveObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 
+                                         obj.texture, obj.powerGain, obj.scareGain, obj.powerLossRate);
+            newObj.setScale(obj.scale);
+            this.moveGroup.push(newObj);
+        });
 
         // update ceiling var
         game.settings.ceiling -= this.background.height;
@@ -27,6 +47,7 @@ class Level {
                                                  this.background.y - this.background.height / 2 + this.params.borderWidth).
              setSize(this.background.width - 2 * this.params.borderWidth,
                      this.background.height - 2 * this.params.borderWidth);
+        
     }
 
     // TODO: makePassive(), removes physics objects from physics scene
@@ -39,11 +60,28 @@ class Level {
         this.background.x += distX;
         this.background.y += distY;
 
-        // TODO: shift all other objects in level
+        // shift all other objects in level
+        Phaser.Actions.Call(this.scareGroup, (obj) => {
+            obj.x += distX;
+            obj.y += distY;
+        });
+        Phaser.Actions.Call(this.moveGroup, (obj) => {
+            obj.x += distX;
+            obj.y += distY;
+        });
     }
 
     remove() {
         this.background.destroy();
-        // TODO: destroy all other objects
+        
+        // destroy all other objects
+        while(this.scareGroup.length > 0) {
+            this.scareGroup[0].destroy();
+            this.scareGroup.pop();
+        } 
+        while(this.moveGroup.length > 0) {
+            this.moveGroup[0].destroy();
+            this.moveGroup.pop();
+        } 
     }
 }

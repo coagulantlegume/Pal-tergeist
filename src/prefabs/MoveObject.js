@@ -1,8 +1,9 @@
 // MoveObject prefab, for objects that can scare child and cost ghost power to manipulate
 class MoveObject extends ScareObject {
-    constructor(scene, x, y, texture, frame) {
-        super(scene, x, y, texture, frame);
+    constructor(scene, x, y, texture, powerGain, scareGain, powerLossRate) {
+        super(scene, x, y, texture, powerGain, scareGain);
 
+        this.params.powerLoss = powerLossRate;
         // add to scene and physics
         scene.add.existing(this);
         //scene.physics.add.existing(this);
