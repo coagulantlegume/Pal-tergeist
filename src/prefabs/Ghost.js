@@ -13,19 +13,18 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
+        // add level bounding box
+        this.body.setBoundsRectangle(game.levelParams.levelBounds);
+        this.setCollideWorldBounds(true);
+
         // set overlap detection
         this.body.onOverlap = true;
     }
 
     update() {
         // follow mouse if not currently possessing object
-        if(!this.isPossessing && this.scene.pointerIsInCurrentLevel() && 
-           ((typeof this.shiftTimer === 'undefined') || this.shiftTimer.getOverallProgress() == 1)) {
-            //let lerpedDirection = direction.lerp(this.body.velocity, 0.2); // Set 0.2 to 0.99 to get very smooth movement
-
-            let direction = this.getCenter().subtract(this.target.position);
-            //Phaser.Math.Interpolation.SmootherStep(1, this.body.velocity, direction)
-            direction.scale(this.speed);
+        if(!this.isPossessing && ((typeof this.shiftTimer === 'undefined') || this.shiftTimer.getOverallProgress() == 1)) {
+            let direction = this.getCenter().subtract(this.target.position).scale(this.speed);
             this.setVelocity(-direction.x, -direction.y);
         }
         else {

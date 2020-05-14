@@ -23,6 +23,10 @@ class Level {
     // TODO: makeActive(), adds physics objects to physics scene
     makeActive() {
         console.log(this.params.name + " made active");
+        game.levelParams.levelBounds.setPosition(this.background.x - this.background.width / 2 + this.params.borderWidth, 
+                                                 this.background.y - this.background.height / 2 + this.params.borderWidth).
+             setSize(this.background.width - 2 * this.params.borderWidth,
+                     this.background.height - 2 * this.params.borderWidth);
     }
 
     // TODO: makePassive(), removes physics objects from physics scene
