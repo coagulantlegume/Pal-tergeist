@@ -11,7 +11,7 @@ class Play extends Phaser.Scene {
         this.load.json('lvl3','./src/levels/lvl3.json');
 
         // Load level backgrounds
-        this.load.image('lvl1Background', './assets/textures/tb1.png');
+        this.load.image('lvl1Background', './assets/textures/level1BG.png');
         this.load.image('lvl2Background', './assets/textures/tb2.png');
         this.load.image('lvl3Background', './assets/textures/tb3.png');
 
