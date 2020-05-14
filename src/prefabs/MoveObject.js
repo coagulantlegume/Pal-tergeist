@@ -9,6 +9,18 @@ class MoveObject extends ScareObject {
         //scene.physics.add.existing(this);
     }
 
+    makeActive() {
+        // add to physics scene
+        this.scene.physics.add.existing(this);
+
+        // add level collision
+        this.body.setBoundsRectangle(game.levelParams.levelBounds);
+        this.setCollideWorldBounds(true);
+
+        // set gravity
+        this.setGravity(0,1000);
+    }
+
     // TODO: custom control variables based on size
     // TODO: manipulation drain variables for moving, resizing, and
     // opening based on size.
