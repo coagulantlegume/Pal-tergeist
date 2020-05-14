@@ -7,6 +7,7 @@ class Level {
 
         // set params (border width, center, size)
         this.params = rawData.params;
+        this.params.index;
 
         // load/draw level background
         this.background = scene.add.sprite(game.config.width / 2, game.settings.ceiling, rawData.backgroundTexture);

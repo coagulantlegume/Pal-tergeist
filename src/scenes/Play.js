@@ -17,6 +17,9 @@ class Play extends Phaser.Scene {
 
         // TODO: Load level asset images
 
+        // load characters' images
+        this.load.image('ghost', './assets/textures/ghost.png');
+
     }
     
     create() {
@@ -27,21 +30,28 @@ class Play extends Phaser.Scene {
 
         // define keyboard keys
         keyLevelUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+
+        // make ghost
+        this.ghost = new Ghost(this, game.config.width / 2, game.config.height / 2, 'ghost', 0);
         
         // TODO: remove, just here for testing level generating
         this.count = 2;
 
         // format camera
-        this.cameras.main.setZoom(0.3);
+        //this.cameras.main.setZoom(0.3);
         this.cameras.main.setBackgroundColor(0xFACADE);
     }
 
     update() {
+        // debug changing level
         if(((typeof this.shiftTimer === 'undefined') || this.shiftTimer.getOverallProgress() == 1) &&
            Phaser.Input.Keyboard.JustDown(keyLevelUp)) {
             this.nextLevel(this.count % 3 + 1);
             ++this.count;
         }
+
+        // update ghost
+        this.ghost.update();
     }
 
     // TODO: on create, add all textures for start level and all other visible levels,
