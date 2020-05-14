@@ -60,6 +60,14 @@ class Play extends Phaser.Scene {
         // format camera
         //this.cameras.main.setZoom(0.3);
         this.cameras.main.setBackgroundColor(0xFACADE);
+
+        // timer for when the kid wanders around
+        this.wanderTimer = this.time.addEvent({
+            delay: 3000,
+            callback: this.moveKid,
+            callbackScope: this,
+            loop: true
+          });
     }
 
     update() {
@@ -79,6 +87,25 @@ class Play extends Phaser.Scene {
     // levels no longer visible, and draw textures for now visible levels. Add animation.
     // TODO: update all physics objects.
     // TODO: load all audio
+
+    // kid wandering around randomly
+    moveKid(){
+        const randNumber = Math.floor((Math.random() * 4) + 1);
+        switch(randNumber) {
+            case 1:
+                this.kid.setVelocityX(game.settings.wanderSpeed); //kid moves right
+                break;
+            case 2:
+                this.kid.setVelocityX(-30); //kid moves left
+                break;
+            case 3: 
+                this.kid.setVelocityX(0); //kid remains idle
+                break;
+            default:
+                this.kid.setVelocityX(game.settings.wanderSpeed);
+        }
+        this.wanderTimer.delay = Math.floor((Math.random() * 5000) + 2000); //selects delay randomly in a range
+    }
 
     // move to next level (specify level number)
     nextLevel(level) {

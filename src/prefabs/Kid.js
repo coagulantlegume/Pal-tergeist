@@ -4,8 +4,6 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
 
         this.setDepth(2);
-
-        this.kidSpeed = 2;
         
         // add to scene and physics
         scene.add.existing(this);
