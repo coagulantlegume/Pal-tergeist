@@ -19,20 +19,30 @@ class Play extends Phaser.Scene {
 
         // load characters' images
         this.load.image('ghost', './assets/textures/ghost.png');
+        this.load.image('kid', './assets/textures/kid.png');
 
     }
     
     create() {
+        // set additional level params
+        game.levelParams.changingLevel = false;
+        game.levelParams.levelBounds = new Phaser.Geom.Rectangle(0,0,0,0);
+
         // Create first level
         game.levelParams.renderedLevels.push(new Level(this, 1));
         game.levelParams.renderedLevels.push(new Level(this, 2));
         game.levelParams.currLevel = 1;
+        game.levelParams.currLevelIndex = 0;
+        game.levelParams.renderedLevels[0].makeActive();
 
         // define keyboard keys
         keyLevelUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
 
         // make ghost
         this.ghost = new Ghost(this, game.config.width / 2, game.config.height / 2, 'ghost', 0);
+
+        // make kid
+        this.kid = new Kid(this, game.config.width / 2, (game.config.height / 2) + 300, 'kid', 0);
         
         // TODO: remove, just here for testing level generating
         this.count = 2;
@@ -44,8 +54,7 @@ class Play extends Phaser.Scene {
 
     update() {
         // debug changing level
-        if(((typeof this.shiftTimer === 'undefined') || this.shiftTimer.getOverallProgress() == 1) &&
-           Phaser.Input.Keyboard.JustDown(keyLevelUp)) {
+        if(!this.changingLevel && Phaser.Input.Keyboard.JustDown(keyLevelUp)) {
             this.nextLevel(this.count % 3 + 1);
             ++this.count;
         }
@@ -80,6 +89,11 @@ class Play extends Phaser.Scene {
         let shiftDistY = game.config.height / 2 - game.levelParams.renderedLevels[1].background.y;
         game.settings.ceiling += shiftDistY;
 
+        
+        // set passive
+        game.levelParams.renderedLevels[0].makePassive();
+        game.levelParams.changingLevel = true;
+
         this.shiftTimer = this.time.addEvent({
             delay: 25,
             callback: () => {
@@ -97,15 +111,20 @@ class Play extends Phaser.Scene {
             },
             callbackScope: this,
             repeat: 99,
-        })
+        });
+
+        this.levelChangeTimer = this.time.addEvent({
+            delay: 2500,
+            callback: () => {
+                // set active 
+                game.levelParams.renderedLevels[1].makeActive();
+                game.levelParams.changingLevel = false;
+            },
+            callbackScope: this,
+        });
 
         // change current level
         game.levelParams.currLevel = level;
-
-        // set passive
-        game.levelParams.renderedLevels[0].makePassive();
-
-        // set active 
-        game.levelParams.renderedLevels[1].makeActive();
+        game.levelParams.currLevelIndex = 1;
     }
 }

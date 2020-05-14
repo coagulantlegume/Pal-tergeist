@@ -1,6 +1,9 @@
 /*
     
 */
+
+"use strict";
+
 let config = {
     type: Phaser.CANVAS,
     width: 1500,
@@ -25,6 +28,7 @@ game.levelParams = {
     // dynamic array of all currently rendered levels
     renderedLevels: [],
     currLevel: 0,
+    currLevelIndex: -1,
 };
 
 // TODO: reserve keyboard vars
