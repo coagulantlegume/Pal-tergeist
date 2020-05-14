@@ -21,6 +21,7 @@ class Play extends Phaser.Scene {
 
         // load characters' images
         this.load.image('ghost', './assets/textures/ghost.png');
+        this.load.image('kid', './assets/textures/kid.png');
 
     }
     
@@ -41,6 +42,9 @@ class Play extends Phaser.Scene {
 
         // make ghost
         this.ghost = new Ghost(this, game.config.width / 2, game.config.height / 2, 'ghost', 0);
+
+        // make kid
+        this.kid = new Kid(this, game.config.width / 2, (game.config.height / 2) + 300, 'kid', 0);
         
         // TODO: remove, just here for testing level generating
         this.count = 2;
