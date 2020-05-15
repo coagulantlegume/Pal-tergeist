@@ -35,6 +35,15 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
 
     touchObj() {
         console.log("touched " + this.params.name);
+
+        // move to object
+        this.scene.ghost.target = this;
+    }
+
+    possess() {
+        // TODO: add effects of scare object (animation, sound, and scare/power manipulation)
+        console.log("ooOOoo scary " + this.params.name);
+        this.scene.ghost.target = game.input.mousePointer;
     }
 
     // TODO: every frame where manipulation is taking place, call this.scene.kid.scaredBy(this)

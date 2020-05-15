@@ -26,8 +26,10 @@ class MoveObject extends ScareObject {
 
     touchObj() {
         console.log("touched " + this.params.name);
+        //this.scene.possessObj(this);
+        this.scene.ghost.target = this;
     }
-    
+
     // TODO: custom control variables based on size
     // TODO: manipulation drain variables for moving, resizing, and
     // opening based on size.
