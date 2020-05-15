@@ -8,6 +8,10 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         // add to scene and physics
         scene.add.existing(this);
         scene.physics.add.existing(this);
+
+        // add level bounding box
+        this.body.setBoundsRectangle(game.levelParams.levelBounds);
+        this.setCollideWorldBounds(true);
     }
 
     // TODO: variable for scare level with setter/getter/modifiers.
