@@ -22,7 +22,7 @@ class Level {
         this.scareGroup = [];
         Phaser.Actions.Call(rawData.scareObjects, (obj) => {
             let newObj = new ScareObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 
-                                         obj.texture, obj.powerGain, obj.scareGain);
+                                         obj.texture, obj.powerGain, obj.scareGain, obj.name);
             newObj.setScale(obj.scale);
             this.scareGroup.push(newObj);
         });
@@ -31,7 +31,7 @@ class Level {
         this.moveGroup = [];
         Phaser.Actions.Call(rawData.moveObjects, (obj) => {
             let newObj = new MoveObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 
-                                         obj.texture, obj.powerGain, obj.scareGain, obj.powerLossRate);
+                                         obj.texture, obj.powerGain, obj.scareGain, obj.powerLossRate, obj.name);
             newObj.setScale(obj.scale);
             this.moveGroup.push(newObj);
         });
