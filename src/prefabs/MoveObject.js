@@ -25,9 +25,23 @@ class MoveObject extends ScareObject {
     }
 
     touchObj() {
-        console.log("touched " + this.params.name);
-        //this.scene.possessObj(this);
         this.scene.ghost.target = this;
+    }
+
+    possess() {
+        // TODO: add effects of scare object (animation, sound, and scare/power manipulation)
+        console.log("ooOOoo scary " + this.params.name);
+
+        // TODO: replace with possession animation
+        this.ghostHideTimer = this.scene.time.addEvent({
+            delay: 50,
+            callback: () => {this.scene.ghost.alpha -= .05},
+            callbackScope: this.scene,
+            repeat: 20,
+        });
+
+        // set possessing variable for ghost
+        this.scene.ghost.isPossessing = true;
     }
 
     // TODO: custom control variables based on size

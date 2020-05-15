@@ -19,6 +19,24 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
 
         // set overlap detection
         this.body.onOverlap = true;
+
+        // setup unpossession pointerdown touch event
+        this.scene.input.on('pointerdown', (pointer, currentlyOver) => {
+            if(this.isPossessing){
+                let objectInStack = false;
+                Phaser.Actions.Call(currentlyOver, (obj) => {
+                    if(obj === this.target) { // if found object (currently possessed object clicked)
+                        objectInStack = true;
+                        return;
+                    }
+                });
+            
+                // if clicked not on currently possessed object
+                if(!objectInStack) {
+                    this.scene.ghost.unpossess();
+                }
+            }
+        });
     }
 
     update() {
@@ -28,8 +46,8 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
             targetPos = {position: {x: this.target.x, y: this.target.y}};
         }
 
-        // follow mouse if not currently possessing object
-        if(!this.isPossessing && ((typeof this.shiftTimer === 'undefined') || this.shiftTimer.getOverallProgress() == 1)) {
+        // follow mouse target (mouse or object to possess/interact with)
+        if((typeof this.shiftTimer === 'undefined') || this.shiftTimer.getOverallProgress() == 1) {
             let direction = this.getCenter().subtract(targetPos.position).scale(this.speed);
             this.setVelocity(-direction.x, -direction.y);
         }
@@ -39,12 +57,23 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         }
 
         // if close to target object to interact with, interact
-        if(this.target !== game.input.mousePointer) {
-            // if within 8 pixels of object to interact with
-            if(Math.abs(this.x - targetPos.position.x) < 50 && Math.abs(this.y - targetPos.position.y) < 50) {
+        if(!this.isPossessing && this.target !== game.input.mousePointer) {
+            // if within 60 pixels of object to interact with TODO: maybe use aabb instead
+            if(Math.abs(this.x - targetPos.position.x) < 60 && Math.abs(this.y - targetPos.position.y) < 60) {
                 this.target.possess();
             }
         }
+    }
+
+    unpossess() {
+        this.ghostHideTimer = this.scene.time.addEvent({
+            delay: 50,
+            callback: () => {this.scene.ghost.alpha += .05},
+            callbackScope: this,
+            repeat: 20,
+        });
+        this.target = game.input.mousePointer;
+        this.isPossessing = false;
     }
 
     // TODO: Posessing: wait for overlap with target, possessing animation, pause ghost movement,

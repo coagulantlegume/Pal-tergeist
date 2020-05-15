@@ -38,7 +38,7 @@ class Play extends Phaser.Scene {
         game.levelParams.changingLevel = false;
         game.levelParams.levelBounds = new Phaser.Geom.Rectangle(0,0,0,0);
 
-        // Create first level
+        // Inital level setup
         game.levelParams.renderedLevels.push(new Level(this, 1));
         game.levelParams.renderedLevels.push(new Level(this, 2));
         game.levelParams.currLevel = 1;

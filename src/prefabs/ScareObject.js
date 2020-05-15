@@ -34,8 +34,6 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
     }
 
     touchObj() {
-        console.log("touched " + this.params.name);
-
         // move to object
         this.scene.ghost.target = this;
     }
