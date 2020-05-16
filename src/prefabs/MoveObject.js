@@ -26,6 +26,7 @@ class MoveObject extends ScareObject {
 
     touchObj() {
         this.scene.ghost.target = this;
+        this.scene.ghost.targetChanged = true;
     }
 
     possess() {

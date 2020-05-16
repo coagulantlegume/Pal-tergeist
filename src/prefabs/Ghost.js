@@ -7,6 +7,7 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
 
         this.isPossessing = false;
         this.target = game.input.mousePointer;
+        this.targetChanged = false;
         this.speed = 300;
 
         // add to scene and physics
@@ -25,7 +26,12 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
             if(this.isPossessing){
                 let objectInStack = false;
                 Phaser.Actions.Call(currentlyOver, (obj) => {
-                    if(obj === this.target) { // if found object (currently possessed object clicked)
+                    if(obj === this.target && this.targetChanged) { // if found target, but target changed (moving between objects)
+                        objectInStack = false;
+                        this.targetChanged = false;
+                        return;
+                    }
+                    else if(obj === this.target) {
                         objectInStack = true;
                         return;
                     }
