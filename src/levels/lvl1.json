@@ -2,7 +2,7 @@
   "backgroundTexture": "lvl1Background",
   "params": {
     "name": "lvl1",
-    "borderWidth": 10,
+    "borderWidth": 50,
     "center": {
       "x": 562.5,
       "y": 250
@@ -10,25 +10,48 @@
   },
   "scareObjects": [
     {
-      "name": "light",
-      "texture": "light",
+      "name": "clock",
+      "texture": "clock",
       "scale": 1,
       "position": {
-        "x": 250,
-        "y": 30
+        "x": 482,
+        "y": 270
+      },
+      "powerGain": 5,
+      "scareGain": 3
+    },
+    {
+      "name": "light",
+      "texture": "light_OFF",
+      "scale": 1,
+      "position": {
+        "x": 726,
+        "y": 100
+      },
+      "powerGain": 5,
+      "scareGain": 3
+    },
+    {
+      "name": "radio",
+      "texture": "radio",
+      "scale": 1,
+      "position": {
+        "x": 378,
+        "y": 216
       },
       "powerGain": 5,
       "scareGain": 3
     }
+
   ],
   "moveObjects": [
     {
-      "name": "book",
-      "texture": "book",
+      "name": "tub",
+      "texture": "tub",
       "scale": 1,
       "position": {
-        "x": 100,
-        "y": 470
+        "x": 700,
+        "y": 380
       },
       "powerGain": 5,
       "scareGain": 3,

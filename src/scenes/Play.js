@@ -16,8 +16,13 @@ class Play extends Phaser.Scene {
         this.load.image('lvl3Background', './assets/textures/tb3.png');
 
         // Load level asset images
-        this.load.image('light', './assets/textures/light.png');
-        this.load.image('book', './assets/textures/book.png');
+        //this.load.image('light', './assets/textures/light.png');
+        //this.load.image('book', './assets/textures/book.png');
+        this.load.image('radio', './assets/textures/radio.png');
+        this.load.image('clock', './assets/textures/clock.png');
+        this.load.image('light_OFF', './assets/textures/light_OFF.png');
+        this.load.image('light_ON', './assets/textures/light_ON.png');
+        this.load.image('tub', './assets/textures/tub.png');
 
         // load characters' images
         this.load.image('ghost', './assets/textures/ghost.png');
@@ -52,7 +57,7 @@ class Play extends Phaser.Scene {
         this.ghost = new Ghost(this, game.config.width / 2, game.config.height / 2, 'ghost', 0);
 
         // make kid
-        this.kid = new Kid(this, game.config.width / 2, (game.config.height / 2) + 250, 'kid', 0);
+        this.kid = new Kid(this, game.config.width / 4, (game.config.height / 2) + 250, 'kid', 0);
         
         // TODO: remove, just here for testing level generating
         this.count = 2;
