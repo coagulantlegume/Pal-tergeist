@@ -7,7 +7,7 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
 
         this.isPossessing = false;
         this.target = game.input.mousePointer;
-        this.speed = 1;
+        this.speed = 300;
 
         // add to scene and physics
         scene.add.existing(this);
@@ -47,13 +47,23 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         }
 
         // follow mouse target (mouse or object to possess/interact with)
-        if((typeof this.shiftTimer === 'undefined') || this.shiftTimer.getOverallProgress() == 1) {
-            let direction = this.getCenter().subtract(targetPos.position).scale(this.speed);
-            this.setVelocity(-direction.x, -direction.y);
+        if(!game.levelParams.changingLevel) {
+            let direction = this.getCenter().subtract(targetPos.position).normalize(); // direction traveling
+            let distance = this.getCenter().subtract(targetPos.position).length();
+            let currSpeed = this.body.velocity.length();
+
+            let lerpSpeed;
+            if(distance > currSpeed) { // if more than 50 pixels away (speeding up or maintaining speed)
+                lerpSpeed = Phaser.Math.Interpolation.SmootherStep(0.2, currSpeed, this.speed);
+            }
+            else {
+                lerpSpeed = distance;
+            }
+
+            this.body.velocity = direction.scale(-lerpSpeed);
         }
-        else {
-            this.body.velocity.x *= .9;
-            this.body.velocity.y *= .9;
+        else { // changing levels
+            this.body.velocity.scale(0.95);
         }
 
         // if close to target object to interact with, interact
