@@ -31,7 +31,10 @@
         "y": 100
       },
       "powerGain": 5,
-      "scareGain": 3
+      "scareGain": 3,
+      "anims": "anims_light",
+      "anims_fCount": 30,
+      "anims_fRate": 8
     },
     {
       "name": "radio",

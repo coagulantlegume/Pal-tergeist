@@ -22,6 +22,7 @@ class Play extends Phaser.Scene {
         this.load.image('clock', './assets/textures/clock.png');
         this.load.image('light_OFF', './assets/textures/light_OFF.png');
         this.load.image('light_ON', './assets/textures/light_ON.png');
+        this.load.atlas('anims_light', './assets/textures/anims_light.png', './assets/textures/anims_light.json');
         this.load.image('tub', './assets/textures/tub.png');
 
         // load characters' images
