@@ -45,7 +45,8 @@ class Play extends Phaser.Scene {
     create() {
         //bgm loop
         this.music = this.sound.play('bgmLoop', {
-            loop: true
+            loop: true,
+            volume: 0.1
         });
 
         // set additional level params
@@ -66,6 +67,8 @@ class Play extends Phaser.Scene {
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+
+        keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // make ghost
         this.ghost = new Ghost(this, game.config.width / 2, game.config.height / 2, 'ghost', 0);
@@ -101,6 +104,16 @@ class Play extends Phaser.Scene {
         // if possessing, move active object
         if(this.ghost.isPossessing) {
             this.ghost.target.update();
+        }
+
+        // PROGRAM SCENE DEBUGGING
+        if (Phaser.Input.Keyboard.JustDown(keySpace)) {
+            game.levelParams.renderedLevels[0].makePassive();
+            while(game.levelParams.renderedLevels.length > 0){
+                game.levelParams.renderedLevels.shift();
+            }
+
+            this.scene.start("outroScene");
         }
     }
 

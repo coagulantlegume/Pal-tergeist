@@ -9,6 +9,7 @@ class Level {
         this.params = rawData.params;
         this.params.index;
 
+        console.log(rawData);
         // load/draw level background
         this.background = scene.add.sprite(game.config.width / 2, game.settings.ceiling, rawData.backgroundTexture);
         this.background.setOrigin(this.params.center.x / this.background.width, this.params.center.y / this.background.height);
@@ -43,7 +44,6 @@ class Level {
 
     // TODO: makeActive(), adds physics objects to physics scene
     makeActive() {
-        console.log(this.params.name + " made active");
         // TODO: smooth out readjustment
         // readjust current levelBounds
         game.levelParams.levelBounds.setPosition(this.background.x - this.background.width / 2 + this.params.borderWidth, 
@@ -62,7 +62,6 @@ class Level {
 
     // TODO: makePassive(), removes physics objects from physics scene
     makePassive() {
-        console.log(this.params.name + " made passive");
 
         // make objects passive
         Phaser.Actions.Call(this.scareGroup, (obj) => {

@@ -2,7 +2,6 @@
 class ScareObject extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, powerGain, scareGain, name, sound, animation, animation_fCount, animation_fRate) {
         super(scene, x, y, texture, 0);
-
         // parameters
         this.params = {
             name: name,
@@ -44,7 +43,6 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
     makeActive() {
         // add to physics scene (for overlap)
         this.scene.physics.add.existing(this);
-
         // make interactable
         this.setInteractive().on('pointerdown', this.touchObj);
     }

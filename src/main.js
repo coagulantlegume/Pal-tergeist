@@ -8,7 +8,7 @@ let config = {
     type: Phaser.CANVAS,
     width: 1500,
     height: 700,
-    scene: [Play],
+    scene: [Play, Outro, Menu, Credit, Intro],
     physics: {
         default: 'arcade',
         arcade: {
@@ -34,3 +34,5 @@ game.levelParams = {
 
 // TODO: reserve keyboard vars
 let keyLevelUp, keyToggle, keyRight, keyLeft, keyUp, keyDown;
+
+let keySpace;
