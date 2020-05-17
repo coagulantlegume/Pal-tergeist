@@ -31,6 +31,12 @@ class Play extends Phaser.Scene {
         // load bgm
         this.load.audio('bgmLoop', './assets/audio/PaltergeistBGMLoop.wav');
 
+        //sfx
+        this.load.audio('chime', './assets/audio/ClockChime.wav');
+        this.load.audio('radioBite', './assets/audio/Radio.wav');
+        this.load.audio('lightSwitch', './assets/audio/LightSwitch.wav');
+
+
     }
     
     create() {
@@ -81,7 +87,6 @@ class Play extends Phaser.Scene {
             this.nextLevel(this.count % 3 + 1);
             ++this.count;
         }
-
         // update ghost
         this.ghost.update();
     }

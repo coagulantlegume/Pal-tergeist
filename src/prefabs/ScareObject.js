@@ -1,6 +1,6 @@
 // ScareObject prefab, for any object that can scare child
 class ScareObject extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, powerGain, scareGain, name) {
+    constructor(scene, x, y, texture, powerGain, scareGain, name, sound) {
         super(scene, x, y, texture, 0);
 
         // parameters
@@ -8,7 +8,12 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
             name: name,
             power: powerGain,
             scare: scareGain,
+            sfx: sound,
         };
+
+        if(this.params.sfx){
+            this.params.sfx = scene.sound.add(sound);
+        }
 
         // put in front of background layer
         this.setDepth(1);
@@ -42,6 +47,10 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
     possess() {
         // TODO: add effects of scare object (animation, sound, and scare/power manipulation)
         console.log("ooOOoo scary " + this.params.name);
+        //sfx
+        this.params.sfx.setVolume(0.8);
+        this.params.sfx.play();
+
         this.scene.ghost.target = game.input.mousePointer;
     }
 

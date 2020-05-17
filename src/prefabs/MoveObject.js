@@ -2,11 +2,11 @@
 class MoveObject extends ScareObject {
     constructor(scene, x, y, texture, powerGain, scareGain, powerLossRate, name) {
         super(scene, x, y, texture, powerGain, scareGain, name);
-
         this.params.powerLoss = powerLossRate;
         // add to scene and physics
         scene.add.existing(this);
         //scene.physics.add.existing(this);
+
     }
 
     makeActive() {

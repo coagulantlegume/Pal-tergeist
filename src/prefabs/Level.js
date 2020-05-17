@@ -22,7 +22,7 @@ class Level {
         this.scareGroup = [];
         Phaser.Actions.Call(rawData.scareObjects, (obj) => {
             let newObj = new ScareObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 
-                                         obj.texture, obj.powerGain, obj.scareGain, obj.name);
+                                         obj.texture, obj.powerGain, obj.scareGain, obj.name, obj.sound);
             newObj.setScale(obj.scale);
             this.scareGroup.push(newObj);
         });
@@ -35,7 +35,7 @@ class Level {
             newObj.setScale(obj.scale);
             this.moveGroup.push(newObj);
         });
-
+        
         // update ceiling var
         game.settings.ceiling -= this.background.height;
     }

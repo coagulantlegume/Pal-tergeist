@@ -12,6 +12,7 @@
     {
       "name": "clock",
       "texture": "clock",
+      "sound": "chime",
       "scale": 1,
       "position": {
         "x": 482,
@@ -23,6 +24,7 @@
     {
       "name": "light",
       "texture": "light_OFF",
+      "sound": "lightSwitch",
       "scale": 1,
       "position": {
         "x": 726,
@@ -34,6 +36,7 @@
     {
       "name": "radio",
       "texture": "radio",
+      "sound": "radioBite",
       "scale": 1,
       "position": {
         "x": 378,
@@ -48,6 +51,7 @@
     {
       "name": "tub",
       "texture": "tub",
+      "sound": "possession",
       "scale": 1,
       "position": {
         "x": 700,
