@@ -48,8 +48,10 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
         // TODO: add effects of scare object (animation, sound, and scare/power manipulation)
         console.log("ooOOoo scary " + this.params.name);
         //sfx
-        this.params.sfx.setVolume(0.8);
-        this.params.sfx.play();
+        if(this.params.sfx){
+            this.params.sfx.setVolume(0.8);
+            this.params.sfx.play();
+        }
 
         this.scene.ghost.target = game.input.mousePointer;
     }

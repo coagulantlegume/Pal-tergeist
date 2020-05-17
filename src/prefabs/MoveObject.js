@@ -1,12 +1,13 @@
 // MoveObject prefab, for objects that can scare child and cost ghost power to manipulate
 class MoveObject extends ScareObject {
     constructor(scene, x, y, texture, powerGain, scareGain, powerLossRate, name) {
-        super(scene, x, y, texture, powerGain, scareGain, name);
+        super(scene, x, y, texture, powerGain, scareGain, name, null);
         this.params.powerLoss = powerLossRate;
         // add to scene and physics
         scene.add.existing(this);
         //scene.physics.add.existing(this);
 
+        this.possessSFX = scene.sound.add('possession');
     }
 
     makeActive() {
@@ -31,7 +32,10 @@ class MoveObject extends ScareObject {
 
     possess() {
         // TODO: add effects of scare object (animation, sound, and scare/power manipulation)
-        console.log("ooOOoo scary " + this.params.name);
+        console.log("ooOOoo possess " + this.params.name);
+        //sfx
+        this.possessSFX.setVolume(0.8);
+        this.possessSFX.play();
 
         // TODO: replace with possession animation
         this.ghostHideTimer = this.scene.time.addEvent({

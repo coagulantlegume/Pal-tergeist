@@ -35,8 +35,10 @@ class Play extends Phaser.Scene {
         this.load.audio('chime', './assets/audio/ClockChime.wav');
         this.load.audio('radioBite', './assets/audio/Radio.wav');
         this.load.audio('lightSwitch', './assets/audio/LightSwitch.wav');
+        this.load.audio('lightSwitch', './assets/audio/LightSwitch.wav');
 
-
+        this.load.audio('possession', './assets/audio/PossessionSFX.wav');
+        this.load.audio('unpossession', './assets/audio/UnpossessionSFX.wav');
     }
     
     create() {
