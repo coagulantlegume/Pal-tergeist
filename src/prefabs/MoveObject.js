@@ -9,6 +9,11 @@ class MoveObject extends ScareObject {
 
         this.possessSFX = scene.sound.add('possession');
     }
+    
+    update() {
+        // TODO: add control effects
+        return;
+    }
 
     makeActive() {
         // add to physics scene
