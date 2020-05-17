@@ -12,6 +12,40 @@ class MoveObject extends ScareObject {
     
     update() {
         // TODO: add control effects
+
+
+        if(Phaser.Input.Keyboard.JustDown(keyToggle)){
+            //Change the possession mode
+            //switch modes only once the player releases the key after pressing it
+        }
+
+        
+        if(Phaser.Input.Keyboard.JustDown(keyRight)){
+            //if move mode do this
+
+            //if resize mode do this
+
+
+        }
+        else if(Phaser.Input.Keyboard.JustDown(keyLeft)){
+            //if move mode do this
+
+            //if resize mode do this
+
+            
+        }
+
+        //if in moving mode check these keys, otherwise don't
+        if(Phaser.Input.Keyboard.JustDown(keyUp)){
+
+        }
+        else if(Phaser.Input.Keyboard.JustDown(keyDown)){
+
+        }
+        //^^^^^^^^^^^^^^^
+
+
+
         return;
     }
 
