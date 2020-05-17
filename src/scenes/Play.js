@@ -53,6 +53,9 @@ class Play extends Phaser.Scene {
         game.levelParams.changingLevel = false;
         game.levelParams.levelBounds = new Phaser.Geom.Rectangle(0,0,0,0);
 
+        // fix new ceiling
+        game.settings.ceiling = config.height;
+
         // Inital level setup
         game.levelParams.renderedLevels.push(new Level(this, 1));
         game.levelParams.renderedLevels.push(new Level(this, 2));
@@ -108,11 +111,7 @@ class Play extends Phaser.Scene {
 
         // PROGRAM SCENE DEBUGGING
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
-            game.levelParams.renderedLevels[0].makePassive();
-            while(game.levelParams.renderedLevels.length > 0){
-                game.levelParams.renderedLevels.shift();
-            }
-
+            game.levelParams.renderedLevels = [];
             this.scene.start("outroScene");
         }
     }
