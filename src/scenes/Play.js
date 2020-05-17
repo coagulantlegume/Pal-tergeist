@@ -117,15 +117,18 @@ class Play extends Phaser.Scene {
         switch(randNumber) {
             case 1:
                 this.kid.setVelocityX(game.settings.wanderSpeed); //kid moves right
+                this.kid.resetFlip();
                 break;
             case 2:
-                this.kid.setVelocityX(-30); //kid moves left
+                this.kid.setVelocityX(-game.settings.wanderSpeed); //kid moves left
+                this.kid.toggleFlipX()
                 break;
             case 3: 
                 this.kid.setVelocityX(0); //kid remains idle
                 break;
             default:
                 this.kid.setVelocityX(game.settings.wanderSpeed);
+                this.kid.resetFlip();
         }
         this.wanderTimer.delay = Math.floor((Math.random() * 5000) + 2000); //selects delay randomly in a range
     }
