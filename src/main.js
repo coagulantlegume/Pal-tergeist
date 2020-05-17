@@ -33,4 +33,4 @@ game.levelParams = {
 };
 
 // TODO: reserve keyboard vars
-let keyLevelUp;
+let keyLevelUp, keyToggle, keyRight, keyLeft, keyUp, keyDown;

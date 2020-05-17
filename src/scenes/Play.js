@@ -21,7 +21,7 @@ class Play extends Phaser.Scene {
         this.load.image('radio', './assets/textures/radio.png');
         this.load.image('clock', './assets/textures/clock.png');
         this.load.image('light_OFF', './assets/textures/light_OFF.png');
-        this.load.image('light_ON', './assets/textures/light_ON.png');
+        //this.load.image('light_ON', './assets/textures/light_ON.png');
         this.load.atlas('anims_light', './assets/textures/anims_light.png', './assets/textures/anims_light.json');
         this.load.image('tub', './assets/textures/tub.png');
 
@@ -61,6 +61,11 @@ class Play extends Phaser.Scene {
 
         // define keyboard keys
         keyLevelUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+        keyToggle = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         // make ghost
         this.ghost = new Ghost(this, game.config.width / 2, game.config.height / 2, 'ghost', 0);

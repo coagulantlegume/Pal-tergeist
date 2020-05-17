@@ -34,7 +34,7 @@
       "scareGain": 3,
       "anims": "anims_light",
       "anims_fCount": 30,
-      "anims_fRate": 8
+      "anims_fRate": 12
     },
     {
       "name": "radio",
