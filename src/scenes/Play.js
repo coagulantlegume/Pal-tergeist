@@ -91,6 +91,11 @@ class Play extends Phaser.Scene {
         }
         // update ghost
         this.ghost.update();
+
+        // if possessing, move active object
+        if(this.ghost.isPossessing) {
+            this.ghost.target.update();
+        }
     }
 
     // TODO: on create, add all textures for start level and all other visible levels,
