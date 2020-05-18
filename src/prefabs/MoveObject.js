@@ -33,7 +33,7 @@ class MoveObject extends ScareObject {
 
         // Movement amount based on how big the object is. *Might need to rework better math
         // Resizing up and down by a quarter of the current size *definitely needs to be reworked
-        if(Phaser.Input.Keyboard.JustDown(keyRight)){
+        if(keyRight.isDown){
             if("move" === this.mode){
                 // console.log("move right");
                 // console.log((100000 * (1/(this.height*this.width))));
@@ -46,7 +46,7 @@ class MoveObject extends ScareObject {
                 }
             }
         }
-        else if(Phaser.Input.Keyboard.JustDown(keyLeft)){
+        else if(keyLeft.isDown){
             if("move" === this.mode){
                 // console.log("move left");
                 // console.log((100000 * (1/(this.height*this.width))));
@@ -64,10 +64,10 @@ class MoveObject extends ScareObject {
         // UP/DOWN Controls
         if("move" === this.mode){
             this.body.allowGravity = false; //disable gravity so object can float
-            if(Phaser.Input.Keyboard.DownDuration(keyUp)){
+            if(keyUp.isDown){
                 this.y -= (100000 * (1/(this.height*this.width)));
             }
-            else if(Phaser.Input.Keyboard.DownDuration(keyDown)){
+            else if(keyDown.isDown){
                 this.y += (100000 * (1/(this.height*this.width)));
             }
         }
