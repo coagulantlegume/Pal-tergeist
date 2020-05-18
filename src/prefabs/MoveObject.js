@@ -33,7 +33,7 @@ class MoveObject extends ScareObject {
 
         // Movement amount based on how big the object is. *Might need to rework better math
         // Resizing up and down by a quarter of the current size *definitely needs to be reworked
-        if(Phaser.Input.Keyboard.DownDuration(keyRight)){
+        if(Phaser.Input.Keyboard.JustDown(keyRight)){
             if("move" === this.mode){
                 // console.log("move right");
                 // console.log((100000 * (1/(this.height*this.width))));
@@ -46,7 +46,7 @@ class MoveObject extends ScareObject {
                 }
             }
         }
-        else if(Phaser.Input.Keyboard.DownDuration(keyLeft)){
+        else if(Phaser.Input.Keyboard.JustDown(keyLeft)){
             if("move" === this.mode){
                 // console.log("move left");
                 // console.log((100000 * (1/(this.height*this.width))));
