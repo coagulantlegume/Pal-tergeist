@@ -1,6 +1,6 @@
 // MoveObject prefab, for objects that can scare child and cost ghost power to manipulate
 class MoveObject extends ScareObject {
-    constructor(scene, x, y, texture, powerGain, scareGain, powerLossRate, name) {
+    constructor(scene, x, y, texture, powerGain, scareGain, powerLossRate, name, scaleMax) {
         super(scene, x, y, texture, powerGain, scareGain, name, null, null);
         this.params.powerLoss = powerLossRate;
         // add to scene and physics
@@ -12,6 +12,8 @@ class MoveObject extends ScareObject {
 
         // posessesion mode (move/resize)
         this.mode = "move";
+        this.scaleCount = 0;
+        this.scaleMax = scaleMax; // How many times can they shrink or grow 
     }
     
     update(keyToggle) {
@@ -30,36 +32,42 @@ class MoveObject extends ScareObject {
         }
 
         // Movement amount based on how big the object is. *Might need to rework better math
-        if(Phaser.Input.Keyboard.JustDown(keyRight)){
+        // Resizing up and down by a quarter of the current size *definitely needs to be reworked
+        if(Phaser.Input.Keyboard.DownDuration(keyRight)){
             if("move" === this.mode){
                 // console.log("move right");
                 // console.log((100000 * (1/(this.height*this.width))));
-                this.x -= (100000 * (1/(this.height*this.width))); 
+                this.x += (100000 * (1/(this.height*this.width))); 
             }
             else if("resize" === this.mode){
-                
+                // only increase up to 4 times
+                if(this.scaleCount < this.scaleMax){
+                    this.scaleCount += 1;
+                }
             }
-
-
         }
-        else if(Phaser.Input.Keyboard.JustDown(keyLeft)){
+        else if(Phaser.Input.Keyboard.DownDuration(keyLeft)){
             if("move" === this.mode){
                 // console.log("move left");
                 // console.log((100000 * (1/(this.height*this.width))));
-                this.x += (100000 * (1/(this.height*this.width)));
+                this.x -= (100000 * (1/(this.height*this.width)));
             }
             else if("resize" === this.mode){
-                
+                if(this.scaleCount > ((-1*this.scaleMax)+1)){
+                    this.scaleCount -= 1;
+                }
             }
         }
+        //set scale of obj
+        this.setScale(1+(this.scaleCount*(1/(2*this.scaleMax))));
 
-        //*Somehow deactive gravity in this mode
+        // UP/DOWN Controls
         if("move" === this.mode){
             this.body.allowGravity = false; //disable gravity so object can float
-            if(Phaser.Input.Keyboard.JustDown(keyUp)){
+            if(Phaser.Input.Keyboard.DownDuration(keyUp)){
                 this.y -= (100000 * (1/(this.height*this.width)));
             }
-            else if(Phaser.Input.Keyboard.JustDown(keyDown)){
+            else if(Phaser.Input.Keyboard.DownDuration(keyDown)){
                 this.y += (100000 * (1/(this.height*this.width)));
             }
         }

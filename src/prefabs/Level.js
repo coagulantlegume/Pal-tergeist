@@ -32,7 +32,7 @@ class Level {
         this.moveGroup = [];
         Phaser.Actions.Call(rawData.moveObjects, (obj) => {
             let newObj = new MoveObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 
-                                         obj.texture, obj.powerGain, obj.scareGain, obj.powerLossRate, obj.name);
+                                         obj.texture, obj.powerGain, obj.scareGain, obj.powerLossRate, obj.name, obj.scaleMax);
             newObj.setScale(obj.scale);
             this.moveGroup.push(newObj);
         });

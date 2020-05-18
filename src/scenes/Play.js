@@ -66,8 +66,8 @@ class Play extends Phaser.Scene {
         // define keyboard keys
         keyLevelUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
         keyToggle = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-        keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
