@@ -44,10 +44,11 @@ class Play extends Phaser.Scene {
     
     create() {
         //bgm loop
-        this.music = this.sound.play('bgmLoop', {
+        this.music = this.sound.add('bgmLoop', {
             loop: true,
             volume: 0.1
         });
+        this.music.play();
 
         // set additional level params
         game.levelParams.changingLevel = false;
@@ -112,6 +113,7 @@ class Play extends Phaser.Scene {
         // PROGRAM SCENE DEBUGGING
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
             game.levelParams.renderedLevels = [];
+            this.music.destroy();
             this.scene.start("outroScene");
         }
     }
