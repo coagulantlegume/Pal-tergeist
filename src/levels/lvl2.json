@@ -1,8 +1,8 @@
 {
-  "backgroundTexture": "lvl2Background",
+  "backgroundTexture": "lvl1Background",
   "params": {
     "name": "lvl2",
-    "borderWidth": 10,
+    "borderWidth": 50,
     "center": {
       "x": 562.5,
       "y": 250
@@ -10,25 +10,56 @@
   },
   "scareObjects": [
     {
-      "name": "POOPOO",
-      "texture": "light",
+      "name": "clock",
+      "texture": "clock",
+      "sound": "chime",
       "scale": 1,
       "position": {
-        "x": 600,
-        "y": 30
+        "x": 900,
+        "y": 270
+      },
+      "powerGain": 5,
+      "scareGain": 3
+    },
+    {
+      "name": "light",
+      "texture": "light_OFF",
+      "sound": "lightSwitch",
+      "scale": 1,
+      "position": {
+        "x": 200,
+        "y": 100
+      },
+      "powerGain": 5,
+      "scareGain": 3,
+      "anims": "anims_light",
+      "anims_fCount": 30,
+      "anims_fRate": 12
+    },
+    {
+      "name": "radio",
+      "texture": "radio",
+      "sound": "radioBite",
+      "scale": 1,
+      "position": {
+        "x": 340,
+        "y": 216
       },
       "powerGain": 5,
       "scareGain": 3
     }
+
   ],
   "moveObjects": [
     {
-      "name": "book",
-      "texture": "book",
+      "name": "tub",
+      "texture": "tub",
+      "sound": "possession",
       "scale": 1,
+      "scaleMax": 2,
       "position": {
-        "x": 300,
-        "y": 290
+        "x": 600,
+        "y": 380
       },
       "powerGain": 5,
       "scareGain": 3,
