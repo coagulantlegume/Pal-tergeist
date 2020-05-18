@@ -95,6 +95,9 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         this.unpossessSFX.setVolume(0.8);
         this.unpossessSFX.play();
 
+        // reapply gravity
+        this.target.body.allowGravity = true;
+
         this.target = game.input.mousePointer;
         this.isPossessing = false;
     }

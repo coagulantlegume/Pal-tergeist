@@ -106,7 +106,7 @@ class Play extends Phaser.Scene {
 
         // if possessing, move active object
         if(this.ghost.isPossessing) {
-            this.ghost.target.update();
+            this.ghost.target.update(keyToggle);
         }
 
         // PROGRAM SCENE DEBUGGING

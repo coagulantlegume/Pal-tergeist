@@ -7,44 +7,62 @@ class MoveObject extends ScareObject {
         scene.add.existing(this);
         //scene.physics.add.existing(this);
 
+        // sfx
         this.possessSFX = scene.sound.add('possession');
+
+        // posessesion mode (move/resize)
+        this.mode = "move";
     }
     
-    update() {
+    update(keyToggle) {
         // TODO: add control effects
 
-
+        //switch modes only once the player releases the key after pressing it
         if(Phaser.Input.Keyboard.JustDown(keyToggle)){
             //Change the possession mode
-            //switch modes only once the player releases the key after pressing it
+            if("move" === this.mode){
+                this.mode = "resize";
+            }
+            else if("resize" === this.mode){
+                this.mode = "move";
+            }
+            console.log(this.mode);
         }
 
-        
+        // Movement amount based on how big the object is. *Might need to rework better math
         if(Phaser.Input.Keyboard.JustDown(keyRight)){
-            //if move mode do this
-
-            //if resize mode do this
+            if("move" === this.mode){
+                // console.log("move right");
+                // console.log((100000 * (1/(this.height*this.width))));
+                this.x -= (100000 * (1/(this.height*this.width))); 
+            }
+            else if("resize" === this.mode){
+                
+            }
 
 
         }
         else if(Phaser.Input.Keyboard.JustDown(keyLeft)){
-            //if move mode do this
-
-            //if resize mode do this
-
-            
+            if("move" === this.mode){
+                // console.log("move left");
+                // console.log((100000 * (1/(this.height*this.width))));
+                this.x += (100000 * (1/(this.height*this.width)));
+            }
+            else if("resize" === this.mode){
+                
+            }
         }
 
-        //if in moving mode check these keys, otherwise don't
-        if(Phaser.Input.Keyboard.JustDown(keyUp)){
-
+        //*Somehow deactive gravity in this mode
+        if("move" === this.mode){
+            this.body.allowGravity = false; //disable gravity so object can float
+            if(Phaser.Input.Keyboard.JustDown(keyUp)){
+                this.y -= (100000 * (1/(this.height*this.width)));
+            }
+            else if(Phaser.Input.Keyboard.JustDown(keyDown)){
+                this.y += (100000 * (1/(this.height*this.width)));
+            }
         }
-        else if(Phaser.Input.Keyboard.JustDown(keyDown)){
-
-        }
-        //^^^^^^^^^^^^^^^
-
-
 
         return;
     }
