@@ -93,11 +93,11 @@ class Level {
         // destroy all other objects
         while(this.scareGroup.length > 0) {
             this.scareGroup[0].destroy();
-            this.scareGroup.pop();
+            this.scareGroup.shift();
         } 
         while(this.moveGroup.length > 0) {
             this.moveGroup[0].destroy();
-            this.moveGroup.pop();
+            this.moveGroup.shift();
         } 
     }
 }
