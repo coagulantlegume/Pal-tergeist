@@ -118,13 +118,6 @@ class Play extends Phaser.Scene {
         }
     }
 
-    // TODO: on create, add all textures for start level and all other visible levels,
-    // then add physics for current level.
-    // TODO: variable for current object/ghost being controlled w/ setter/getter/manipulators
-    // levels no longer visible, and draw textures for now visible levels. Add animation.
-    // TODO: update all physics objects.
-    // TODO: load all audio
-
     // kid wandering around randomly
     moveKid(){
         const randNumber = Math.floor((Math.random() * 4) + 1);
@@ -171,7 +164,7 @@ class Play extends Phaser.Scene {
         game.levelParams.renderedLevels[0].makePassive();
         game.levelParams.changingLevel = true;
 
-        // TODO: smooth out shift
+        // TODO: smooth out shift (lerp dat ish)
         // shift levels down to center next level
         this.shiftTimer = this.time.addEvent({
             delay: 25,

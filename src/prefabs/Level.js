@@ -22,7 +22,7 @@ class Level {
         this.scareGroup = [];
         Phaser.Actions.Call(rawData.scareObjects, (obj) => {
             let newObj = new ScareObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 
-                                         obj.texture, obj.powerGain, obj.scareGain, obj.name, obj.sound, 
+                                         obj.texture, obj.scale, obj.powerGain, obj.scareGain, obj.name, obj.sound, 
                                          obj.anims, obj.anims_fCount, obj.anims_fRate);
             newObj.setScale(obj.scale);
             this.scareGroup.push(newObj);
@@ -32,7 +32,7 @@ class Level {
         this.moveGroup = [];
         Phaser.Actions.Call(rawData.moveObjects, (obj) => {
             let newObj = new MoveObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 
-                                         obj.texture, obj.powerGain, obj.scareGain, obj.powerLossRate, obj.name, obj.scaleMax);
+                                         obj.texture, obj.scale, obj.powerGain, obj.scareGain, obj.powerLossRate, obj.name, obj.scaleMax);
             newObj.setScale(obj.scale);
             this.moveGroup.push(newObj);
         });
@@ -41,7 +41,7 @@ class Level {
         game.settings.ceiling -= this.background.height;
     }
 
-    // TODO: makeActive(), adds physics objects to physics scene
+    // adds physics objects to physics scene
     makeActive() {
         // TODO: smooth out readjustment
         // readjust current levelBounds
@@ -59,7 +59,7 @@ class Level {
         });
     }
 
-    // TODO: makePassive(), removes physics objects from physics scene
+    // removes physics objects from physics scene
     makePassive() {
 
         // make objects passive
@@ -87,6 +87,7 @@ class Level {
         });
     }
 
+    // remove level entirely
     remove() {
         this.background.destroy();
         

@@ -32,7 +32,7 @@ game.levelParams = {
     currLevelIndex: -1,
 };
 
-// TODO: reserve keyboard vars
+// reserve keyboard vars
 let keyLevelUp, keyToggle, keyRight, keyLeft, keyUp, keyDown;
 
 let keySpace;

@@ -9,7 +9,6 @@ class Credit extends Phaser.Scene {
     }
 
     // TODO: play credits
-    // TODO: change scenes to menu
     update(){
         // PROGRAM SCENE DEBUGGING
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
