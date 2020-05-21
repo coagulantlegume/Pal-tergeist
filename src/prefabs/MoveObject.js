@@ -16,7 +16,19 @@ class MoveObject extends ScareObject {
     }
     
     update(keyToggle) {
-        // TODO: add control effects
+        // set drag based on size
+        if (!this.body.blocked.none) { // if against ceiling or floor
+            this.body.setDragX((this.scale * this.height * this.width) / 60);
+        }
+        else {
+            this.body.setDragX(0);
+        }
+
+        // set gravity based on size
+        this.setGravity(0, (this.scale * this.height * this.width) / 40)
+
+        // set max velocity
+        this.setMaxVelocity((this.height * this.width) / (this.scale * 400), (this.height * this.width) / (this.scale * 100));
 
         //switch modes only once the player releases the key after pressing it
         if(Phaser.Input.Keyboard.JustDown(keyToggle)){
@@ -30,13 +42,13 @@ class MoveObject extends ScareObject {
             console.log(this.mode);
         }
 
-        // Movement amount based on how big the object is. *Might need to rework better math
-        // Resizing up and down by a quarter of the current size *definitely needs to be reworked
+        // Movement amount based on how big the object is.
+        // Resizing up and down from 1 / scaleMax to scaleMax
         if(keyRight.isDown){
             if("move" === this.mode){
                 // console.log("move right");
                 // console.log((100000 * (1/(this.height*this.width))));
-                this.x += (100000 * (1/(this.height*this.width))); 
+                this.body.velocity.x += ((this.height * this.width) / (this.scale * 2000)); 
             }
             else if("resize" === this.mode){
                 // only increase to scaleMax value
@@ -49,7 +61,7 @@ class MoveObject extends ScareObject {
             if("move" === this.mode){
                 // console.log("move left");
                 // console.log((100000 * (1/(this.height*this.width))));
-                this.x -= (100000 * (1/(this.height*this.width)));
+                this.body.velocity.x -= ((this.height * this.width) / (this.scale * 2000));
             }
             else if("resize" === this.mode){
                 if(this.scale > 1 / this.scaleMax){
@@ -60,12 +72,12 @@ class MoveObject extends ScareObject {
 
         // UP/DOWN Controls
         if("move" === this.mode){
-            this.body.allowGravity = false; //disable gravity so object can float
+            //this.body.allowGravity = false; //disable gravity so object can float
             if(keyUp.isDown){
-                this.y -= (100000 * (1/(this.height*this.width)));
+                this.body.velocity.y -= ((this.height * this.width) / (this.scale * 2000));
             }
             else if(keyDown.isDown){
-                this.y += (100000 * (1/(this.height*this.width)));
+                this.body.velocity.y += ((this.height * this.width) / (this.scale * 2000));
             }
         }
 
@@ -81,7 +93,7 @@ class MoveObject extends ScareObject {
         this.setCollideWorldBounds(true);
 
         // set gravity
-        this.setGravity(0,1000);
+        this.setGravity(0,700);
 
         // make interactable
         this.setInteractive().on('pointerdown', this.touchObj);
