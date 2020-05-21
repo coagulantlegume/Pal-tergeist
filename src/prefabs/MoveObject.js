@@ -16,6 +16,7 @@ class MoveObject extends ScareObject {
     }
     
     update(keyToggle) {
+        // TODO: drain ghost power with when actions taken
         // set drag based on size
         if (!this.body.blocked.none) { // if against ceiling or floor
             this.body.setDragX((this.scale * this.height * this.width) / 60);
@@ -105,7 +106,6 @@ class MoveObject extends ScareObject {
     }
 
     possess() {
-        // TODO: add effects of scare object (animation, sound, and scare/power manipulation)
         console.log("ooOOoo possess " + this.params.name);
         //sfx
         this.possessSFX.setVolume(0.8);
@@ -125,9 +125,4 @@ class MoveObject extends ScareObject {
         // set possessing variable for ghost
         this.scene.ghost.isPossessing = true;
     }
-
-    // TODO: custom control variables based on size
-    // TODO: manipulation drain variables for moving, resizing, and
-    // opening based on size.
-    // TODO: update function applying drain values when manipulating
 }

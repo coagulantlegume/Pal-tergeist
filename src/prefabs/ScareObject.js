@@ -65,7 +65,7 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
     }
 
     possess() {
-        // TODO: add effects of scare object (animation, sound, and scare/power manipulation)
+        // TODO: add effects of scare object (scare/power manipulation)
         console.log("ooOOoo scary " + this.params.name);
         //sfx
         if(this.params.sfx){

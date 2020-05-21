@@ -102,7 +102,6 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         this.isPossessing = false;
     }
 
-    // TODO: Posessing: wait for overlap with target, possessing animation, pause ghost movement,
-    // set play variable forevel with  current object/ghost being controlled.
+    // TODO: add possession/unpossession animations
     // TODO: variable for ghost power setter/getter/modifiers.
 }

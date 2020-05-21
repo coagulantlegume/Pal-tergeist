@@ -41,7 +41,7 @@ class Level {
         game.settings.ceiling -= this.background.height;
     }
 
-    // TODO: makeActive(), adds physics objects to physics scene
+    // adds physics objects to physics scene
     makeActive() {
         // TODO: smooth out readjustment
         // readjust current levelBounds
@@ -59,7 +59,7 @@ class Level {
         });
     }
 
-    // TODO: makePassive(), removes physics objects from physics scene
+    // removes physics objects from physics scene
     makePassive() {
 
         // make objects passive
@@ -87,6 +87,7 @@ class Level {
         });
     }
 
+    // remove level entirely
     remove() {
         this.background.destroy();
         

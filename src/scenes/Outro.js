@@ -10,7 +10,6 @@ class Outro extends Phaser.Scene {
 
 
     // TODO: display ending story animation
-    // TODO: change scenes to credits
     update(){
         // PROGRAM SCENE DEBUGGING
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {

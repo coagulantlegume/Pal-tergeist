@@ -38,7 +38,6 @@ class Intro extends Phaser.Scene {
     }
 
     // TODO: display introduction story animation
-    // TODO: change scenes to play
     update(){
         // PROGRAM SCENE DEBUGGING
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
