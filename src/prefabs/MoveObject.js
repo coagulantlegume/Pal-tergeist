@@ -1,7 +1,7 @@
 // MoveObject prefab, for objects that can scare child and cost ghost power to manipulate
 class MoveObject extends ScareObject {
-    constructor(scene, x, y, texture, powerGain, scareGain, powerLossRate, name, scaleMax) {
-        super(scene, x, y, texture, powerGain, scareGain, name, null, null);
+    constructor(scene, x, y, texture, scale, powerGain, scareGain, powerLossRate, name, scaleMax) {
+        super(scene, x, y, texture, scale, powerGain, scareGain, name, null, null);
         this.params.powerLoss = powerLossRate;
         // add to scene and physics
         scene.add.existing(this);
@@ -12,8 +12,7 @@ class MoveObject extends ScareObject {
 
         // posessesion mode (move/resize)
         this.mode = "move";
-        this.scaleCount = 0;
-        this.scaleMax = scaleMax; // How many times can they shrink or grow 
+        this.scaleMax = scaleMax; // max scale value, min scale value = 1/scaleMax
     }
     
     update(keyToggle) {
@@ -40,9 +39,9 @@ class MoveObject extends ScareObject {
                 this.x += (100000 * (1/(this.height*this.width))); 
             }
             else if("resize" === this.mode){
-                // only increase up to 4 times
-                if(this.scaleCount < this.scaleMax){
-                    this.scaleCount += 1;
+                // only increase to scaleMax value
+                if(this.scale < this.scaleMax){
+                    this.scale += .01;
                 }
             }
         }
@@ -53,13 +52,11 @@ class MoveObject extends ScareObject {
                 this.x -= (100000 * (1/(this.height*this.width)));
             }
             else if("resize" === this.mode){
-                if(this.scaleCount > ((-1*this.scaleMax)+1)){
-                    this.scaleCount -= 1;
+                if(this.scale > 1 / this.scaleMax){
+                    this.scale -= .01;
                 }
             }
         }
-        //set scale of obj
-        this.setScale(1+(this.scaleCount*(1/(2*this.scaleMax))));
 
         // UP/DOWN Controls
         if("move" === this.mode){
@@ -101,6 +98,9 @@ class MoveObject extends ScareObject {
         //sfx
         this.possessSFX.setVolume(0.8);
         this.possessSFX.play();
+
+        // reset mode
+        this.mode = "move"
 
         // TODO: replace with possession animation
         this.ghostHideTimer = this.scene.time.addEvent({
