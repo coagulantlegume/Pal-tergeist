@@ -6,6 +6,13 @@
     "center": {
       "x": 562.5,
       "y": 250
+    },
+    "entrance": {
+      "x": "undefined"
+    },
+    "exit": {
+      "x": 715.5,
+      "width": 167 
     }
   },
   "scareObjects": [
