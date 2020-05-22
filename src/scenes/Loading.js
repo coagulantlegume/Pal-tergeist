@@ -5,6 +5,8 @@ class Loading extends Phaser.Scene {
 	}
 
 	preload() {
+
+		// makes loading bar ui
 		this.graphics = this.add.graphics();
 		this.newGraphics = this.add.graphics();
 		var progressBar = new Phaser.Geom.Rectangle(200, 200, 400, 50);
@@ -18,17 +20,20 @@ class Loading extends Phaser.Scene {
 
 		var loadingText = this.add.text(250,260,"Loading: ", { fontSize: '32px', fill: '#FFF' });
 
-
+		// the more images you load, the longer the load time
 		this.load.image('background', 'images/tut/background.png');
-		for(var i =0;i<30;i++) {
-			this.load.image('background_'+i, 'images/tut/background.png');
+		for(var i = 0;i<300;i++) {
+			this.load.image('background_' + i, 'images/tut/background.png');
 		}
 
 		this.load.on('progress', this.updateBar, {newGraphics:this.newGraphics,loadingText:loadingText});
 		this.load.on('complete', this.complete, {scene:this.scene});
     }
-    
+	
+	// displays percent value of loading
     updateBar(percentage) {
+
+		// the updating loading bar
         this.newGraphics.clear();
         this.newGraphics.fillStyle(0x3587e2, 1);
         this.newGraphics.fillRectShape(new Phaser.Geom.Rectangle(205, 205, percentage*390, 40));
