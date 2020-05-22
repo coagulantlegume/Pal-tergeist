@@ -4,6 +4,8 @@ class Play extends Phaser.Scene {
         super("playScene");
     }
 
+    // hello
+
     preload() {
         // Load level data
         this.load.json('lvl1','./src/levels/lvl1.json');
