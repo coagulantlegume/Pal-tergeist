@@ -98,12 +98,12 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         // reapply gravity
         this.target.body.allowGravity = true;
 
+        this.target = game.input.mousePointer;
+        this.isPossessing = false;
+
         // set toggle UI of object to invisible
         this.target.resizeUI.setAlpha(0);
         this.target.moveUI.setAlpha(0);
-
-        this.target = game.input.mousePointer;
-        this.isPossessing = false;
     }
 
     // TODO: add possession/unpossession animations
