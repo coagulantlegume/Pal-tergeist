@@ -37,7 +37,7 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
     update() {
         // calculate the slowly decreasing scare level
         if(this.params.scareLevelCurr > 0){
-            this.params.scareLevelCurr -=0.01;
+            this.params.scareLevelCurr -=0.02;
         }
  
         // calculate walkable area

@@ -25,8 +25,8 @@ class Play extends Phaser.Scene {
         // UI
         this.load.image('barBorder', './assets/textures/barBorder.png');
         this.load.image('barBackFill', './assets/textures/barBackFill.png');
-        this.load.image('resizeToggle', './assets/textures/resizeToggleB.png')
-        this.load.image('moveToggle', './assets/textures/moveToggleB.png')
+        this.load.image('resizeToggle', './assets/textures/resizeToggleB.png');
+        this.load.image('moveToggle', './assets/textures/moveToggleB.png');
 
         // load characters' images
         this.load.image('ghost', './assets/textures/ghost.png');
@@ -43,6 +43,7 @@ class Play extends Phaser.Scene {
 
         this.load.audio('possession', './assets/audio/PossessionSFX.wav');
         this.load.audio('unpossession', './assets/audio/UnpossessionSFX.wav');
+        this.load.audio('toggle', './assets/audio/Toggle.wav');
     }
     
     create() {

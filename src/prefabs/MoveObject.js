@@ -9,6 +9,9 @@ class MoveObject extends ScareObject {
 
         // sfx
         this.possessSFX = scene.sound.add('possession');
+        this.possessSFX.setVolume(0.5);
+        this.toggleSFX = scene.sound.add('toggle');
+        this.toggleSFX.setVolume(0.5);
 
         // posessesion mode (move/resize)
         this.mode = "move";
@@ -53,6 +56,7 @@ class MoveObject extends ScareObject {
 
         //switch modes only once the player releases the key after pressing it
         if(Phaser.Input.Keyboard.JustDown(keyToggle)){
+            this.toggleSFX.play();
             //Change the possession mode
             if("move" === this.mode){
                 this.mode = "resize";
@@ -134,7 +138,6 @@ class MoveObject extends ScareObject {
     possess() {
         console.log("ooOOoo possess " + this.params.name);
         //sfx
-        this.possessSFX.setVolume(0.8);
         this.possessSFX.play();
 
         // reset mode

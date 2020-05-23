@@ -17,6 +17,7 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
         //Set sound effect
         if(this.params.sfx){
             this.params.sfx = scene.sound.add(sound);
+            this.params.sfx.setVolume(0.5);
         }
 
         // set animation
@@ -69,7 +70,6 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
         console.log("ooOOoo scary " + this.params.name);
         //sfx
         if(this.params.sfx){
-            this.params.sfx.setVolume(0.8);
             this.params.sfx.play();
         }
         // animation
