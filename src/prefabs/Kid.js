@@ -13,7 +13,7 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
             distance: 0,                // distance to travel
             maxSpeed: 1,
             scareLevelMax: 100,
-            scareLevelCurr: 0
+            scareLevelCurr: 25
         }
 
         // cet center
@@ -35,6 +35,11 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
+        // calculate the slowly decreasing scare level
+        if(this.params.scareLevelCurr > 0){
+            this.params.scareLevelCurr -=0.01;
+        }
+ 
         // calculate walkable area
         let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
         this.params.walkAreaLBound = currLevel.params.x0 + currLevel.params.borderWidth; // left wall of level
