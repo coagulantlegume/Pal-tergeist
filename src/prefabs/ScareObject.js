@@ -60,6 +60,12 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
     }
 
     touchObj() {
+        // extra measure to clear toggle UI when clicking on scareObject after possessing an object
+        if(this.scene.ghost.isPossessing){
+            console.log(this.scene.ghost.target);
+            this.scene.ghost.target.resizeUI.setAlpha(0);
+            this.scene.ghost.target.moveUI.setAlpha(0);
+        }
         // move to object
         this.scene.ghost.target = this;
         this.scene.ghost.targetChanged = true;

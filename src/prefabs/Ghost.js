@@ -13,6 +13,7 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         this.paranormalStrengthCurr = 50;
 
         this.unpossessSFX = scene.sound.add('unpossession');
+        this.unpossessSFX.setVolume(0.5);
 
         // add to scene and physics
         scene.add.existing(this);
@@ -94,15 +95,16 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         });
 
         //sfx
-        this.unpossessSFX.setVolume(0.8);
         this.unpossessSFX.play();
 
-        this.target = game.input.mousePointer;
         this.isPossessing = false;
-
-        // set toggle UI of object to invisible
+        // set toggle UI of object to invisible 
+        // (only works when you don't click on a scare object to exit)
+        // code for handling when you do is in touchObj() of scareObject.js
         this.target.resizeUI.setAlpha(0);
         this.target.moveUI.setAlpha(0);
+
+        this.target = game.input.mousePointer;
     }
 
     // TODO: add possession/unpossession animations
