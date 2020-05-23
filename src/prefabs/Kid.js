@@ -47,7 +47,7 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         this.params.walkAreaLBound = currLevel.params.x0 + currLevel.params.borderWidth; // left wall of level
         this.params.walkAreaRBound = this.params.walkAreaLBound + currLevel.background.width - 2 * currLevel.params.borderWidth; // right wall of level
         Phaser.Actions.Call(currLevel.moveGroup, (obj) => {
-            if(obj.y + obj.scale * obj.height / 2 >= this.y - this.height / 2) { // on the correct y plane
+            if(true/*obj.y + obj.scale * obj.height / 2 >= this.y - this.height / 2*/) { // on the correct y plane
                 if(obj.x > this.params.walkAreaLBound && obj.x < this.x) { // closer than current left bound
                     this.params.walkAreaLBound = obj.x + (obj.width * obj.scale) / 2;
                 }
