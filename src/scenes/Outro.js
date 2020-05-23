@@ -3,6 +3,7 @@ class Outro extends Phaser.Scene {
     constructor() {
         super("outroScene");
     }
+
     create(){
         console.log("outro");
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);

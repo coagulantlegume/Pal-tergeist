@@ -46,7 +46,7 @@ class Loading extends Phaser.Scene {
 
     complete() {
 		console.log("COMPLETE!");
-		this.scene.start("playScene");
+		this.scene.start("menuScene");
 	}
 
 }
