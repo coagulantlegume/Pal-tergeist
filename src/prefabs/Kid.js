@@ -32,6 +32,35 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         // add level bounding box
         this.body.setBoundsRectangle(game.levelParams.levelBounds);
         this.setCollideWorldBounds(true);
+
+        // add animations
+        scene.anims.create({
+            key: 'kidWalkLeft',
+            repeat: -1,
+            frameRate: 2,
+            frames: scene.anims.generateFrameNames('anims_kid', {
+                prefix: 'kid_left_',
+                suffix: '.png',
+                start: 1,
+                end:  2,
+                zeroPad: 2
+            })
+        })
+        this.anims.load('kidWalkLeft');
+
+        scene.anims.create({
+            key: 'kidWalkRight',
+            repeat: -1,
+            frameRate: 2,
+            frames: scene.anims.generateFrameNames('anims_kid', {
+                prefix: 'kid',
+                suffix: '.png',
+                start: 1,
+                end:  2,
+                zeroPad: 2
+            })
+        })
+        this.anims.load('kidWalkRight');
     }
 
     update() {

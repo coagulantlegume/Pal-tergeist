@@ -1,0 +1,104 @@
+{
+	"textures": [
+		{
+			"image": "anims_kid.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 336,
+				"h": 106
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "kid01.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 82,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 82,
+						"h": 104
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 82,
+						"h": 104
+					}
+				},
+				{
+					"filename": "kid02.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 82,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 82,
+						"h": 104
+					},
+					"frame": {
+						"x": 85,
+						"y": 1,
+						"w": 82,
+						"h": 104
+					}
+				},
+				{
+					"filename": "kid_left_01.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 82,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 82,
+						"h": 104
+					},
+					"frame": {
+						"x": 169,
+						"y": 1,
+						"w": 82,
+						"h": 104
+					}
+				},
+				{
+					"filename": "kid_left_02.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 82,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 82,
+						"h": 104
+					},
+					"frame": {
+						"x": 253,
+						"y": 1,
+						"w": 82,
+						"h": 104
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:6dda5d97b9de70fa45874a6db7d475d9:6f7bd086abf47b5d5287be5fc64f0565:3db1e2a189c0506db0320c74f984165d$"
+	}
+}
