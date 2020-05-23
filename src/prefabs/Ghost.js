@@ -9,6 +9,8 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         this.target = game.input.mousePointer;
         this.targetChanged = false;
         this.speed = 300;
+        this.paranormalStrengthMax = 100;
+        this.paranormalStrengthCurr = 50;
 
         this.unpossessSFX = scene.sound.add('unpossession');
 
@@ -94,9 +96,6 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         //sfx
         this.unpossessSFX.setVolume(0.8);
         this.unpossessSFX.play();
-
-        // reapply gravity
-        this.target.body.allowGravity = true;
 
         this.target = game.input.mousePointer;
         this.isPossessing = false;

@@ -12,6 +12,8 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
             isMoving: false,            // whether kid is currently walking or standing still
             distance: 0,                // distance to travel
             maxSpeed: 1,
+            scareLevelMax: 100,
+            scareLevelCurr: 0
         }
 
         // cet center

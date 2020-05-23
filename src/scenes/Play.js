@@ -112,16 +112,16 @@ class Play extends Phaser.Scene {
 
         // update kid
         this.kid.update();
-        this.scareBar.update(this.kid.x, this.kid.y-(18+this.kid.height/2));
+        this.scareBar.update(this.kid.x, this.kid.y-(18+this.kid.height/2), this.kid.params.scareLevelCurr/this.kid.params.scareLevelMax);
 
 
         // if possessing, move active object, and set the paranormal bar to the object
         if(this.ghost.isPossessing) {
             this.ghost.target.update(keyToggle);
-            this.paranormalBar.update(this.ghost.target.x, this.ghost.target.y);
+            this.paranormalBar.update(this.ghost.target.x, this.ghost.target.y, this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
         }
         else {
-            this.paranormalBar.update(this.ghost.x, this.ghost.y-(18+this.ghost.height/2));
+            this.paranormalBar.update(this.ghost.x, this.ghost.y-(18+this.ghost.height/2), this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
         }
 
         // PROGRAM SCENE DEBUGGING
