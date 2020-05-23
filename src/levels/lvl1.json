@@ -19,6 +19,7 @@
     {
       "name": "clock",
       "texture": "clock",
+      "hoverTexture": "clockHover",
       "sound": "chime",
       "scale": 1,
       "position": {
@@ -31,6 +32,7 @@
     {
       "name": "light",
       "texture": "light_OFF",
+      "hoverTexture": "light_OFFHover",
       "sound": "lightSwitch",
       "scale": 1,
       "position": {
@@ -46,6 +48,7 @@
     {
       "name": "radio",
       "texture": "radio",
+      "hoverTexture": "radioHover",
       "sound": "radioBite",
       "scale": 1,
       "position": {
@@ -61,6 +64,7 @@
     {
       "name": "tub",
       "texture": "tub",
+      "hoverTexture": "tubHover",
       "sound": "possession",
       "scale": 1,
       "scaleMax": 1.5,

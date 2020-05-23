@@ -38,7 +38,7 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         scene.anims.create({
             key: 'kidWalkLeft',
             repeat: -1,
-            frameRate: 2,
+            frameRate: 10,
             frames: scene.anims.generateFrameNames('anims_kid', {
                 prefix: 'kid_left_',
                 suffix: '.png',
@@ -52,7 +52,7 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         scene.anims.create({
             key: 'kidWalkRight',
             repeat: -1,
-            frameRate: 2,
+            frameRate: 10,
             frames: scene.anims.generateFrameNames('anims_kid', {
                 prefix: 'kid',
                 suffix: '.png',
@@ -126,6 +126,11 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         }
         
         if(game.levelParams.complete) {
+            // get rid of toggle UI
+            if(this.scene.ghost.isPossessing){
+                this.scene.ghost.target.makeToggleInvis();
+            }
+            
             if(!this.params.exiting) { // level complete but path not yet set)
                 this.params.distance = currLevel.params.exit.x + currLevel.params.x0 - this.x;
                 if(this.params.distance > 0) { // exit to right of kid

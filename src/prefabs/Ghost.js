@@ -98,13 +98,11 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         this.unpossessSFX.play();
 
         this.isPossessing = false;
-        
+
         // set toggle UI of object to invisible 
         // (only works when you don't click on a scare object to exit)
         // code for handling when you do is in touchObj() of scareObject.js
-        this.target.resizeUI.setAlpha(0);
-        this.target.moveUI.setAlpha(0);
-
+        this.target.makeToggleInvis();
         this.target = game.input.mousePointer;
     }
 

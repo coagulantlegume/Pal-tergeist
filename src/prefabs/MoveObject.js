@@ -154,4 +154,9 @@ class MoveObject extends ScareObject {
         // set possessing variable for ghost
         this.scene.ghost.isPossessing = true;
     }
+
+    makeToggleInvis(){
+        this.resizeUI.setAlpha(0);
+        this.moveUI.setAlpha(0);
+    }
 }
