@@ -11,7 +11,8 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
             direction: "right",         // direction kid is walking in
             isMoving: false,            // whether kid is currently walking or standing still
             distance: 0,                // distance to travel
-            maxSpeed: 1,
+            maxSpeed: 1.5,
+            exiting: false,             // if kid currently walking to exit (calculated path)
             scareLevelMax: 100,
             scareLevelCurr: 25
         }
@@ -20,10 +21,10 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         this.setOrigin(0.5, 0.5);
 
         // add walkable area debug rectangle
-        this.walkAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
-        this.walkAreaRect.alpha = 0.5;
-        this.walkAreaRect.setOrigin(0, 0.5);
-        this.walkAreaRect.setDepth(3);
+        //this.walkAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
+        //this.walkAreaRect.alpha = 0.5;
+        //this.walkAreaRect.setOrigin(0, 0.5);
+        //this.walkAreaRect.setDepth(3);
         
         // add to scene and physics
         scene.add.existing(this);
@@ -68,13 +69,14 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         if(this.params.scareLevelCurr > 0){
             this.params.scareLevelCurr -=0.02;
         }
- 
-        // calculate walkable area
+
         let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
+
+        // calculate walkable area
         this.params.walkAreaLBound = currLevel.params.x0 + currLevel.params.borderWidth; // left wall of level
         this.params.walkAreaRBound = this.params.walkAreaLBound + currLevel.background.width - 2 * currLevel.params.borderWidth; // right wall of level
         Phaser.Actions.Call(currLevel.moveGroup, (obj) => {
-            if(obj.y + obj.scale * obj.height / 2 >= this.y - this.height / 2) { // on the correct y plane
+            if(true/*obj.y + obj.scale * obj.height / 2 >= this.y - this.height / 2*/) { // on the correct y plane
                 if(obj.x > this.params.walkAreaLBound && obj.x < this.x) { // closer than current left bound
                     this.params.walkAreaLBound = obj.x + (obj.width * obj.scale) / 2;
                 }
@@ -89,8 +91,8 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         this.params.walkAreaRBound -= 5;
 
         // draw debug walkable area rectangle
-        this.walkAreaRect.setPosition(this.params.walkAreaLBound, this.y - this.height / 2);
-        this.walkAreaRect.setSize((this.params.walkAreaRBound - this.params.walkAreaLBound), this.height);
+        //this.walkAreaRect.setPosition(this.params.walkAreaLBound, this.y - this.height / 2);
+        //this.walkAreaRect.setSize((this.params.walkAreaRBound - this.params.walkAreaLBound), this.height);
 
         // test for exit condition
         if(!game.levelParams.changingLevel) {
@@ -98,11 +100,14 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
             let exitRight = currLevel.params.x0 + (currLevel.params.exit.x + currLevel.params.exit.width / 2);
             if(exitLeft >= this.params.walkAreaLBound && exitLeft <= this.params.walkAreaRBound && 
                this.params.walkAreaRBound -exitLeft > this.width) {
-                console.log("exit path");
+                game.levelParams.complete = true;
             }
             else if(exitRight <= this.params.walkAreaRBound && exitRight >= this.params.walkAreaLBound &&
                     exitRight - this.params.walkAreaLBound > this.width) {
-                console.log("exit path");
+                game.levelParams.complete = true;
+            }
+            else {
+                game.levelParams.complete = false;
             }
         }
 
@@ -112,6 +117,37 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         }
         else if(this.direction == "left") {
             this.params.distance = Math.min(this.params.distance, this.x - this.width / 2 - this.params.walkAreaLBound);
+        }
+        
+        // if just stopped moving, reset timer
+        if(this.params.distance <= 0 && this.params.isMoving == true) { // end of calculated walk distance (or within 1 pixel)
+            this.scene.wanderTimer.paused = false; // take another move immediately
+            this.params.isMoving = false;
+        }
+        
+        if(game.levelParams.complete) {
+            if(!this.params.exiting) { // level complete but path not yet set)
+                this.params.distance = currLevel.params.exit.x + currLevel.params.x0 - this.x;
+                if(this.params.distance > 0) { // exit to right of kid
+                    this.setFlipX(false);
+                    this.params.direction = "right";
+                }
+                else { // exit to left of kid
+                    this.setFlipX(true);
+                    this.params.direction = "left";
+                    this.params.distance = -this.params.distance;
+                }
+                this.params.isMoving = true;
+                this.params.exiting = true;
+                this.scene.wanderTimer.paused = true;
+            }
+            else if(this.x - this.width / 2 > currLevel.params.x0 + (currLevel.params.exit.x - currLevel.params.exit.width / 2) &&
+                    this.x + this.width / 2 < currLevel.params.x0 + (currLevel.params.exit.x + currLevel.params.exit.width / 2)) { // if completely overlapping with exit
+                this.scene.nextLevel(this.scene.count % 3 + 1);
+                ++this.scene.count;
+                this.params.isMoving = false;
+                this.setCollideWorldBounds(false);
+            }
         }
 
         // calculate movement TODO: lerp
@@ -124,12 +160,6 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
                 this.x -= this.params.maxSpeed;
                 this.params.distance -= this.params.maxSpeed; 
             }
-        }
-
-        // if just stopped moving, reset timer
-        if(this.params.distance <= 0 && this.params.isMoving == true) { // end of calculated walk distance (or within 1 pixel)
-            this.scene.wanderTimer.paused = false; // take another move immediately
-            this.params.isMoving = false;
         }
     }
 

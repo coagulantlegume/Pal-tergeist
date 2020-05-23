@@ -8,7 +8,7 @@
       "y": 250
     },
     "entrance": {
-      "x": "undefined"
+      "x": 900
     },
     "exit": {
       "x": 715.5,
@@ -65,7 +65,7 @@
       "scale": 1,
       "scaleMax": 2,
       "position": {
-        "x": 250,
+        "x": 600,
         "y": 380
       },
       "powerGain": 5,
