@@ -5,6 +5,9 @@ class Level {
         // Read level JSON file
         let rawData = scene.cache.json.get('lvl' + levelNum);
 
+        // add scene parameter
+        this.scene = scene;
+
         // set params (border width, center, size)
         this.params = rawData.params;
         this.params.index;
@@ -15,8 +18,8 @@ class Level {
         this.background.y -= this.background.height / 2;
 
         // set params for new 0,0 coordinate of level
-        this.params.x0 = this.background.x - this.background.width / 2;
-        this.params.y0 = this.background.y - this.background.height / 2;
+        this.params.x0 = this.background.x - this.params.center.x;
+        this.params.y0 = this.background.y - this.params.center.y;
 
         // make scare objects
         this.scareGroup = [];
@@ -85,6 +88,10 @@ class Level {
             obj.x += distX;
             obj.y += distY;
         });
+
+        // update new 0,0 coordinate of level
+        this.params.x0 = this.background.x - this.params.center.x;
+        this.params.y0 = this.background.y - this.params.center.y;
     }
 
     // remove level entirely

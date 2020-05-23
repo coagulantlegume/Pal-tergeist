@@ -157,6 +157,14 @@ class Play extends Phaser.Scene {
 
     // move to next level (specify level number)
     nextLevel(level) {
+        // turn off level complete flag
+        game.levelParams.complete = false;
+
+        // if ghost is possessing something, unpossess
+        if(this.ghost.isPossessing) {
+            this.ghost.unpossess();
+        }
+
         // make new level
         game.levelParams.renderedLevels.push(new Level(this, level));
 
@@ -179,6 +187,21 @@ class Play extends Phaser.Scene {
         game.levelParams.renderedLevels[0].makePassive();
         game.levelParams.changingLevel = true;
 
+        // walk kid to start of stairs
+        this.kidShiftTimer = this.time.addEvent({
+            delay:25,
+            callback: () => {
+                this.kid.y -= 1;
+
+                // when reached stairs, start shifting level
+                if(this.kidShiftTimer.getOverallProgress() > 0.3) {
+                    this.shiftTimer.paused = false;
+                }
+            },
+            callbackScope: this,
+            repeat: 149,
+        });
+
         // TODO: smooth out shift (lerp dat ish)
         // shift levels down to center next level
         this.shiftTimer = this.time.addEvent({
@@ -190,21 +213,36 @@ class Play extends Phaser.Scene {
                 if(isOffscreen) {
                     offscreenLevel.shift(shiftDistX / 100, shiftDistY / 100);
                 }
+
+                // shift kid
+                this.kid.x += shiftDistX / 100;
+                this.kid.y += shiftDistY / 100; // shift with level but walk up stairs
+                
                 if(this.shiftTimer.getOverallProgress() > 0.8 && isOffscreen) {
                     offscreenLevel.remove();
                     isOffscreen = false;
+                    let currLevel = game.levelParams.renderedLevels[1];
                 }
             },
             callbackScope: this,
             repeat: 99,
+            paused: true,
         });
 
         this.levelChangeTimer = this.time.addEvent({
-            delay: 2500,
+            delay: 3750,
             callback: () => {
+                let currLevel = game.levelParams.renderedLevels[1];
                 // set active 
-                game.levelParams.renderedLevels[1].makeActive();
+                currLevel.makeActive();
                 game.levelParams.changingLevel = false;
+
+                // set kid to next level
+                this.kid.x = currLevel.params.entrance.x + currLevel.params.x0;
+                this.kid.y = currLevel.params.y0 + currLevel.background.height - currLevel.params.borderWidth;
+                this.kid.params.exiting = false;
+                this.wanderTimer.paused = false;
+                this.kid.setCollideWorldBounds(true);
             },
             callbackScope: this,
         });
