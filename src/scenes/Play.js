@@ -117,7 +117,7 @@ class Play extends Phaser.Scene {
 
 
         // if possessing, move active object, and set the paranormal bar to the object
-        if(this.ghost.isPossessing) {
+        if(this.ghost.isPossessing && !game.levelParams.complete) {
             this.ghost.target.update(keyToggle);
             this.paranormalBar.update(this.ghost.target.x, this.ghost.target.y, this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
         }
