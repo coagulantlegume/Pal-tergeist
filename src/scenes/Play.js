@@ -16,14 +16,17 @@ class Play extends Phaser.Scene {
         this.load.image('lvl3Background', './assets/textures/tb3.png');
 
         // Load level asset images
-        //this.load.image('light', './assets/textures/light.png');
-        //this.load.image('book', './assets/textures/book.png');
         this.load.image('radio', './assets/textures/radio.png');
         this.load.image('clock', './assets/textures/clock.png');
         this.load.image('light_OFF', './assets/textures/light_OFF.png');
-        //this.load.image('light_ON', './assets/textures/light_ON.png');
         this.load.atlas('anims_light', './assets/textures/anims_light.png', './assets/textures/anims_light.json');
         this.load.image('tub', './assets/textures/tub.png');
+
+        // UI
+        this.load.image('barBorder', './assets/textures/barBorder.png');
+        this.load.image('barBackFill', './assets/textures/barBackFill.png');
+        this.load.image('resizeToggle', './assets/textures/resizeToggleB.png')
+        this.load.image('moveToggle', './assets/textures/moveToggleB.png')
 
         // load characters' images
         this.load.image('ghost', './assets/textures/ghost.png');
@@ -76,9 +79,11 @@ class Play extends Phaser.Scene {
 
         // make ghost
         this.ghost = new Ghost(this, game.config.width / 2, game.config.height / 2, 'ghost', 0);
+        this.paranormalBar = new UIBar(this, this.ghost.x, this.ghost.y-(18+this.ghost.height/2),0x7bfff6,2); 
 
         // make kid
         this.kid = new Kid(this, game.config.width / 4, (game.config.height / 2) + 250, 'kid', 0);
+        this.scareBar = new UIBar(this, this.kid.x, this.kid.y-(18+this.kid.height/2),0xffa100,3);
         
         // TODO: remove, just here for testing level generating
         this.count = 2;
@@ -107,10 +112,16 @@ class Play extends Phaser.Scene {
 
         // update kid
         this.kid.update();
+        this.scareBar.update(this.kid.x, this.kid.y-(18+this.kid.height/2));
 
-        // if possessing, move active object
+
+        // if possessing, move active object, and set the paranormal bar to the object
         if(this.ghost.isPossessing) {
             this.ghost.target.update(keyToggle);
+            this.paranormalBar.update(this.ghost.target.x, this.ghost.target.y);
+        }
+        else {
+            this.paranormalBar.update(this.ghost.x, this.ghost.y-(18+this.ghost.height/2));
         }
 
         // PROGRAM SCENE DEBUGGING

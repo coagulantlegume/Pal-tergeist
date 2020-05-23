@@ -13,6 +13,16 @@ class MoveObject extends ScareObject {
         // posessesion mode (move/resize)
         this.mode = "move";
         this.scaleMax = scaleMax; // max scale value, min scale value = 1/scaleMax
+
+        // move/resize UI
+        this.initOffset = 9; // this might be temp. There's a bug where the after clicking on the object for the first time the toggle UI shifts down a bit
+        this.resizeUI = scene.add.sprite(x-(this.width/2*this.scale),
+                                         y-(this.height/2*this.scale)-this.initOffset, 
+                                         'resizeToggle').setOrigin(0,1).setDepth(4).setAlpha(0);
+                             
+        this.moveUI = scene.add.sprite(x-(this.width/2*this.scale),
+                                       y-(this.height/2*this.scale)-this.initOffset, 
+                                       'moveToggle').setOrigin(0,1).setDepth(4).setAlpha(0);
     }
     
     update(keyToggle) {
@@ -30,6 +40,16 @@ class MoveObject extends ScareObject {
 
         // set max velocity
         this.setMaxVelocity((this.height * this.width) / (this.scale * 400), (this.height * this.width) / (this.scale * 100));
+
+        // Set Toggle UI
+        if("move" === this.mode){
+            this.resizeUI.setAlpha(0);
+            this.moveUI.setAlpha(1);
+        }
+        else if("resize" === this.mode){
+            this.resizeUI.setAlpha(1);
+            this.moveUI.setAlpha(0);
+        }
 
         //switch modes only once the player releases the key after pressing it
         if(Phaser.Input.Keyboard.JustDown(keyToggle)){
@@ -81,6 +101,12 @@ class MoveObject extends ScareObject {
                 this.body.velocity.y += ((this.height * this.width) / (this.scale * 2000));
             }
         }
+
+        // set position of the toggle UI
+        this.resizeUI.setPosition(this.x-(this.width/2*this.scale),
+                                  this.y-(this.height/2*this.scale));
+        this.moveUI.setPosition(this.x-(this.width/2*this.scale),
+                                  this.y-(this.height/2*this.scale));
 
         return;
     }
