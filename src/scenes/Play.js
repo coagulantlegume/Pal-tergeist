@@ -95,9 +95,9 @@ class Play extends Phaser.Scene {
         // timer for when the kid wanders around
         this.wanderTimer = this.time.addEvent({
             delay: 3000,
-            callback: this.moveKid,
-            callbackScope: this,
-            loop: true
+            callback: this.kid.moveKid,
+            callbackScope: this.kid,
+            loop: true,
           });
     }
 

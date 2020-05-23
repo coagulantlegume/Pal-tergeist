@@ -10,6 +10,8 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
             walkAreaRBound: undefined,  // right (max) y value of walkable area
             direction: "right",         // direction kid is walking in
             isMoving: false,            // whether kid is currently walking or standing still
+            distance: 0,                // distance to travel
+            maxSpeed: 1,
         }
 
         // cet center
@@ -67,6 +69,67 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
                 console.log("exit path");
             }
         }
+
+        // if barrier moved, readjust distance
+        if(this.params.direction == "right") {
+            this.params.distance = Math.min(this.params.distance, this.params.walkAreaRBound - this.x - this.width / 2);
+        }
+        else if(this.direction == "left") {
+            this.params.distance = Math.min(this.params.distance, this.x - this.width / 2 - this.params.walkAreaLBound);
+        }
+
+        // calculate movement TODO: lerp
+        if(this.params.isMoving) {
+            if(this.params.direction == "right") {
+                this.x += this.params.maxSpeed;
+                this.params.distance -= this.params.maxSpeed; 
+            }
+            else {
+                this.x -= this.params.maxSpeed;
+                this.params.distance -= this.params.maxSpeed; 
+            }
+        }
+
+        // if just stopped moving, reset timer
+        if(this.params.distance <= 0 && this.params.isMoving == true) { // end of calculated walk distance (or within 1 pixel)
+            this.scene.wanderTimer.paused = false; // take another move immediately
+            this.params.isMoving = false;
+        }
+    }
+
+    // kid wandering around randomly
+    moveKid(){
+        let randNumber = Math.floor((Math.random() * 5) + 1);
+        switch(randNumber) {
+            case 1: // move right
+                this.scene.wanderTimer.paused = true;
+                this.params.direction = "right";
+                this.setFlipX(false);
+                this.params.isMoving = true;
+                // calculate random location between kid and right bound
+                this.params.distance = Math.random() * (this.params.walkAreaRBound - this.x - this.width / 2);
+                break;
+            case 2: // move left
+                this.scene.wanderTimer.paused = true;
+                this.params.direction = "left";
+                this.setFlipX(true);
+                this.params.isMoving = true;
+                // calculate random location between kid and left bound
+                this.params.distance = Math.random() * (this.x - this.width / 2 - this.params.walkAreaLBound);
+                break;
+            case 3: // idle turn
+                this.params.direction = (this.params.direction == "left") ? "right" : "left";
+                this.setFlip(this.params.direction == "left");
+                this.params.isMoving = false;
+                this.scene.wanderTimer.elapsed = 0;
+                this.scene.wanderTimer.paused = false;
+                break;
+            case 4: // idle no turn
+                this.params.isMoving = false;
+                this.scene.wanderTimer.elapsed = 0;
+                this.scene.wanderTimer.paused = false;
+        }
+        this.scene.wanderTimer.delay = Math.floor((Math.random() * 5000) + 2000); //selects delay randomly in a range
     }
 
     // TODO: variable for scare level with setter/getter/modifiers.
