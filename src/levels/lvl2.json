@@ -25,6 +25,9 @@
         "x": 900,
         "y": 270
       },
+      "visual": false,
+      "auditory": true,
+      "range": 800,
       "powerGain": 5,
       "scareGain": 3
     },
@@ -37,6 +40,9 @@
         "x": 200,
         "y": 100
       },
+      "visual": true,
+      "auditory": true,
+      "range": 200,
       "powerGain": 5,
       "scareGain": 3,
       "anims": "anims_light",
@@ -52,6 +58,9 @@
         "x": 340,
         "y": 216
       },
+      "visual": false,
+      "auditory": true,
+      "range": 800,
       "powerGain": 5,
       "scareGain": 3
     }
@@ -68,6 +77,9 @@
         "x": 600,
         "y": 380
       },
+      "visual": true,
+      "auditory": false,
+      "range": 50,
       "powerGain": 5,
       "scareGain": 3,
       "powerLossRate": 1

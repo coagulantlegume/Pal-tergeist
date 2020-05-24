@@ -1,10 +1,13 @@
 // ScareObject prefab, for any object that can scare child
 class ScareObject extends Phaser.Physics.Matter.Sprite {
-    constructor(scene, x, y, texture, scale, powerGain, scareGain, name, sound, animation, animation_fCount, animation_fRate) {
+    constructor(scene, x, y, texture, scale, range, visual, auditory, powerGain, scareGain, name, sound, animation, animation_fCount, animation_fRate) {
         super(scene.matter.world, x, y, texture, 0);
         // parameters
         this.params = {
             name: name,
+            range: range,
+            visual: visual,
+            auditory: auditory,
             power: powerGain,
             scare: scareGain,
             sfx: sound,
@@ -77,8 +80,6 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
     }
 
     possess() {
-        // TODO: add effects of scare object (scare/power manipulation)
-        console.log("ooOOoo scary " + this.params.name);
         //sfx
         if(this.params.sfx){
             this.params.sfx.play();
@@ -88,9 +89,9 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
             this.play('_anims_'+this.params.name);
         }
 
+        // update kid's scare effect
+        this.scene.kid.scaredBy(this, this.params.scare);
+
         this.scene.ghost.target = game.input.mousePointer;
     }
-
-    // TODO: every frame where manipulation is taking place, call this.scene.kid.scaredBy(this)
-    // to check if affecting child
 }

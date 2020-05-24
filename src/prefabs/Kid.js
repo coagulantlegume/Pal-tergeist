@@ -170,7 +170,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
     }
 
     // kid wandering around randomly
-    moveKid(){
+    moveKid() {
         let randNumber = Math.floor((Math.random() * 5) + 1);
         switch(randNumber) {
             case 1: // move right
@@ -204,9 +204,19 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.scene.wanderTimer.delay = Math.floor((Math.random() * 5000) + 2000); //selects delay randomly in a range
     }
 
-    // TODO: variable for scare level with setter/getter/modifiers.
-    // TODO: timer for cooldown of scare level.
-    // TODO: scaredBy({Object}) function which calculates if child perceived
+    // checks if object is perceivable by kid
+    scaredBy(obj, amount) {
+        if(obj.params.visual) {
+            let side = (this.x - obj.x > 0) ? "left":"right"; // which side of the kid the object is on
+            if(side === this.params.direction) {
+                console.log("scared by: " + obj.params.name);
+            }
+        }
+        if(obj.params.auditory && this.getCenter().distance(obj.getCenter()) <= obj.params.range) {
+            console.log("scared by: " + obj.params.name);
+        }
+    }
+
     // scare and modifies scare level.
     // TODO: runFrom({Object}, distance) function for when scare amount is
     // above a given threshhold, with distance -1 for running out of level

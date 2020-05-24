@@ -1,10 +1,13 @@
 // MoveObject prefab, for objects that can scare child and cost ghost power to manipulate
 class MoveObject extends ScareObject {
-    constructor(scene, x, y, texture, scale, powerGain, scareGain, powerLossRate, name, scaleMax) {
-        super(scene, x, y, texture, scale, powerGain, scareGain, name, null, null);
+    constructor(scene, x, y, texture, scale, range, visual, auditory, powerGain, scareGain, powerLossRate, name, scaleMax) {
+        super(scene, x, y, texture, scale, range, visual, auditory, powerGain, scareGain, name, null, null);
         this.params.powerLoss = powerLossRate;
         // add to scene
         scene.add.existing(this);
+
+        // previous position tracker (to track if moving)
+        this.prevPosY = this.body.position.y;
 
         // set collision group and mask
         this.setCollisionGroup(this.scene.moveCollision);
@@ -104,6 +107,13 @@ class MoveObject extends ScareObject {
                                   this.y-(this.height/2*this.scale));
         this.moveUI.setPosition(this.x-(this.width/2*this.scale),
                                   this.y-(this.height/2*this.scale));
+        
+        // update kid's scare effect if object is moving
+        if(Math.floor(Math.abs(this.body.position.y - this.prevPosY) + 0.8) != 0 || Math.floor(Math.abs(this.body.velocity.x)) != 0) {
+            let typeMultiplier = ("move" === this.mode) ? 1:1.5; // multiplier based on type of manipulation (1 for move, 1.5 for scale)
+            this.scene.kid.scaredBy(this, this.params.scare * typeMultiplier);
+        }
+        this.prevPosY = this.body.position.y;
     }
 
     makeActive() {
