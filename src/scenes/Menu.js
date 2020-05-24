@@ -42,10 +42,19 @@ class Menu extends Phaser.Scene {
         var tutorialMenu = this.add.sprite(centerX, centerY, 'tutorialMenu');
         var creditsMenu = this.add.sprite(centerX, centerY + 100, 'creditsMenu');
 
+        playMenu.setInteractive();
+        tutorialMenu.setInteractive();
+        creditsMenu.setInteractive();
 
         console.log("menu");
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        // detects when mouse pointer is over the options
+        playMenu.on('pointerdown', () => { this.scene.start("playScene") });
+        tutorialMenu.on('pointerdown', () => { this.scene.start("introScene") });
+        creditsMenu.on('pointerdown', () => { this.scene.start("creditScene") });
     }
+
 
     update(){
         // PROGRAM SCENE DEBUGGING
