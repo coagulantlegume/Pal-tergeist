@@ -5,7 +5,14 @@ class Menu extends Phaser.Scene {
     }
 
     preload(){
+        //load title logo
         this.load.image('titleLogo', './assets/textures/PaltergeistLogo.png');
+
+        //load menu options
+        this.load.image('playMenu', './assets/textures/PlayMenu.png');
+        this.load.image('tutorialMenu', './assets/textures/TutorialMenu.png');
+        this.load.image('creditsMenu', './assets/textures/CreditsMenu.png');
+
     }
 
     create(){
@@ -14,6 +21,9 @@ class Menu extends Phaser.Scene {
         let centerY = game.config.height/2;
 
         var title = this.add.sprite(centerX, centerY - 250, 'titleLogo');
+        var playMenu = this.add.sprite(centerX, centerY - 100, 'playMenu');
+        var tutorialMenu = this.add.sprite(centerX, centerY, 'tutorialMenu');
+        var creditsMenu = this.add.sprite(centerX, centerY + 100, 'creditsMenu');
         console.log("menu");
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
