@@ -13,7 +13,7 @@ class Menu extends Phaser.Scene {
         let centerX = game.config.width/2;
         let centerY = game.config.height/2;
 
-        var title = this.add.sprite(centerX, centerY, 'titleLogo');
+        var title = this.add.sprite(centerX, centerY - 250, 'titleLogo');
         console.log("menu");
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }

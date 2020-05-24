@@ -6,11 +6,15 @@ class Loading extends Phaser.Scene {
 
 	preload() {
 
+		// center alignments for canvas
+		let centerX = game.config.width/2;
+		let centerY = game.config.height/2;
+
 		// makes loading bar ui
 		this.graphics = this.add.graphics();
 		this.newGraphics = this.add.graphics();
-		var progressBar = new Phaser.Geom.Rectangle(200, 200, 400, 50);
-		var progressBarFill = new Phaser.Geom.Rectangle(205, 205, 290, 40);
+		var progressBar = new Phaser.Geom.Rectangle(545, 280, 400, 50);
+		var progressBarFill = new Phaser.Geom.Rectangle(550, 285, 290, 40);
 
 		this.graphics.fillStyle(0xffffff, 1);
 		this.graphics.fillRectShape(progressBar);
@@ -18,11 +22,11 @@ class Loading extends Phaser.Scene {
 		this.newGraphics.fillStyle(0x3587e2, 1);
 		this.newGraphics.fillRectShape(progressBarFill);
 
-		var loadingText = this.add.text(250,260,"Loading: ", { fontSize: '32px', fill: '#FFF' });
+		var loadingText = this.add.text(595,340,"Loading: ", { fontSize: '32px', fill: '#FFF' });
 
 		// the more images you load, the longer the load time
 		this.load.image('background', 'images/tut/background.png');
-		for(var i = 0;i<300;i++) {
+		for(var i = 0;i<10;i++) {
 			this.load.image('background_' + i, 'images/tut/background.png');
 		}
 
@@ -36,7 +40,7 @@ class Loading extends Phaser.Scene {
 		// the updating loading bar
         this.newGraphics.clear();
         this.newGraphics.fillStyle(0x3587e2, 1);
-        this.newGraphics.fillRectShape(new Phaser.Geom.Rectangle(205, 205, percentage*390, 40));
+        this.newGraphics.fillRectShape(new Phaser.Geom.Rectangle(550, 285, percentage*390, 40));
                 
         percentage = percentage * 100;
         this.loadingText.setText("Loading: " + percentage.toFixed(2) + "%");
