@@ -22,11 +22,13 @@ class Menu extends Phaser.Scene {
 
     create(){
         //bgm loop
-        this.music = this.sound.add('bgmLoop', {
-            loop: true,
-            volume: 0.1
-        });
-        this.music.play();
+        if(game.music == undefined) {
+            game.music = this.sound.add('bgmLoop', {
+                loop: true,
+                volume: 0.1
+            });
+            game.music.play();
+        }
 
         // center alignments for canvas
         let centerX = game.config.width/2;
