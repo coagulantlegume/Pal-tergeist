@@ -55,7 +55,7 @@ class Play extends Phaser.Scene {
     /*    //bgm loop
         this.music = this.sound.add('bgmLoop', {
             loop: true,
-            volume: 0.1
+            volume: 0.2
         });
         this.music.play(); */
 

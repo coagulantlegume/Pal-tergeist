@@ -5,6 +5,7 @@ class Loading extends Phaser.Scene {
 	}
 
 	preload() {
+		this.load.image('ghostLoad', './assets/textures/ghost.png');
 
 		// center alignments for canvas
 		let centerX = game.config.width/2;
@@ -19,27 +20,46 @@ class Loading extends Phaser.Scene {
 		this.graphics.fillStyle(0xffffff, 1);
 		this.graphics.fillRectShape(progressBar);
 
-		this.newGraphics.fillStyle(0x3587e2, 1);
+		this.newGraphics.fillStyle(0x3ed7fd, 1);
 		this.newGraphics.fillRectShape(progressBarFill);
 
-		var loadingText = this.add.text(595,340,"Loading: ", { fontSize: '32px', fill: '#FFF' });
+		var loadingText = this.add.text(630,340,"Loading: ", { fontFamily: 'Comic Sans MS', fontSize: '32px', fill: '#FFF' });
 
 		// the more images you load, the longer the load time
 		this.load.image('background', 'images/tut/background.png');
-		for(var i = 0;i<10;i++) {
+		for(var i = 0;i<100;i++) {
 			this.load.image('background_' + i, 'images/tut/background.png');
 		}
 
 		this.load.on('progress', this.updateBar, {newGraphics:this.newGraphics,loadingText:loadingText});
 		this.load.on('complete', this.complete, {scene:this.scene});
-    }
+	}
+	
+	create(){
+		// center alignments for canvas
+		let centerX = game.config.width/2;
+		let centerY = game.config.height/2;
+
+		var ghost = this.add.image(centerX, centerY, 'ghostLoad');
+
+		var ghostBob = this.tweens.add({
+			targets: ghost,
+			y: '-=50',
+			ease: 'Sine.easeInOut',
+			duration: 2000,
+			yoyo: true,
+			repeat: 100
+		});
+
+		console.log(ghostBob);
+	}
 	
 	// displays percent value of loading
     updateBar(percentage) {
 
 		// the updating loading bar
         this.newGraphics.clear();
-        this.newGraphics.fillStyle(0x3587e2, 1);
+        this.newGraphics.fillStyle(0x3ed7fd, 1);
         this.newGraphics.fillRectShape(new Phaser.Geom.Rectangle(550, 285, percentage*390, 40));
                 
         percentage = percentage * 100;
