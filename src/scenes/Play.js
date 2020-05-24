@@ -64,12 +64,18 @@ class Play extends Phaser.Scene {
         this.ghostCollision = this.matter.world.nextGroup();
         this.scareCollision = this.matter.world.nextGroup(true);
         this.moveCollision = this.matter.world.nextGroup();
+        this.wallCollision = this.matter.world.nextGroup();
 
         // set additional level params
         game.levelParams.changingLevel = false;
 
         // fix new ceiling
         game.settings.ceiling = config.height;
+
+        // make initial floor collision box
+        this.floor = this.matter.add.image(0,0,0);
+        this.floor.setStatic(true).setCollisionGroup(this.wallCollision).setCollidesWith(this.moveCollision).setOrigin(0.5,0.5).setAlpha(0);
+        this.floor.body.friction = 4;
 
         // Inital level setup
         game.levelParams.renderedLevels.push(new Level(this, 1));

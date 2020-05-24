@@ -51,7 +51,10 @@ class Level {
         this.scene.matter.world.setBounds(this.background.x - this.background.width / 2 + this.params.borderWidth, 
                                           this.background.y - this.background.height / 2 + this.params.borderWidth,
                                           this.background.width - 2 * this.params.borderWidth,
-                                          this.background.height - 2 * this.params.borderWidth);
+                                          this.background.height - 2 * this.params.borderWidth + 10);
+        // readjust floor bound
+        this.scene.floor.setPosition(this.params.x0 + this.background.width / 2, this.params.y0 + this.background.height);
+        this.scene.floor.setScale(this.background.width / this.scene.floor.width, this.params.borderWidth * 2 / this.scene.floor.height);
 
         // make objects active
         Phaser.Actions.Call(this.scareGroup, (obj) => {
