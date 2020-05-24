@@ -8,12 +8,12 @@ class MoveObject extends ScareObject {
 
         // set collision group and mask
         this.setCollisionGroup(this.scene.moveCollision);
-        this.setCollidesWith([this.scene.kidCollision]);
+        this.setCollidesWith([this.scene.kidCollision, this.scene.wallCollision]);
 
         // set density and friction
         this.setDensity(1);
         this.setMass(this.scale * this.width * this.height);
-        this.setFriction(.5, 0.005);
+        this.body.frictionAir = 0.008;
 
         // sfx
         this.possessSFX = scene.sound.add('possession');
@@ -68,7 +68,7 @@ class MoveObject extends ScareObject {
         // Resizing up and down from 1 / scaleMax to scaleMax
         if(keyRight.isDown){
             if("move" === this.mode){
-                this.applyForce({x: 10,y: 0});
+                this.applyForce({x: 200,y: 0});
             }
             else if("resize" === this.mode){
                 // only increase to scaleMax value
@@ -79,7 +79,7 @@ class MoveObject extends ScareObject {
         }
         else if(keyLeft.isDown){
             if("move" === this.mode){
-                this.applyForce({x: -10,y: 0});
+                this.applyForce({x: -200,y: 0});
             }
             else if("resize" === this.mode){
                 if(this.scale > 1 / this.scaleMax){
@@ -92,10 +92,10 @@ class MoveObject extends ScareObject {
         if("move" === this.mode){
             //this.body.allowGravity = false; //disable gravity so object can float
             if(keyUp.isDown){
-                this.applyForce({x: 0,y: -300});
+                this.applyForce({x: 0,y: -220});
             }
             else if(keyDown.isDown){
-                this.applyForce({x: 0,y: 300});
+                this.applyForce({x: 0,y: 220});
             }
         }
 
@@ -112,6 +112,9 @@ class MoveObject extends ScareObject {
 
         // make interactable
         this.setInteractive().on('pointerdown', this.touchObj);
+
+        // set friction
+        this.body.friction = 10;
     }
 
     touchObj() {
