@@ -48,10 +48,10 @@ class Level {
     makeActive() {
         // TODO: smooth out readjustment
         // readjust current levelBounds
-        game.levelParams.levelBounds.setPosition(this.background.x - this.background.width / 2 + this.params.borderWidth, 
-                                                 this.background.y - this.background.height / 2 + this.params.borderWidth).
-             setSize(this.background.width - 2 * this.params.borderWidth,
-                     this.background.height - 2 * this.params.borderWidth);
+        this.scene.matter.world.setBounds(this.background.x - this.background.width / 2 + this.params.borderWidth, 
+                                          this.background.y - this.background.height / 2 + this.params.borderWidth,
+                                          this.background.width - 2 * this.params.borderWidth,
+                                          this.background.height - 2 * this.params.borderWidth);
 
         // make objects active
         Phaser.Actions.Call(this.scareGroup, (obj) => {

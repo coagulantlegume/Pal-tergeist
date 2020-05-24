@@ -10,8 +10,11 @@ let config = {
     height: 700,
     scene: [Loading, Intro, Play, Outro, Menu, Credit],
     physics: {
-        default: 'arcade',
-        arcade: {
+        default: 'matter',
+        matter: {
+            gravity: {
+                y: 4,
+            },
             debug: true, // show bounding boxes
         }
     }

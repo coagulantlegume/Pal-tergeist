@@ -1,27 +1,29 @@
 // Ghost prefab
-class Ghost extends Phaser.Physics.Arcade.Sprite {
+class Ghost extends Phaser.Physics.Matter.Sprite {
     constructor(scene, x, y, texture, frame) {
-        super(scene, x, y, texture, frame);
+        super(scene.matter.world, x, y, texture, frame);
 
         this.setDepth(2);
 
         this.isPossessing = false;
         this.target = game.input.mousePointer;
         this.targetChanged = false;
-        this.speed = 300;
+        this.speed = 2;
         this.paranormalStrengthMax = 100;
         this.paranormalStrengthCurr = 50;
 
         this.unpossessSFX = scene.sound.add('unpossession');
         this.unpossessSFX.setVolume(0.5);
 
-        // add to scene and physics
+        // add to scene
         scene.add.existing(this);
-        scene.physics.add.existing(this);
+
+        // set collision group and mask (ghost does not collide with anything, so no mask needed)
+        this.setCollisionGroup(this.scene.ghostCollision);
+        this.setCollidesWith();
 
         // add level bounding box
-        this.body.setBoundsRectangle(game.levelParams.levelBounds);
-        this.setCollideWorldBounds(true);
+        this.setIgnoreGravity(true);
 
         // set overlap detection
         this.body.onOverlap = true;
@@ -61,7 +63,7 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
         if(!game.levelParams.changingLevel) {
             let direction = this.getCenter().subtract(targetPos.position).normalize(); // direction traveling
             let distance = this.getCenter().subtract(targetPos.position).length();
-            let currSpeed = this.body.velocity.length();
+            let currSpeed = Math.sqrt(Math.pow(this.body.velocity.x, 2) + Math.pow(this.body.velocity.y, 2));
 
             let lerpSpeed;
             if(distance > currSpeed) { // if more than 50 pixels away (speeding up or maintaining speed)
@@ -71,10 +73,12 @@ class Ghost extends Phaser.Physics.Arcade.Sprite {
                 lerpSpeed = distance;
             }
 
-            this.body.velocity = direction.scale(-lerpSpeed);
+            direction = direction.scale(-lerpSpeed);
+
+            this.setVelocity(direction.x, direction.y);
         }
         else { // changing levels
-            this.body.velocity.scale(0.95);
+            this.target = game.input.mousePointer;
         }
 
         // if close to target object to interact with, interact

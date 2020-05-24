@@ -1,7 +1,7 @@
 // ScareObject prefab, for any object that can scare child
-class ScareObject extends Phaser.Physics.Arcade.Sprite {
+class ScareObject extends Phaser.Physics.Matter.Sprite {
     constructor(scene, x, y, texture, scale, powerGain, scareGain, name, sound, animation, animation_fCount, animation_fRate) {
-        super(scene, x, y, texture, 0);
+        super(scene.matter.world, x, y, texture, 0);
         // parameters
         this.params = {
             name: name,
@@ -37,6 +37,13 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
             this.anims.load('_anims_'+name);
         }
 
+        // set collision group and mask (scare objects do not collide with anything, so no mask needed)
+        this.setCollisionGroup(this.scene.scareCollision);
+        this.setCollidesWith();
+
+        // make static
+        this.setStatic(true);
+
         // put in front of background layer
         this.setDepth(1);
 
@@ -45,18 +52,18 @@ class ScareObject extends Phaser.Physics.Arcade.Sprite {
     }
 
     makeActive() {
-        // add to physics scene (for overlap)
-        this.scene.physics.add.existing(this);
         // make interactable
         this.setInteractive().on('pointerdown', this.touchObj);
+        this.setActive(true);
     }
 
     makePassive() {
-        // remove physics body
-        this.body.destroy();
-        
         // remove interactivity
-        this.removeInteractive();
+        this.disableInteractive();
+
+        // make static (for move objects)
+        this.setStatic(true);
+        this.setActive(false);
     }
 
     touchObj() {

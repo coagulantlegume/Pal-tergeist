@@ -8,7 +8,7 @@
       "y": 250
     },
     "entrance": {
-      "x": 50
+      "x": 150
     },
     "exit": {
       "x": 715.5,
@@ -70,7 +70,7 @@
       "scaleMax": 1.5,
       "position": {
         "x": 700,
-        "y": 380
+        "y": 300
       },
       "powerGain": 5,
       "scareGain": 3,

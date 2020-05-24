@@ -59,9 +59,14 @@ class Play extends Phaser.Scene {
         });
         this.music.play();
 
+        // make collision groups
+        this.kidCollision = this.matter.world.nextGroup();
+        this.ghostCollision = this.matter.world.nextGroup();
+        this.scareCollision = this.matter.world.nextGroup(true);
+        this.moveCollision = this.matter.world.nextGroup();
+
         // set additional level params
         game.levelParams.changingLevel = false;
-        game.levelParams.levelBounds = new Phaser.Geom.Rectangle(0,0,0,0);
 
         // fix new ceiling
         game.settings.ceiling = config.height;
@@ -244,10 +249,9 @@ class Play extends Phaser.Scene {
 
                 // set kid to next level
                 this.kid.x = currLevel.params.entrance.x + currLevel.params.x0;
-                this.kid.y = currLevel.params.y0 + currLevel.background.height - currLevel.params.borderWidth;
+                this.kid.y = currLevel.params.y0 + currLevel.background.height - 2 * currLevel.params.borderWidth;
                 this.kid.params.exiting = false;
                 this.wanderTimer.paused = false;
-                this.kid.setCollideWorldBounds(true);
             },
             callbackScope: this,
         });

@@ -1,7 +1,7 @@
 // Kid prefab
-class Kid extends Phaser.Physics.Arcade.Sprite {
+class Kid extends Phaser.Physics.Matter.Sprite {
     constructor(scene, x, y, texture, frame) {
-        super(scene, x, y, texture, frame);
+        super(scene.matter.world, x, y, texture, frame);
 
         this.setDepth(2);
 
@@ -17,7 +17,14 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
             scareLevelCurr: 25
         }
 
-        // cet center
+        // make static (so it can be drawn outside of world area)
+        this.setStatic(true);
+
+        // set collision group and mask 
+        this.setCollisionGroup(this.scene.kidCollision);
+        this.setCollidesWith([this.scene.moveCollision]);
+
+        // set center
         this.setOrigin(0.5, 0.5);
 
         // add walkable area debug rectangle
@@ -28,11 +35,6 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
         
         // add to scene and physics
         scene.add.existing(this);
-        scene.physics.add.existing(this);
-
-        // add level bounding box
-        this.body.setBoundsRectangle(game.levelParams.levelBounds);
-        this.setCollideWorldBounds(true);
 
         // add animations
         scene.anims.create({
@@ -151,7 +153,6 @@ class Kid extends Phaser.Physics.Arcade.Sprite {
                 this.scene.nextLevel(this.scene.count % 3 + 1);
                 ++this.scene.count;
                 this.params.isMoving = false;
-                this.setCollideWorldBounds(false);
             }
         }
 

@@ -3,9 +3,17 @@ class MoveObject extends ScareObject {
     constructor(scene, x, y, texture, scale, powerGain, scareGain, powerLossRate, name, scaleMax) {
         super(scene, x, y, texture, scale, powerGain, scareGain, name, null, null);
         this.params.powerLoss = powerLossRate;
-        // add to scene and physics
+        // add to scene
         scene.add.existing(this);
-        //scene.physics.add.existing(this);
+
+        // set collision group and mask
+        this.setCollisionGroup(this.scene.moveCollision);
+        this.setCollidesWith([this.scene.kidCollision]);
+
+        // set density and friction
+        this.setDensity(1);
+        this.setMass(this.scale * this.width * this.height);
+        this.setFriction(.5, 0.005);
 
         // sfx
         this.possessSFX = scene.sound.add('possession');
@@ -30,19 +38,8 @@ class MoveObject extends ScareObject {
     
     update(keyToggle) {
         // TODO: drain ghost power with when actions taken
-        // set drag based on size
-        if (!this.body.blocked.none) { // if against ceiling or floor
-            this.body.setDragX((this.scale * this.height * this.width) / 60);
-        }
-        else {
-            this.body.setDragX(0);
-        }
-
-        // set gravity based on size
-        this.setGravity(0, (this.scale * this.height * this.width) / 40)
-
-        // set max velocity
-        this.setMaxVelocity((this.height * this.width) / (this.scale * 400), (this.height * this.width) / (this.scale * 100));
+        // set mass based on size
+        this.setMass(this.scale * this.width * this.height);
 
         // Set Toggle UI
         if("move" === this.mode){
@@ -71,26 +68,22 @@ class MoveObject extends ScareObject {
         // Resizing up and down from 1 / scaleMax to scaleMax
         if(keyRight.isDown){
             if("move" === this.mode){
-                // console.log("move right");
-                // console.log((100000 * (1/(this.height*this.width))));
-                this.body.velocity.x += ((this.height * this.width) / (this.scale * 2000)); 
+                this.applyForce({x: 10,y: 0});
             }
             else if("resize" === this.mode){
                 // only increase to scaleMax value
                 if(this.scale < this.scaleMax){
-                    this.scale += .01;
+                    this.setScale(this.scale + .01);
                 }
             }
         }
         else if(keyLeft.isDown){
             if("move" === this.mode){
-                // console.log("move left");
-                // console.log((100000 * (1/(this.height*this.width))));
-                this.body.velocity.x -= ((this.height * this.width) / (this.scale * 2000));
+                this.applyForce({x: -10,y: 0});
             }
             else if("resize" === this.mode){
                 if(this.scale > 1 / this.scaleMax){
-                    this.scale -= .01;
+                    this.setScale(this.scale - .01);
                 }
             }
         }
@@ -99,10 +92,10 @@ class MoveObject extends ScareObject {
         if("move" === this.mode){
             //this.body.allowGravity = false; //disable gravity so object can float
             if(keyUp.isDown){
-                this.body.velocity.y -= ((this.height * this.width) / (this.scale * 2000));
+                this.applyForce({x: 0,y: -300});
             }
             else if(keyDown.isDown){
-                this.body.velocity.y += ((this.height * this.width) / (this.scale * 2000));
+                this.applyForce({x: 0,y: 300});
             }
         }
 
@@ -111,20 +104,11 @@ class MoveObject extends ScareObject {
                                   this.y-(this.height/2*this.scale));
         this.moveUI.setPosition(this.x-(this.width/2*this.scale),
                                   this.y-(this.height/2*this.scale));
-
-        return;
     }
 
     makeActive() {
-        // add to physics scene
-        this.scene.physics.add.existing(this);
-
-        // add level collision
-        this.body.setBoundsRectangle(game.levelParams.levelBounds);
-        this.setCollideWorldBounds(true);
-
-        // set gravity
-        this.setGravity(0,700);
+        // make dynamic (render physics)
+        this.setStatic(false);
 
         // make interactable
         this.setInteractive().on('pointerdown', this.touchObj);
