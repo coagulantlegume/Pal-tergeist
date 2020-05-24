@@ -5,6 +5,9 @@ class Menu extends Phaser.Scene {
     }
 
     preload(){
+        // load bgm
+        this.load.audio('bgmLoop', './assets/audio/PaltergeistBGMLoop.wav');
+
         //load title logo and background/foreground
         this.load.image('titleLogo', './assets/textures/PaltergeistLogo.png');
         this.load.image('titleBackground', './assets/textures/TitleMenuBackground.png');
@@ -18,6 +21,13 @@ class Menu extends Phaser.Scene {
     }
 
     create(){
+        //bgm loop
+        this.music = this.sound.add('bgmLoop', {
+            loop: true,
+            volume: 0.1
+        });
+        this.music.play();
+
         // center alignments for canvas
         let centerX = game.config.width/2;
         let centerY = game.config.height/2;

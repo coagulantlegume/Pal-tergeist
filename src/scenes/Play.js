@@ -52,12 +52,12 @@ class Play extends Phaser.Scene {
     }
     
     create() {
-        //bgm loop
+    /*    //bgm loop
         this.music = this.sound.add('bgmLoop', {
             loop: true,
             volume: 0.1
         });
-        this.music.play();
+        this.music.play(); */
 
         // make collision groups
         this.kidCollision = this.matter.world.nextGroup();
