@@ -144,7 +144,6 @@ class Play extends Phaser.Scene {
         // PROGRAM SCENE DEBUGGING
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
             game.levelParams.renderedLevels = [];
-            this.music.destroy();
             this.scene.start("outroScene");
         }
     }
