@@ -41,6 +41,7 @@ class MoveObject extends ScareObject {
     
     update(keyToggle) {
         // TODO: drain ghost power with when actions taken
+
         // set mass based on size
         this.setMass(this.scale * this.width * this.height);
 
@@ -80,7 +81,7 @@ class MoveObject extends ScareObject {
                 }
             }
         }
-        else if(keyLeft.isDown){
+        if(keyLeft.isDown){
             if("move" === this.mode){
                 this.applyForce({x: -200,y: 0});
             }

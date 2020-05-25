@@ -74,7 +74,7 @@ class Play extends Phaser.Scene {
 
         // make initial floor collision box
         this.floor = this.matter.add.image(0,0,0);
-        this.floor.setStatic(true).setCollisionGroup(this.wallCollision).setCollidesWith(this.moveCollision).setOrigin(0.5,0.5).setAlpha(0);
+        this.floor.setStatic(true).setCollisionGroup(this.wallCollision).setCollidesWith(this.moveCollision, this.ghostCollision).setOrigin(0.5,0.5).setAlpha(0);
         this.floor.body.friction = 4;
 
         // Inital level setup
@@ -128,12 +128,14 @@ class Play extends Phaser.Scene {
         this.ghost.update();
 
         // update kid
-        this.kid.update();
+        if(!game.levelParams.changingLevel) {
+            this.kid.update();
+        }
         this.scareBar.update(this.kid.x, this.kid.y-(18+this.kid.height/2), this.kid.params.scareLevelCurr/this.kid.params.scareLevelMax);
 
 
         // if possessing, move active object, and set the paranormal bar to the object
-        if(this.ghost.isPossessing && !game.levelParams.complete) {
+        if(this.ghost.isPossessing) {
             this.ghost.target.update(keyToggle);
             this.paranormalBar.update(this.ghost.target.x, this.ghost.target.y, this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
         }
@@ -146,28 +148,6 @@ class Play extends Phaser.Scene {
             game.levelParams.renderedLevels = [];
             this.scene.start("outroScene");
         }
-    }
-
-    // kid wandering around randomly
-    moveKid(){
-        const randNumber = Math.floor((Math.random() * 4) + 1);
-        switch(randNumber) {
-            case 1:
-                this.kid.setVelocityX(game.settings.wanderSpeed); //kid moves right
-                this.kid.resetFlip();
-                break;
-            case 2:
-                this.kid.setVelocityX(-game.settings.wanderSpeed); //kid moves left
-                this.kid.toggleFlipX()
-                break;
-            case 3: 
-                this.kid.setVelocityX(0); //kid remains idle
-                break;
-            default:
-                this.kid.setVelocityX(game.settings.wanderSpeed);
-                this.kid.resetFlip();
-        }
-        this.wanderTimer.delay = Math.floor((Math.random() * 5000) + 2000); //selects delay randomly in a range
     }
 
     // move to next level (specify level number)

@@ -78,7 +78,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.params.walkAreaLBound = currLevel.params.x0 + currLevel.params.borderWidth; // left wall of level
         this.params.walkAreaRBound = this.params.walkAreaLBound + currLevel.background.width - 2 * currLevel.params.borderWidth; // right wall of level
         Phaser.Actions.Call(currLevel.moveGroup, (obj) => {
-            if(true/*obj.y + obj.scale * obj.height / 2 >= this.y - this.height / 2*/) { // on the correct y plane
+            if(obj.y + obj.scale * obj.height / 2 >= this.y - this.height / 2) { // on the correct y plane
                 if(obj.x > this.params.walkAreaLBound && obj.x < this.x) { // closer than current left bound
                     this.params.walkAreaLBound = obj.x + (obj.width * obj.scale) / 2;
                 }
@@ -98,8 +98,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         // test for exit condition
         if(!game.levelParams.changingLevel) {
-            let exitLeft = currLevel.params.x0 + (currLevel.params.exit.x - currLevel.params.exit.width / 2);
-            let exitRight = currLevel.params.x0 + (currLevel.params.exit.x + currLevel.params.exit.width / 2);
+            let exitLeft = Math.ceil(currLevel.params.x0 + (currLevel.params.exit.x - currLevel.params.exit.width / 2));
+            let exitRight = Math.floor(currLevel.params.x0 + (currLevel.params.exit.x + currLevel.params.exit.width / 2));
             if(exitLeft >= this.params.walkAreaLBound && exitLeft <= this.params.walkAreaRBound && 
                this.params.walkAreaRBound -exitLeft > this.width) {
                 game.levelParams.complete = true;
@@ -109,11 +109,15 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 game.levelParams.complete = true;
             }
             else {
+                if(this.params.exiting) { // if kid is on previous exit path
+                    this.moveKid();
+                }
                 game.levelParams.complete = false;
+                this.params.exiting = false;
             }
         }
 
-        // if barrier moved, readjust distance
+        // if barrier moved, readjust distance and cancel exiting and complete 
         if(this.params.direction == "right") {
             this.params.distance = Math.min(this.params.distance, this.params.walkAreaRBound - this.x - this.width / 2);
         }
@@ -129,20 +133,22 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         
         if(game.levelParams.complete) {
             // get rid of toggle UI
-            if(this.scene.ghost.isPossessing){
-                this.scene.ghost.target.makeToggleInvis();
-            }
+            //if(this.scene.ghost.isPossessing){
+            //    this.scene.ghost.target.makeToggleInvis();
+            //}
             
             if(!this.params.exiting) { // level complete but path not yet set)
                 this.params.distance = currLevel.params.exit.x + currLevel.params.x0 - this.x;
                 if(this.params.distance > 0) { // exit to right of kid
                     this.setFlipX(false);
                     this.params.direction = "right";
+                    this.params.exiting = true;
                 }
                 else { // exit to left of kid
                     this.setFlipX(true);
                     this.params.direction = "left";
                     this.params.distance = -this.params.distance;
+                    this.params.exiting = true;
                 }
                 this.params.isMoving = true;
                 this.params.exiting = true;
