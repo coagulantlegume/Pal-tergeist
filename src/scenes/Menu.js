@@ -59,13 +59,19 @@ class Menu extends Phaser.Scene {
         //title tween
         let titleTween = this.tweens.add({
             targets: title,
-            alpha: {from: 0, to: 1},
-            scale: {from: 0.1, to: 1},
+            alpha: {from: 0, to: 1, duration: 2000},
+            alpha: {from: 1, to: 0.5, duration: 2000, delay: 2500, yoyo: true, repeat: 100},
+            scale: {from: 0.1, to: 1, duration: 2000},
+            ease: 'Sine.easeInOut', 
+        });   
+        
+        //menu options tween
+        let optionBob = this.tweens.add({
+            targets: [playMenu, tutorialMenu, creditsMenu],
+            y: '-=20',
             ease: 'Sine.easeInOut',
-            duration: 2000,
-            repeat: 0,
-            yoyo: false,
-            onCompleteScope: this
+            yoyo: true,
+            repeat: 1000
         });
     }
 
