@@ -55,6 +55,18 @@ class Menu extends Phaser.Scene {
         playMenu.on('pointerdown', () => { this.scene.start("playScene") });
         tutorialMenu.on('pointerdown', () => { this.scene.start("introScene") });
         creditsMenu.on('pointerdown', () => { this.scene.start("creditScene") });
+
+        //title tween
+        let titleTween = this.tweens.add({
+            targets: title,
+            alpha: {from: 0, to: 1},
+            scale: {from: 0.1, to: 1},
+            ease: 'Sine.easeInOut',
+            duration: 2000,
+            repeat: 0,
+            yoyo: false,
+            onCompleteScope: this
+        });
     }
 
     update(){
