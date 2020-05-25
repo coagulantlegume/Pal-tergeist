@@ -41,12 +41,12 @@ class Menu extends Phaser.Scene {
 
         //menu options
         var playMenu = this.add.sprite(centerX, centerY - 100, 'playMenu');
-        var tutorialMenu = this.add.sprite(centerX, centerY, 'tutorialMenu');
-        var creditsMenu = this.add.sprite(centerX, centerY + 100, 'creditsMenu');
+        var tutorialMenu = this.add.sprite(centerX, centerY + 50, 'tutorialMenu');
+        var creditsMenu = this.add.sprite(centerX, centerY + 200, 'creditsMenu');
 
-        playMenu.setInteractive();
-        tutorialMenu.setInteractive();
-        creditsMenu.setInteractive();
+        playMenu.setInteractive({ useHandCursor: true });
+        tutorialMenu.setInteractive({ useHandCursor: true });
+        creditsMenu.setInteractive({ useHandCursor: true });
 
         console.log("menu");
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -56,7 +56,6 @@ class Menu extends Phaser.Scene {
         tutorialMenu.on('pointerdown', () => { this.scene.start("introScene") });
         creditsMenu.on('pointerdown', () => { this.scene.start("creditScene") });
     }
-
 
     update(){
         // PROGRAM SCENE DEBUGGING
