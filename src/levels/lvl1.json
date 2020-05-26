@@ -30,7 +30,7 @@
       "auditory": true,
       "range": 800,
       "powerGain": 5,
-      "scareGain": 3
+      "scareGain": 25
     },
     {
       "name": "light",
@@ -46,7 +46,7 @@
       "auditory": true,
       "range": 200,
       "powerGain": 5,
-      "scareGain": 3,
+      "scareGain": 10,
       "anims": "anims_light",
       "anims_fCount": 30,
       "anims_fRate": 12
@@ -65,7 +65,7 @@
       "auditory": true,
       "range": 800,
       "powerGain": 5,
-      "scareGain": 3
+      "scareGain": 15
     }
 
   ],
@@ -84,7 +84,7 @@
       "visual": true,
       "auditory": false,
       "range": 50,
-      "powerGain": 5,
+      "powerGain": 0,
       "scareGain": 3,
       "powerLossRate": 1
     }

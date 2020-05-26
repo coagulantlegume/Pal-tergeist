@@ -90,7 +90,7 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
         }
 
         // update kid's scare effect
-        this.scene.kid.scaredBy(this, this.params.scare);
+        this.scene.kid.scaredBy(this, this.params.scare, this.params.power);
 
         this.scene.ghost.target = game.input.mousePointer;
     }

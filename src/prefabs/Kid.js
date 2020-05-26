@@ -211,15 +211,30 @@ class Kid extends Phaser.Physics.Matter.Sprite {
     }
 
     // checks if object is perceivable by kid
-    scaredBy(obj, amount) {
+    scaredBy(obj, scareAmount, powerAmount) {
+        console.log(powerAmount);
         if(obj.params.visual) {
             let side = (this.x - obj.x > 0) ? "left":"right"; // which side of the kid the object is on
             if(side === this.params.direction) {
-                console.log("scared by: " + obj.params.name);
+                this.params.scareLevelCurr += scareAmount;
+                //console.log("scared by: " + obj.params.name);
+                this.scene.ghost.paranormalStrengthCurr += powerAmount;
             }
         }
         if(obj.params.auditory && this.getCenter().distance(obj.getCenter()) <= obj.params.range) {
-            console.log("scared by: " + obj.params.name);
+            this.params.scareLevelCurr += scareAmount;
+            this.scene.ghost.paranormalStrengthCurr += powerAmount;
+            //console.log("scared by: " + obj.params.name);
+        }
+        
+        // if scareLevelCurr exceeds the max then set it to the max
+        if(this.params.scareLevelCurr > this.params.scareLevelMax){
+            this.params.scareLevelCurr = this.params.scareLevelMax;
+        }
+
+        // if paranormalStrengthCurr exceeds the max then set it to the max
+        if(this.scene.ghost.paranormalStrengthCurr > this.scene.ghost.paranormalStrengthMax){
+            this.scene.ghost.paranormalStrengthCurr = this.scene.ghost.paranormalStrengthMax;
         }
     }
 
