@@ -9,6 +9,9 @@ class MoveObject extends ScareObject {
         // previous position tracker (to track if moving)
         this.prevPosY = this.body.position.y;
 
+        // if user input given
+        this.inputGiven = false;
+
         // set collision group and mask
         this.setCollisionGroup(this.scene.moveCollision);
         this.setCollidesWith([this.scene.kidCollision, this.scene.wallCollision]);
@@ -17,6 +20,10 @@ class MoveObject extends ScareObject {
         this.setDensity(1);
         this.setMass(this.scale * this.width * this.height);
         this.body.frictionAir = 0.008;
+
+        // possession force values
+        this.horizontalForce = 250;
+        this.verticalForce = 220;
 
         // sfx
         this.possessSFX = scene.sound.add('possession');
@@ -37,6 +44,14 @@ class MoveObject extends ScareObject {
         this.moveUI = scene.add.sprite(x-(this.width/2*this.scale),
                                        y-(this.height/2*this.scale)-this.initOffset, 
                                        'moveToggle').setOrigin(0,1).setDepth(4).setAlpha(0);
+        
+        // solution for friction but (friction not applying despite collision)
+        this.setOnCollideActive(() => {
+            if(!this.inputGiven && Math.abs(this.body.velocity.x) > .005 &&
+               Math.floor(Math.abs((this.scene.floor.y - (this.scene.floor.displayHeight) / 2) - (this.y + (this.displayHeight) / 2))) < 1) {
+                this.setStatic(true);
+            }
+        })
     }
     
     update(keyToggle) {
@@ -45,6 +60,8 @@ class MoveObject extends ScareObject {
         let resized = false; // used to see if we need subtract from paranormal bar
         // set mass based on size
         this.setMass(this.scale * this.width * this.height);
+
+        this.setStatic(false);
 
         // Set Toggle UI
         if("move" === this.mode){
@@ -73,7 +90,7 @@ class MoveObject extends ScareObject {
         // Resizing up and down from 1 / scaleMax to scaleMax
         if(keyRight.isDown && this.scene.ghost.paranormalStrengthCurr > 0){
             if("move" === this.mode){
-                this.applyForce({x: 200,y: 0});
+                this.applyForce({x: this.horizontalForce,y: 0});
                 moved = true;
             }
             else if("resize" === this.mode){
@@ -86,7 +103,7 @@ class MoveObject extends ScareObject {
         }
         if(keyLeft.isDown && this.scene.ghost.paranormalStrengthCurr > 0){
             if("move" === this.mode){
-                this.applyForce({x: -200,y: 0});
+                this.applyForce({x: -this.horizontalForce,y: 0});
                 moved = true;
             }
             else if("resize" === this.mode){
@@ -101,11 +118,11 @@ class MoveObject extends ScareObject {
         if("move" === this.mode && this.scene.ghost.paranormalStrengthCurr > 0){
             //this.body.allowGravity = false; //disable gravity so object can float
             if(keyUp.isDown){
-                this.applyForce({x: 0,y: -220});
+                this.applyForce({x: 0,y: -this.verticalForce});
                 moved = true; 
             }
             else if(keyDown.isDown){
-                this.applyForce({x: 0,y: 220});
+                this.applyForce({x: 0,y: this.verticalForce});
                 moved = true;
             }
         }
@@ -135,6 +152,8 @@ class MoveObject extends ScareObject {
             this.scene.kid.scaredBy(this, this.params.scare * typeMultiplier,  this.params.power);
         }
         this.prevPosY = this.body.position.y;
+
+        this.inputGiven = moved || resized;
     }
 
     makeActive() {

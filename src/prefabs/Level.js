@@ -49,7 +49,7 @@ class Level {
         // TODO: smooth out readjustment
         // readjust current levelBounds
         this.scene.matter.world.setBounds(this.background.x - this.background.width / 2 + this.params.borderWidth, 
-                                          this.background.y - this.background.height / 2 + this.params.borderWidth,
+                                          this.background.y - this.background.height / 2 + this.params.borderWidth + 5,
                                           this.background.width - 2 * this.params.borderWidth,
                                           this.background.height - 2 * this.params.borderWidth + 10);
         // readjust floor bound
