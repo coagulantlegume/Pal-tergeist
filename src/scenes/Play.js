@@ -20,8 +20,8 @@ class Play extends Phaser.Scene {
         this.load.image('radioHover', './assets/textures/radioHover.png');
         this.load.image('clock', './assets/textures/clock.png');
         this.load.image('clockHover', './assets/textures/clockHover.png');
-        this.load.image('light_OFF', './assets/textures/light_OFF.png');
-        this.load.image('light_OFFHover', './assets/textures/light_OFFHover.png');
+        this.load.image('light', './assets/textures/light_OFF.png');
+        this.load.image('lightHover', './assets/textures/light_OFFHover.png');
         this.load.atlas('anims_light', './assets/textures/anims_light.png', './assets/textures/anims_light.json');
         this.load.image('tub', './assets/textures/tub.png');
         this.load.image('tubHover', './assets/textures/tubHover.png');

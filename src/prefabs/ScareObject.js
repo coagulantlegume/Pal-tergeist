@@ -56,7 +56,7 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
 
     makeActive() {
         // make interactable
-        this.setInteractive().on('pointerdown', this.touchObj);
+        this.setInteractive().on('pointerdown', this.touchObj).on('pointerover', this.hoverObj).on('pointerout', this.unhoverObj);
         this.setActive(true);
     }
 
@@ -77,6 +77,15 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
         // move to object
         this.scene.ghost.target = this;
         this.scene.ghost.targetChanged = true;
+    }
+
+    hoverObj(){
+        console.log("hovering!"+this.params.name+'Hover');
+        this.setTexture(this.params.name+'Hover');
+    }
+
+    unhoverObj(){
+        this.setTexture(this.params.name);
     }
 
     possess() {

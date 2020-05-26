@@ -34,8 +34,8 @@
     },
     {
       "name": "light",
-      "texture": "light_OFF",
-      "hoverTexture": "light_OFFHover",
+      "texture": "light",
+      "hoverTexture": "lightHover",
       "sound": "lightSwitch",
       "scale": 1,
       "position": {
