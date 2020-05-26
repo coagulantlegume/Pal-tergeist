@@ -36,6 +36,7 @@ class Play extends Phaser.Scene {
         this.load.image('ghost', './assets/textures/ghost.png');
         this.load.image('kid', './assets/textures/kid.png');
         this.load.atlas('anims_kid', './assets/textures/anims_kid.png', './assets/textures/anims_kid.json');
+        this.load.image('scaredEmote', './assets/textures/scaredEmote.png');
 
         // load bgm
         this.load.audio('bgmLoop', './assets/audio/PaltergeistBGMLoop.wav');

@@ -64,6 +64,11 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             })
         })
         this.anims.load('kidWalkRight');
+
+        //set scared emote
+        this.scaredEmote = scene.add.sprite(x-(this.width/4)-10,
+                                         y-(this.height/4), 
+                                         'scaredEmote').setOrigin(1,1).setDepth(4).setAlpha(0);
     }
 
     update() {
@@ -159,7 +164,9 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 this.scene.nextLevel(this.scene.count % 3 + 1);
                 ++this.scene.count;
                 this.params.isMoving = false;
+                this.scaredEmote.setAlpha(0); //reset scared emote since kid is exiting
             }
+
         }
 
         // calculate movement TODO: lerp
@@ -173,6 +180,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 this.params.distance -= this.params.maxSpeed; 
             }
         }
+        // set scaredEmote position
+        this.scaredEmote.setPosition(this.x-(this.width/4)-10, this.y-(this.height/4));
     }
 
     // kid wandering around randomly
@@ -212,21 +221,36 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
     // checks if object is perceivable by kid
     scaredBy(obj, scareAmount, powerAmount) {
-        console.log(powerAmount);
+        //check visual scares
+        let scared = false;
         if(obj.params.visual) {
             let side = (this.x - obj.x > 0) ? "left":"right"; // which side of the kid the object is on
             if(side === this.params.direction) {
                 this.params.scareLevelCurr += scareAmount;
                 //console.log("scared by: " + obj.params.name);
                 this.scene.ghost.paranormalStrengthCurr += powerAmount;
+                scared = true;
             }
         }
+        //check auditory scares
         if(obj.params.auditory && this.getCenter().distance(obj.getCenter()) <= obj.params.range) {
             this.params.scareLevelCurr += scareAmount;
             this.scene.ghost.paranormalStrengthCurr += powerAmount;
+            scared = true;
             //console.log("scared by: " + obj.params.name);
         }
         
+        // make the scared emote visible
+        if(scared){
+            this.scaredEmote.setAlpha(1);
+            this.scaredEmoteTiemr = this.scene.time.addEvent({
+                delay: 200,
+                callback: () => {this.scaredEmote.alpha -= .05},
+                callbackScope: this,
+                repeat: 20,
+            });
+        }
+
         // if scareLevelCurr exceeds the max then set it to the max
         if(this.params.scareLevelCurr > this.params.scareLevelMax){
             this.params.scareLevelCurr = this.params.scareLevelMax;

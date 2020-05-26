@@ -83,7 +83,7 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
 
         //Set Cooldown of scareObj
         if(!this.cooldown){
-            this.setAlpha(0.7); //make semi transparent to indicate not interactable
+            this.setAlpha(0.75); //make semi transparent to indicate not interactable
             this.cooldownTimer = this.scene.time.addEvent({
                 delay: 10000,
                 callback: () => {this.cooldown = false; this.setAlpha(1)},
