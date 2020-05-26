@@ -25,6 +25,7 @@ class Play extends Phaser.Scene {
         this.load.atlas('anims_light', './assets/textures/anims_light.png', './assets/textures/anims_light.json');
         this.load.image('tub', './assets/textures/tub.png');
         this.load.image('tubHover', './assets/textures/tubHover.png');
+        this.load.json('tubCollision', './assets/textures/tub.xml.json');
 
         // UI
         this.load.image('barBorder', './assets/textures/barBorder.png');

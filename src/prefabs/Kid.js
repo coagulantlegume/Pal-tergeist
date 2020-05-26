@@ -222,8 +222,9 @@ class Kid extends Phaser.Physics.Matter.Sprite {
     // checks if object is perceivable by kid
     scaredBy(obj, scareAmount, powerAmount) {
         //check visual scares
+        console.log(obj.cooldown);
         let scared = false;
-        if(obj.params.visual) {
+        if(obj.params.visual && !obj.cooldown) {
             let side = (this.x - obj.x > 0) ? "left":"right"; // which side of the kid the object is on
             if(side === this.params.direction) {
                 this.params.scareLevelCurr += scareAmount;
@@ -233,7 +234,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             }
         }
         //check auditory scares
-        if(obj.params.auditory && this.getCenter().distance(obj.getCenter()) <= obj.params.range) {
+        if(obj.params.auditory && this.getCenter().distance(obj.getCenter()) <= obj.params.range && !obj.cooldown) {
             this.params.scareLevelCurr += scareAmount;
             this.scene.ghost.paranormalStrengthCurr += powerAmount;
             scared = true;

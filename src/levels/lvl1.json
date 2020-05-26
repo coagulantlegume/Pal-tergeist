@@ -74,6 +74,7 @@
       "name": "tub",
       "texture": "tub",
       "hoverTexture": "tubHover",
+      "collision": "tubCollision",
       "sound": "possession",
       "scale": 1,
       "scaleMax": 1.5,

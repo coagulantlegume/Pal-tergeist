@@ -1,7 +1,9 @@
 // ScareObject prefab, for any object that can scare child
 class ScareObject extends Phaser.Physics.Matter.Sprite {
-    constructor(scene, x, y, texture, scale, range, visual, auditory, powerGain, scareGain, name, sound, animation, animation_fCount, animation_fRate) {
-        super(scene.matter.world, x, y, texture, 0);
+    constructor(scene, x, y, texture, scale, range, visual, auditory, powerGain, scareGain, name, sound, animation, animation_fCount, animation_fRate, collisionBody) {
+        // console.log(name);
+        // console.log(collisionBody);
+        super(scene.matter.world, x, y, texture, 0, collisionBody);
         // parameters
         this.params = {
             name: name,
@@ -116,10 +118,10 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
                 this.play('_anims_'+this.params.name);
             }
         }
-        this.cooldown = true;
 
         // update kid's scare effect
         this.scene.kid.scaredBy(this, this.params.scare, this.params.power);
+        this.cooldown = true;
 
         this.scene.ghost.target = game.input.mousePointer;
     }

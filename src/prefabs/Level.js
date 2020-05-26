@@ -34,8 +34,14 @@ class Level {
         // make move objects
         this.moveGroup = [];
         Phaser.Actions.Call(rawData.moveObjects, (obj) => {
+            // Prep collision body vertices
+            let collisionBody;
+            if(obj.collision){
+                let collisionJson = scene.cache.json.get(obj.collision);
+                eval('collisionBody = {shape: collisionJson.' + obj.name + '};'); 
+            }
             let newObj = new MoveObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 
-                                         obj.texture, obj.scale, obj.range, obj.visual, obj.auditory, obj.powerGain, obj.scareGain, obj.powerLossRate, obj.name, obj.scaleMax);
+                                         obj.texture, obj.scale, obj.range, obj.visual, obj.auditory, obj.powerGain, obj.scareGain, obj.powerLossRate, obj.name, obj.scaleMax, collisionBody);
             newObj.setScale(obj.scale);
             this.moveGroup.push(newObj);
         });
