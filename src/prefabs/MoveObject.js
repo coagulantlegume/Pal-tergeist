@@ -142,7 +142,7 @@ class MoveObject extends ScareObject {
         this.setStatic(false);
 
         // make interactable
-        this.setInteractive().on('pointerdown', this.touchObj);
+        this.setInteractive().on('pointerdown', this.touchObj).on('pointerover', this.hoverObj).on('pointerout', this.unhoverObj);;
 
         // set friction
         this.body.friction = 10;
@@ -151,6 +151,14 @@ class MoveObject extends ScareObject {
     touchObj() {
         this.scene.ghost.target = this;
         this.scene.ghost.targetChanged = true;
+    }
+
+    hoverObj(){
+        this.setTexture(this.params.name+'Hover');
+    }
+
+    unhoverObj(){
+        this.setTexture(this.params.name);
     }
 
     possess() {

@@ -52,6 +52,9 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
 
         // add to scene
         scene.add.existing(this);
+
+        // set cooldown 
+        this.cooldown = false;
     }
 
     makeActive() {
@@ -77,11 +80,25 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
         // move to object
         this.scene.ghost.target = this;
         this.scene.ghost.targetChanged = true;
+
+        //Set Cooldown of scareObj
+        if(!this.cooldown){
+            this.setAlpha(0.7); //make semi transparent to indicate not interactable
+            this.cooldownTimer = this.scene.time.addEvent({
+                delay: 10000,
+                callback: () => {this.cooldown = false; this.setAlpha(1)},
+                callbackScope: this,
+                repeat: 0,
+            });
+        }
+
     }
 
     hoverObj(){
-        console.log("hovering!"+this.params.name+'Hover');
-        this.setTexture(this.params.name+'Hover');
+        // if not on cooldown show obj glow meaning it can be interacted with
+        if(!this.cooldown){
+            this.setTexture(this.params.name+'Hover');
+        }
     }
 
     unhoverObj(){
@@ -89,14 +106,17 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
     }
 
     possess() {
-        //sfx
-        if(this.params.sfx){
-            this.params.sfx.play();
+        if(!this.cooldown){
+            //sfx
+            if(this.params.sfx){
+                this.params.sfx.play();
+            }
+            // animation
+            if(this.params.anims){
+                this.play('_anims_'+this.params.name);
+            }
         }
-        // animation
-        if(this.params.anims){
-            this.play('_anims_'+this.params.name);
-        }
+        this.cooldown = true;
 
         // update kid's scare effect
         this.scene.kid.scaredBy(this, this.params.scare, this.params.power);
