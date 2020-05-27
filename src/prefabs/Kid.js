@@ -14,6 +14,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             maxSpeed: 1.5,
             exiting: false,             // if kid currently walking to exit (calculated path)
             scareLevelMax: 100,
+            scareLevelHigh: 75,
             scareLevelCurr: 25
         }
 
@@ -251,6 +252,40 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 repeat: 20,
             });
         }
+
+        // when scare level is 75%+, kid starts with more erratic wandering
+        // STILL IN TESTING
+        if(this.params.scareLevelCurr >= this.params.scareLevelHigh){
+            console.log("kid is getting very scared");
+            let randNumber = Math.floor((Math.random() * 4) + 1);
+            this.scene.wanderTimer.delay = 1000;
+            switch(randNumber) {
+                case 1: // move right
+                    this.scene.wanderTimer.paused = true;
+                    this.params.direction = "right";
+                    this.setFlipX(false);
+                    this.params.isMoving = true;
+                    // calculate random location between kid and right bound
+                    this.params.distance = Math.random() * (this.params.walkAreaRBound - this.x - this.width / 2);
+                    break;
+                case 2: // move left
+                    this.scene.wanderTimer.paused = true;
+                    this.params.direction = "left";
+                    this.setFlipX(true);
+                    this.params.isMoving = true;
+                    // calculate random location between kid and left bound
+                    this.params.distance = Math.random() * (this.x - this.width / 2 - this.params.walkAreaLBound);
+                    break;
+                case 3: // idle turn
+                    this.params.direction = (this.params.direction == "left") ? "right" : "left";
+                    this.setFlip(this.params.direction == "left");
+                    this.params.isMoving = false;
+                    this.scene.wanderTimer.elapsed = 0;
+                    this.scene.wanderTimer.paused = false;
+                    break;
+            }
+            this.scene.wanderTimer.delay = Math.floor((Math.random() * 3000) + 1000); //selects delay randomly in a range
+        } 
 
         // if scareLevelCurr exceeds the max then set it to the max
         if(this.params.scareLevelCurr > this.params.scareLevelMax){
