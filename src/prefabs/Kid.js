@@ -110,14 +110,16 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                this.params.walkAreaRBound -exitLeft > this.width) {
                 game.levelParams.complete = true;
                 this.scene.wanderTimer.paused = true;
+                this.params.speed = 2.5;
             }
             else if(exitRight <= this.params.walkAreaRBound && exitRight >= this.params.walkAreaLBound &&
                     exitRight - this.params.walkAreaLBound > this.width) {
                 game.levelParams.complete = true;
                 this.scene.wanderTimer.paused = true;
+                this.params.speed = 2.5;
             }
             else {
-                if(this.params.exiting) { // if kid is on previous exit path
+                if(this.params.exiting) { // if kid is on previous exit path, but no longer viable exit
                     this.moveKid();
                 }
                 game.levelParams.complete = false;
