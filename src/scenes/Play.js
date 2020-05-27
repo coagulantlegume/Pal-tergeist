@@ -127,11 +127,11 @@ class Play extends Phaser.Scene {
             ++this.count;
         }
         // update ghost
-        this.ghost.update();
+        this.ghost.update(game.loop.rawDelta);
 
         // update kid
         if(!game.levelParams.changingLevel) {
-            this.kid.update();
+            this.kid.update(game.loop.rawDelta);
         }
         this.scareBar.update(this.kid.x, this.kid.y-(18+this.kid.height/2), this.kid.params.scareLevelCurr/this.kid.params.scareLevelMax);
 

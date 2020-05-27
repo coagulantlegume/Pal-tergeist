@@ -72,7 +72,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                                          'scaredEmote').setOrigin(1,1).setDepth(4).setAlpha(0);
     }
 
-    update() {
+    update(delta) {
         // calculate the slowly decreasing scare level
         if(this.params.scareLevelCurr > 0){
             this.params.scareLevelCurr -=0.02;
@@ -109,14 +109,10 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             if(exitLeft >= this.params.walkAreaLBound && exitLeft <= this.params.walkAreaRBound && 
                this.params.walkAreaRBound -exitLeft > this.width) {
                 game.levelParams.complete = true;
-                this.scene.wanderTimer.paused = true;
-                this.params.speed = 2.5;
             }
             else if(exitRight <= this.params.walkAreaRBound && exitRight >= this.params.walkAreaLBound &&
                     exitRight - this.params.walkAreaLBound > this.width) {
                 game.levelParams.complete = true;
-                this.scene.wanderTimer.paused = true;
-                this.params.speed = 2.5;
             }
             else {
                 if(this.params.exiting) { // if kid is on previous exit path, but no longer viable exit
@@ -163,6 +159,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 this.params.isMoving = true;
                 this.params.exiting = true;
                 this.scene.wanderTimer.paused = true;
+                this.params.speed = 3;
             }
             else if(this.x - this.width / 2 > currLevel.params.x0 + (currLevel.params.exit.x - currLevel.params.exit.width / 2) &&
                     this.x + this.width / 2 < currLevel.params.x0 + (currLevel.params.exit.x + currLevel.params.exit.width / 2)) { // if completely overlapping with exit
@@ -177,12 +174,12 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         // calculate movement TODO: lerp
         if(this.params.isMoving) {
             if(this.params.direction == "right") {
-                this.x += this.params.speed;
-                this.params.distance -= this.params.speed; 
+                this.x += this.params.speed * (delta / 40);
+                this.params.distance -= this.params.speed * (delta / 40); 
             }
             else {
-                this.x -= this.params.speed;
-                this.params.distance -= this.params.speed; 
+                this.x -= this.params.speed * (delta / 40);
+                this.params.distance -= this.params.speed * (delta / 40); 
             }
         }
         // set scaredEmote position

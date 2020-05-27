@@ -52,7 +52,7 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
         });
     }
 
-    update() {
+    update(delta) {
         // change target format if item to possess
         let targetPos = this.target;
         if(this.target !== game.input.mousePointer) {
@@ -78,7 +78,7 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
                 // }
 
                 // this.setPosition(newPosition.x, newPosition.y);
-                this.setVelocity(newVelocity.x, newVelocity.y);
+                this.setVelocity(newVelocity.x * (delta / 40), newVelocity.y * (delta / 40));
             }
         }
         else { // changing levels
