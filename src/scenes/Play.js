@@ -109,7 +109,7 @@ class Play extends Phaser.Scene {
 
         // format camera
         //this.cameras.main.setZoom(0.3);
-        this.cameras.main.setBackgroundColor(0xFACADE);
+        this.cameras.main.setBackgroundColor(0x616765);
 
         // timer for when the kid wanders around
         this.wanderTimer = this.time.addEvent({
@@ -127,11 +127,11 @@ class Play extends Phaser.Scene {
             ++this.count;
         }
         // update ghost
-        this.ghost.update();
+        this.ghost.update(game.loop.rawDelta);
 
         // update kid
         if(!game.levelParams.changingLevel) {
-            this.kid.update();
+            this.kid.update(game.loop.rawDelta);
         }
         this.scareBar.update(this.kid.x, this.kid.y-(18+this.kid.height/2), this.kid.params.scareLevelCurr/this.kid.params.scareLevelMax);
 

@@ -8,6 +8,10 @@ let config = {
     type: Phaser.CANVAS,
     width: 1500,
     height: 700,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     scene: [Loading, Intro, Play, Outro, Menu, Credit],
     physics: {
         default: 'matter',

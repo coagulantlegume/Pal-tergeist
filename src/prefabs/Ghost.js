@@ -8,7 +8,7 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
         this.isPossessing = false;
         this.target = game.input.mousePointer;
         this.targetChanged = false;
-        this.speed = 2;
+        this.maxSpeed = 100;
         this.paranormalStrengthMax = 100;
         this.paranormalStrengthCurr = 50;
 
@@ -52,7 +52,7 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
         });
     }
 
-    update() {
+    update(delta) {
         // change target format if item to possess
         let targetPos = this.target;
         if(this.target !== game.input.mousePointer) {
@@ -63,19 +63,23 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
         if(!game.levelParams.changingLevel) {
             let direction = this.getCenter().subtract(targetPos.position).normalize(); // direction traveling
             let distance = this.getCenter().subtract(targetPos.position).length();
-            let currSpeed = Math.sqrt(Math.pow(this.body.velocity.x, 2) + Math.pow(this.body.velocity.y, 2));
 
-            let lerpSpeed;
-            if(distance > currSpeed) { // if more than 50 pixels away (speeding up or maintaining speed)
-                lerpSpeed = Phaser.Math.Interpolation.SmootherStep(0.2, currSpeed, this.speed);
+            // update position, if not already at target
+            if(distance > 0.5) {
+
+                let newVelocity = {
+                    x: Phaser.Math.Interpolation.SmootherStep(0.2, this.body.velocity.x, (targetPos.position.x - this.x) * 0.25), 
+                    y: Phaser.Math.Interpolation.SmootherStep(0.2, this.body.velocity.y, (targetPos.position.y - this.y) * 0.25)
+                };
+                
+                // if already at max speed, ignore new speed (broken because for some reason can't use length on vector2?)
+                // if(this.body.velocity.length() > this.maxSpeed) {
+                //    newVelocity = direction.scale(this.maxSpeed);
+                // }
+
+                // this.setPosition(newPosition.x, newPosition.y);
+                this.setVelocity(newVelocity.x * (delta / 30), newVelocity.y * (delta / 30));
             }
-            else {
-                lerpSpeed = distance;
-            }
-
-            direction = direction.scale(-lerpSpeed);
-
-            this.setVelocity(direction.x, direction.y);
         }
         else { // changing levels
             this.target = game.input.mousePointer;

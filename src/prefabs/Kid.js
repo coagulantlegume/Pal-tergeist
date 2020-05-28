@@ -11,9 +11,10 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             direction: "right",         // direction kid is walking in
             isMoving: false,            // whether kid is currently walking or standing still
             distance: 0,                // distance to travel
-            maxSpeed: 1.5,
+            speed: 1.5,
             exiting: false,             // if kid currently walking to exit (calculated path)
             scareLevelMax: 100,
+            scareLevelHigh: 75,
             scareLevelCurr: 25
         }
 
@@ -71,7 +72,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                                          'scaredEmote').setOrigin(1,1).setDepth(4).setAlpha(0);
     }
 
-    update() {
+    update(delta) {
         // calculate the slowly decreasing scare level
         if(this.params.scareLevelCurr > 0){
             this.params.scareLevelCurr -=0.02;
@@ -114,7 +115,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 game.levelParams.complete = true;
             }
             else {
-                if(this.params.exiting) { // if kid is on previous exit path
+                if(this.params.exiting) { // if kid is on previous exit path, but no longer viable exit
                     this.moveKid();
                 }
                 game.levelParams.complete = false;
@@ -131,7 +132,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         }
         
         // if just stopped moving, reset timer
-        if(this.params.distance <= 0 && this.params.isMoving == true) { // end of calculated walk distance (or within 1 pixel)
+        if(this.params.distance <= 0 && this.params.isMoving == true && !this.params.exiting) { // end of calculated walk distance (or within 1 pixel)
             this.scene.wanderTimer.paused = false; // take another move immediately
             this.params.isMoving = false;
         }
@@ -158,6 +159,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 this.params.isMoving = true;
                 this.params.exiting = true;
                 this.scene.wanderTimer.paused = true;
+                this.params.speed = 3;
             }
             else if(this.x - this.width / 2 > currLevel.params.x0 + (currLevel.params.exit.x - currLevel.params.exit.width / 2) &&
                     this.x + this.width / 2 < currLevel.params.x0 + (currLevel.params.exit.x + currLevel.params.exit.width / 2)) { // if completely overlapping with exit
@@ -172,12 +174,12 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         // calculate movement TODO: lerp
         if(this.params.isMoving) {
             if(this.params.direction == "right") {
-                this.x += this.params.maxSpeed;
-                this.params.distance -= this.params.maxSpeed; 
+                this.x += this.params.speed * (delta / 40);
+                this.params.distance -= this.params.speed * (delta / 40); 
             }
             else {
-                this.x -= this.params.maxSpeed;
-                this.params.distance -= this.params.maxSpeed; 
+                this.x -= this.params.speed * (delta / 40);
+                this.params.distance -= this.params.speed * (delta / 40); 
             }
         }
         // set scaredEmote position
@@ -186,7 +188,13 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
     // kid wandering around randomly
     moveKid() {
-        let randNumber = Math.floor((Math.random() * 5) + 1);
+        let randNumber;
+        if(this.params.scareLevelCurr >= this.params.scareLevelHigh) {
+            randNumber = Math.floor((Math.random() * 3) + 1);
+        }
+        else {
+            randNumber = Math.floor((Math.random() * 5) + 1);
+        }
         switch(randNumber) {
             case 1: // move right
                 this.scene.wanderTimer.paused = true;
@@ -216,7 +224,18 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 this.scene.wanderTimer.elapsed = 0;
                 this.scene.wanderTimer.paused = false;
         }
-        this.scene.wanderTimer.delay = Math.floor((Math.random() * 5000) + 2000); //selects delay randomly in a range
+
+        // when scare level is 75%+, kid starts with more erratic wandering
+        // STILL IN TESTING
+        if(this.params.scareLevelCurr >= this.params.scareLevelHigh) {
+            console.log("kid is very scared");
+            this.scene.wanderTimer.delay = Math.floor((Math.random() * 1500) + 700);
+            this.params.speed = 2.5;
+        }
+        else {
+            this.scene.wanderTimer.delay = Math.floor((Math.random() * 5000) + 2000); //selects delay randomly in a range
+            this.params.speed = 1;
+        }
     }
 
     // checks if object is perceivable by kid
