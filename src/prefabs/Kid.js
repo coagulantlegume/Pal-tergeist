@@ -228,8 +228,9 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         // when scare level is 75%+, kid starts with more erratic wandering
         // STILL IN TESTING
         if(this.params.scareLevelCurr >= this.params.scareLevelHigh) {
-            this.scene.wanderTimer.delay = Math.floor((Math.random() * 3000) + 1000);
-            this.params.speed = 2;
+            console.log("kid is very scared");
+            this.scene.wanderTimer.delay = Math.floor((Math.random() * 1500) + 700);
+            this.params.speed = 2.5;
         }
         else {
             this.scene.wanderTimer.delay = Math.floor((Math.random() * 5000) + 2000); //selects delay randomly in a range
