@@ -15,7 +15,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             exiting: false,             // if kid currently walking to exit (calculated path)
             scareLevelMax: 100,
             scareLevelHigh: 75,
-            scareLevelCurr: 25
+            scareLevelCurr: 25,
+            shiverAmount: .75,
         }
 
         // make static (so it can be drawn outside of world area)
@@ -70,6 +71,17 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.scaredEmote = scene.add.sprite(x-(this.width/4)-10,
                                          y-(this.height/4), 
                                          'scaredEmote').setOrigin(1,1).setDepth(4).setAlpha(0);
+    
+        this.shiverTimer = this.scene.time.addEvent({
+            delay: 50,
+            callback: () => {
+                this.x += this.params.shiverAmount;
+                this.params.shiverAmount *= -1;
+            },
+            callbackScope: this,
+            paused: true,
+            loop: true,
+        });
     }
 
     update(delta) {
@@ -168,7 +180,6 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 this.params.isMoving = false;
                 this.scaredEmote.setAlpha(0); //reset scared emote since kid is exiting
             }
-
         }
 
         // calculate movement TODO: lerp
@@ -184,6 +195,16 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         }
         // set scaredEmote position
         this.scaredEmote.setPosition(this.x-(this.width/4)-10, this.y-(this.height/4));
+
+        // set high scare effects
+        if(this.params.scareLevelCurr >= this.params.scareLevelHigh) {
+            this.shiverTimer.paused = false;
+            this.params.speed = 2.5;
+        }
+        else {
+            this.shiverTimer.paused = true;
+            this.params.speed = 1;
+        }
     }
 
     // kid wandering around randomly
@@ -230,11 +251,9 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         if(this.params.scareLevelCurr >= this.params.scareLevelHigh) {
             console.log("kid is very scared");
             this.scene.wanderTimer.delay = Math.floor((Math.random() * 1500) + 700);
-            this.params.speed = 2.5;
         }
         else {
             this.scene.wanderTimer.delay = Math.floor((Math.random() * 5000) + 2000); //selects delay randomly in a range
-            this.params.speed = 1;
         }
     }
 
