@@ -95,6 +95,7 @@ class Play extends Phaser.Scene {
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        keyReset = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
         // make ghost
         this.ghost = new Ghost(this, game.config.width / 2, game.config.height / 2, 'ghost', 0);
@@ -149,6 +150,11 @@ class Play extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
             game.levelParams.renderedLevels = [];
             this.scene.start("outroScene");
+        }
+
+        // Debugging reset level
+        if(Phaser.Input.Keyboard.JustDown(keyReset)) {
+            game.levelParams.renderedLevels[game.levelParams.currLevelIndex].reset();
         }
     }
 

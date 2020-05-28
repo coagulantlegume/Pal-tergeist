@@ -117,4 +117,32 @@ class Level {
             this.moveGroup.shift();
         } 
     }
+
+    // reset all parameters and positions
+    reset() {
+        // Read original level JSON file
+        let rawData = this.scene.cache.json.get(this.params.name);
+
+        // reset ghost
+        if(this.scene.ghost.isPossessing) {
+            this.scene.ghost.unpossess();
+        }
+        this.scene.ghost.paranormalStrengthCurr = 50;
+
+        // reset kid
+        this.scene.kid.setPosition(this.params.x0 + rawData.params.entrance.x, this.params.y0 + this.background.height - 2 * this.params.borderWidth);
+        this.scene.kid.params.scareLevelCurr = 25;
+
+        // reset scare objects
+        for(let i = 0; i < this.scareGroup.length; ++i ) {
+            this.scareGroup[i].cooldown = false;
+        }
+
+        // reset move objects
+        for(let i = 0; i < rawData.moveObjects.length; ++i ) {
+            this.moveGroup[i].setPosition(this.params.x0 + rawData.moveObjects[i].position.x, 
+                                          this.params.y0 + rawData.moveObjects[i].position.y);
+            this.moveGroup[i].setScale(rawData.moveObjects[i].scale);
+        }
+    }
 }
