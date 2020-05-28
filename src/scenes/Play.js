@@ -109,7 +109,7 @@ class Play extends Phaser.Scene {
 
         // format camera
         //this.cameras.main.setZoom(0.3);
-        this.cameras.main.setBackgroundColor(0xFACADE);
+        this.cameras.main.setBackgroundColor(0x616765);
 
         // timer for when the kid wanders around
         this.wanderTimer = this.time.addEvent({

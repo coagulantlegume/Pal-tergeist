@@ -68,8 +68,8 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
             if(distance > 0.5) {
 
                 let newVelocity = {
-                    x: (targetPos.position.x - this.x) * 0.05, 
-                    y: (targetPos.position.y - this.y) * 0.05
+                    x: Phaser.Math.Interpolation.SmootherStep(0.2, this.body.velocity.x, (targetPos.position.x - this.x) * 0.25), 
+                    y: Phaser.Math.Interpolation.SmootherStep(0.2, this.body.velocity.y, (targetPos.position.y - this.y) * 0.25)
                 };
                 
                 // if already at max speed, ignore new speed (broken because for some reason can't use length on vector2?)
@@ -78,7 +78,7 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
                 // }
 
                 // this.setPosition(newPosition.x, newPosition.y);
-                this.setVelocity(newVelocity.x * (delta / 40), newVelocity.y * (delta / 40));
+                this.setVelocity(newVelocity.x * (delta / 30), newVelocity.y * (delta / 30));
             }
         }
         else { // changing levels
