@@ -109,7 +109,7 @@ class Play extends Phaser.Scene {
         this.count = 2;
 
         // format camera
-        //this.cameras.main.setZoom(0.3);
+        // this.cameras.main.setZoom(0.3);
         this.cameras.main.setBackgroundColor(0x616765);
 
         // timer for when the kid wanders around
@@ -181,7 +181,7 @@ class Play extends Phaser.Scene {
         }
 
         // shift levels 
-        let shiftDistX = game.config.width / 2 - game.levelParams.renderedLevels[1].background.x;
+        let shiftDistX = game.levelParams.renderedLevels[1].background.x - game.config.width / 2;
         let shiftDistY = game.config.height / 2 - game.levelParams.renderedLevels[1].background.y;
         game.settings.ceiling += shiftDistY;
 
@@ -238,6 +238,11 @@ class Play extends Phaser.Scene {
                 let currLevel = game.levelParams.renderedLevels[1];
                 // set active 
                 currLevel.makeActive();
+                
+                // enter kid
+                // this.kid.alpha = 0;
+                // this.kid.enterLevel();
+
                 game.levelParams.changingLevel = false;
 
                 // set kid to next level

@@ -16,7 +16,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             scareLevelMax: 100,
             scareLevelHigh: 75,
             scareLevelCurr: 25,
-            shiverAmount: .75,
+            shiverAmount: .75,          // the distance in each direction that the kid shivers in
+            showPercent: 100,           // the percentage of the sprite visible(from left side)
         }
 
         // make static (so it can be drawn outside of world area)
@@ -197,13 +198,15 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.scaredEmote.setPosition(this.x-(this.width/4)-10, this.y-(this.height/4));
 
         // set high scare effects
-        if(this.params.scareLevelCurr >= this.params.scareLevelHigh) {
-            this.shiverTimer.paused = false;
-            this.params.speed = 2.5;
-        }
-        else {
-            this.shiverTimer.paused = true;
-            this.params.speed = 1;
+        if(!this.params.exiting) {
+            if(this.params.scareLevelCurr >= this.params.scareLevelHigh) {
+                this.shiverTimer.paused = false;
+                this.params.speed = 2.5;
+            }
+            else {
+                this.shiverTimer.paused = true;
+                this.params.speed = 1;
+            }
         }
     }
 
@@ -301,11 +304,35 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         }
     }
 
-    // scare and modifies scare level.
+    // sets up animation for entering new level
+    enterLevel() {
+        let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
+        this.x = currLevel.params.entrance.x + this.width / 2;
+        this.y = currLevel.params.y0 + currLevel.background.height - 2 * currLevel.params.borderWidth;
+        this.params.showPercent = 0;
+        this.setCrop(0, 0, this.params.showPercent, this.height);
+        this.alpha = 1;
+
+        this.enterNextLevel = this.scene.time.addEvent({
+            delay: 10,
+            callback: () => {
+                if(this.params.showPercent < 100) {
+                    this.params.showPercent += 1;
+                    this.setCrop(0, 0, this.params.showPercent * this.width, this.height);
+                    this.x -= 1;
+                }
+                else {
+                    this.isCropped = false;
+                    game.levelParams.changingLevel = false;
+                    this.kid.params.exiting = false;
+                    this.wanderTimer.paused = false;
+                }
+            },
+            repeat: 99
+        });
+    }
+
     // TODO: runFrom({Object}, distance) function for when scare amount is
     // above a given threshhold, with distance -1 for running out of level
     // if level failed.
-    // TODO: child wander timer with randomized time and distance.
-    // TODO: target variable with setter/getter/modifiers, turns off wander
-    // mechanic if target is set.
 }
