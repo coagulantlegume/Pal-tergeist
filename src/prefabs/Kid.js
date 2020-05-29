@@ -18,6 +18,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             scareLevelCurr: 25,
             shiverAmount: .75,          // the distance in each direction that the kid shivers in
             showPercent: 100,           // the percentage of the sprite visible(from left side)
+            isScared: false,            // whether kid is currently being scared/running away
         }
 
         // make static (so it can be drawn outside of world area)
@@ -31,10 +32,10 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.setOrigin(0.5, 0.5);
 
         // add walkable area debug rectangle
-        //this.walkAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
-        //this.walkAreaRect.alpha = 0.5;
-        //this.walkAreaRect.setOrigin(0, 0.5);
-        //this.walkAreaRect.setDepth(3);
+        // this.walkAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
+        // this.walkAreaRect.alpha = 0.5;
+        // this.walkAreaRect.setOrigin(0, 0.5);
+        // this.walkAreaRect.setDepth(3);
         
         // add to scene and physics
         scene.add.existing(this);
@@ -112,11 +113,11 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.params.walkAreaRBound -= 5;
 
         // draw debug walkable area rectangle
-        //this.walkAreaRect.setPosition(this.params.walkAreaLBound, this.y - this.height / 2);
-        //this.walkAreaRect.setSize((this.params.walkAreaRBound - this.params.walkAreaLBound), this.height);
+        // this.walkAreaRect.setPosition(this.params.walkAreaLBound, this.y - this.height / 2);
+        // this.walkAreaRect.setSize((this.params.walkAreaRBound - this.params.walkAreaLBound), this.height);
 
         // test for exit condition
-        if(!game.levelParams.changingLevel) {
+        if(!game.levelParams.changingLevel && !this.params.isScared) {
             let exitLeft = Math.ceil(currLevel.params.x0 + (currLevel.params.exit.x - currLevel.params.exit.width / 2));
             let exitRight = Math.floor(currLevel.params.x0 + (currLevel.params.exit.x + currLevel.params.exit.width / 2));
             if(exitLeft >= this.params.walkAreaLBound && exitLeft <= this.params.walkAreaRBound && 
@@ -148,9 +149,20 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         if(this.params.distance <= 0 && this.params.isMoving == true && !this.params.exiting) { // end of calculated walk distance (or within 1 pixel)
             this.scene.wanderTimer.paused = false; // take another move immediately
             this.params.isMoving = false;
+            if(this.params.isScared) { // turn kid back around
+                this.cowerLookBackTimer = this.scene.time.addEvent({
+                    delay: 1000,
+                    callback: () => {
+                        this.params.direction = (this.params.direction == "left") ? "right" : "left";
+                        this.setFlip(this.params.direction == "left");
+                        this.params.isScared = false;
+                    },
+                    callbackScope: this,
+                });
+            }
         }
         
-        if(game.levelParams.complete) {
+        if(game.levelParams.complete && !this.params.isScared) {
             // get rid of toggle UI
             //if(this.scene.ghost.isPossessing){
             //    this.scene.ghost.target.makeToggleInvis();
@@ -198,7 +210,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.scaredEmote.setPosition(this.x-(this.width/4)-10, this.y-(this.height/4));
 
         // set high scare effects
-        if(!this.params.exiting) {
+        if(!this.params.exiting && !this.params.isScared) {
             if(this.params.scareLevelCurr >= this.params.scareLevelHigh) {
                 this.shiverTimer.paused = false;
                 this.params.speed = 2.5;
@@ -302,6 +314,35 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         if(this.scene.ghost.paranormalStrengthCurr > this.scene.ghost.paranormalStrengthMax){
             this.scene.ghost.paranormalStrengthCurr = this.scene.ghost.paranormalStrengthMax;
         }
+
+        // run away after .5 seconds
+        if(scared && !this.params.isScared) { // if just scared
+            this.scene.wanderTimer.paused = true;
+            this.params.isScared = true;
+            this.params.isMoving = false;
+            this.runAwayTimer = this.scene.time.addEvent({
+                delay: 500,
+                callback: () => {
+                    this.params.direction = (this.x - obj.x > 0) ? "right":"left"; // which way to run away from it
+                    if(this.params.direction == "right") {
+                        this.params.distance = Math.random() * (this.params.walkAreaRBound - this.x - this.width / 2);
+                        this.scene.wanderTimer.elapsed = 0;
+                        this.params.speed = 4;
+                        console.log("right");
+                    }
+                    if(this.params.direction == "left") {
+                        this.params.distance = Math.random() * (this.x - this.width / 2 - this.params.walkAreaLBound);
+                        this.scene.wanderTimer.elapsed = 0;
+                        this.params.speed = 4;
+                        console.log("left");
+                    }
+                    this.setFlipX(this.params.direction == "left");
+                    this.params.isMoving = true;
+                    this.params.exiting = false;
+                },
+                callbackScope: this,
+            });
+        }
     }
 
     // sets up animation for entering new level
@@ -328,7 +369,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                     this.wanderTimer.paused = false;
                 }
             },
-            repeat: 99
+            callbackScope: this,
+            repeat: 99,
         });
     }
 
