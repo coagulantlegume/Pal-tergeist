@@ -144,6 +144,7 @@ class Level {
             this.moveGroup[i].setPosition(this.params.x0 + rawData.moveObjects[i].position.x, 
                                           this.params.y0 + rawData.moveObjects[i].position.y);
             this.moveGroup[i].setScale(rawData.moveObjects[i].scale);
+            this.moveGroup[i].setRotation(0);
         }
     }
 }
