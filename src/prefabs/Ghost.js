@@ -77,8 +77,15 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
                 //    newVelocity = direction.scale(this.maxSpeed);
                 // }
 
-                // this.setPosition(newPosition.x, newPosition.y);
-                this.setVelocity(newVelocity.x * (delta / 30), newVelocity.y * (delta / 30));
+                if(!game.settings.breakpointFriendly) { 
+                    newVelocity.x *= delta / 30;
+                    newVelocity.y *= delta / 30;
+                }
+                else {
+                    newVelocity.x *= 0.70;
+                    newVelocity.y *= 0.70;
+                }
+                this.setVelocity(newVelocity.x, newVelocity.y);
             }
         }
         else { // changing levels

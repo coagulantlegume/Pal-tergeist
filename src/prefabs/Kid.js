@@ -198,12 +198,26 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         // calculate movement TODO: lerp
         if(this.params.isMoving) {
             if(this.params.direction == "right") {
-                this.x += this.params.speed * (delta / 40);
-                this.params.distance -= this.params.speed * (delta / 40); 
+                if(!game.settings.breakpointFriendly) {
+                    this.x +=this.params.speed * delta / 40;
+                }
+                else {
+                    this.x += this.params.speed;
+                }
             }
             else {
-                this.x -= this.params.speed * (delta / 40);
-                this.params.distance -= this.params.speed * (delta / 40); 
+                if(!game.settings.breakpointFriendly) {
+                    this.x -=this.params.speed * delta / 40;
+                }
+                else {
+                    this.x -= this.params.speed;
+                }
+            }
+            if(!game.settings.breakpointFriendly) {
+                this.params.distance -= this.params.speed * delta / 40;
+            }
+            else {
+                this.params.distance -= this.params.speed;
             }
         }
         // set scaredEmote position

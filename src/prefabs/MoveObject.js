@@ -22,8 +22,7 @@ class MoveObject extends ScareObject {
         this.body.frictionAir = 0.008;
 
         // possession force values
-        this.horizontalForce = 250;
-        this.verticalForce = 220;
+        this.horizontalForce = 110;
 
         // sfx
         this.possessSFX = scene.sound.add('possession');
@@ -44,22 +43,13 @@ class MoveObject extends ScareObject {
         this.moveUI = scene.add.sprite(x-(this.width/2*this.scale),
                                        y-(this.height/2*this.scale)-this.initOffset, 
                                        'moveToggle').setOrigin(0,1).setDepth(4).setAlpha(0);
-
-
-        
-        // solution for friction but (friction not applying despite collision)
-        this.setOnCollideActive(() => {
-            if(!this.inputGiven && Math.abs(this.body.velocity.x) > .005 &&
-               Math.floor(Math.abs((this.scene.floor.y - (this.scene.floor.displayHeight) / 2) - (this.y + (this.displayHeight) / 2))) < 1) {
-                this.setStatic(true);
-            }
-        })
     }
     
     update(keyToggle) {
         // TODO: drain ghost power with when actions taken
         let moved = false; // used to see if we need subtract from paranormal bar
         let resized = false; // used to see if we need subtract from paranormal bar
+        let delta = game.loop.rawDelta;
         // set mass based on size
         this.setMass(this.scale * this.width * this.height);
 
@@ -92,7 +82,22 @@ class MoveObject extends ScareObject {
         // Resizing up and down from 1 / scaleMax to scaleMax
         if(keyRight.isDown && this.scene.ghost.paranormalStrengthCurr > 0){
             if("move" === this.mode){
-                this.applyForce({x: this.horizontalForce,y: 0});
+                if(Math.abs(this.body.position.y - this.body.positionPrev.y) < 0.001) {// essentially on the ground
+                    if(!game.settings.breakpointFriendly) {
+                        this.applyForce({x: this.horizontalForce * 2.5, y: 0});
+                    }
+                    else {
+                        this.applyForce({x: this.horizontalForce * 2.5 * (delta / 40), y: 0});
+                    }
+                }
+                else { // off of the ground (no friction)
+                    if(!game.settings.breakpointFriendly) {
+                        this.applyForce({x: this.horizontalForce, y: 0});
+                    }
+                    else {
+                        this.applyForce({x: this.horizontalForce * (delta / 40), y: 0});
+                    }
+                }
                 moved = true;
             }
             else if("resize" === this.mode){
@@ -105,7 +110,22 @@ class MoveObject extends ScareObject {
         }
         if(keyLeft.isDown && this.scene.ghost.paranormalStrengthCurr > 0){
             if("move" === this.mode){
-                this.applyForce({x: -this.horizontalForce,y: 0});
+                if(Math.abs(this.body.position.y - this.body.positionPrev.y) < 0.001) {// essentially on the ground
+                    if(game.settings.breakpointFriendly) {
+                        this.applyForce({x: -this.horizontalForce * 2.5, y: 0});
+                    }
+                    else {
+                        this.applyForce({x: -this.horizontalForce * 2.5 * (delta / 40), y: 0});
+                    }
+                }
+                else {
+                    if(game.settings.breakpointFriendly) {
+                        this.applyForce({x: -this.horizontalForce, y: 0});
+                    }
+                    else {
+                        this.applyForce({x: -this.horizontalForce * (delta / 40), y: 0});
+                    }
+                }
                 moved = true;
             }
             else if("resize" === this.mode){
@@ -120,11 +140,12 @@ class MoveObject extends ScareObject {
         if("move" === this.mode && this.scene.ghost.paranormalStrengthCurr > 0){
             //this.body.allowGravity = false; //disable gravity so object can float
             if(keyUp.isDown){
-                this.applyForce({x: 0,y: -this.verticalForce});
+                let verticalForce = 32 * Math.pow(1.9, this.scale + 2);
+                this.applyForce({x: 0,y: -verticalForce});
                 moved = true; 
             }
             else if(keyDown.isDown){
-                this.applyForce({x: 0,y: this.verticalForce});
+                this.applyForce({x: 0,y: 300});
                 moved = true;
             }
         }
