@@ -162,6 +162,9 @@ class Play extends Phaser.Scene {
     nextLevel(level) {
         // turn off level complete flag
         game.levelParams.complete = false;
+        this.wanderTimer.paused = true;
+        this.kid.params.direction = "left";
+        this.kid.setFlipX(true);
 
         // if ghost is possessing something, unpossess
         if(this.ghost.isPossessing) {
