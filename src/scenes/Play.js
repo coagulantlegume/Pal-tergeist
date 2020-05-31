@@ -183,43 +183,62 @@ class Play extends Phaser.Scene {
         // shift levels 
         let shiftDistX = game.levelParams.renderedLevels[1].background.x - game.config.width / 2;
         let shiftDistY = game.config.height / 2 - game.levelParams.renderedLevels[1].background.y;
+        let distanceTraveled = {x: 0, y: 0};
         game.settings.ceiling += shiftDistY;
 
-        
         // set passive
         game.levelParams.renderedLevels[0].makePassive();
         game.levelParams.changingLevel = true;
+
+        let step = 1; // current step on movement (out of 100)
 
         // walk kid to start of stairs
         this.kidShiftTimer = this.time.addEvent({
             delay:25,
             callback: () => {
-                this.kid.y -= 1;
-
                 // when reached stairs, start shifting level
-                if(this.kidShiftTimer.getOverallProgress() > 0.3) {
+                if(this.kidShiftTimer.getOverallProgress() > 0.7) {
                     this.shiftTimer.paused = false;
+                }
+                else {
+                    this.kid.y -= 1.5;
                 }
             },
             callbackScope: this,
-            repeat: 149,
+            repeat: 49,
         });
 
-        // TODO: smooth out shift (lerp dat ish)
         // shift levels down to center next level
         this.shiftTimer = this.time.addEvent({
             delay: 25,
             callback: () => {
+                let dx, dy;
+                if(shiftDistX != 0) {
+                    dx = (-shiftDistX / 2) * (Math.cos(step * (Math.PI / 100)) - 1) - distanceTraveled.x;
+                    distanceTraveled.x += dx;
+                }
+                else {
+                    dx = 0;
+                }
+                if(shiftDistY != 0) {
+                    dy = (-shiftDistY / 2) * (Math.cos(step * (Math.PI / 100)) - 1) - distanceTraveled.y;
+                    distanceTraveled.y += dy;
+                }
+                else {
+                    dy = 0;
+                }
+                ++step;
+
                 Phaser.Actions.Call(game.levelParams.renderedLevels, (level) => {
-                    level.shift(shiftDistX / 100, shiftDistY / 100);
+                    level.shift(dx, dy);
                 });
                 if(isOffscreen) {
-                    offscreenLevel.shift(shiftDistX / 100, shiftDistY / 100);
+                    offscreenLevel.shift(dx, dy);
                 }
 
                 // shift kid
-                this.kid.x += shiftDistX / 100;
-                this.kid.y += shiftDistY / 100; // shift with level but walk up stairs
+                this.kid.x += dx;
+                this.kid.y += dy - 1.5; // shift with level but walk up stairs
                 
                 if(this.shiftTimer.getOverallProgress() > 0.8 && isOffscreen) {
                     offscreenLevel.remove();
