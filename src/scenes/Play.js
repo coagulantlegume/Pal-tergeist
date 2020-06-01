@@ -246,7 +246,6 @@ class Play extends Phaser.Scene {
                 if(this.shiftTimer.getOverallProgress() > 0.8 && isOffscreen) {
                     offscreenLevel.remove();
                     isOffscreen = false;
-                    let currLevel = game.levelParams.renderedLevels[1];
                 }
             },
             callbackScope: this,
@@ -262,16 +261,8 @@ class Play extends Phaser.Scene {
                 currLevel.makeActive();
                 
                 // enter kid
-                // this.kid.alpha = 0;
-                // this.kid.enterLevel();
-
-                game.levelParams.changingLevel = false;
-
-                // set kid to next level
-                this.kid.x = currLevel.params.entrance.x + currLevel.params.x0;
-                this.kid.y = currLevel.params.y0 + currLevel.background.height - 2 * currLevel.params.borderWidth;
-                this.kid.params.exiting = false;
-                this.wanderTimer.paused = false;
+                this.kid.alpha = 0;
+                this.kid.enterLevel();
             },
             callbackScope: this,
         });

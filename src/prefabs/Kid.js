@@ -4,6 +4,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         super(scene.matter.world, x, y, texture, frame);
 
         this.setDepth(2);
+        this._crop = this.resetCropObject();
 
         this.params = {
             walkAreaLBound: undefined,  // left (min) y value of walkable area
@@ -370,29 +371,40 @@ class Kid extends Phaser.Physics.Matter.Sprite {
     // sets up animation for entering new level
     enterLevel() {
         let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
-        this.x = currLevel.params.entrance.x + this.width / 2;
+        // set position with left side against entrance coordinates
+        this.x = currLevel.params.x0 + currLevel.params.entrance.x + this.width;
         this.y = currLevel.params.y0 + currLevel.background.height - 2 * currLevel.params.borderWidth;
+        // set initial crop of 0% visible
         this.params.showPercent = 0;
         this.setCrop(0, 0, this.params.showPercent, this.height);
         this.alpha = 1;
+
+        // wait 1 seconds before entering level
+        this.scene.time.addEvent({
+            delay: 1000,
+            callback: () => {this.enterNextLevel.paused = false;},
+            callbackScope: this,
+        });
 
         this.enterNextLevel = this.scene.time.addEvent({
             delay: 10,
             callback: () => {
                 if(this.params.showPercent < 100) {
                     this.params.showPercent += 1;
-                    this.setCrop(0, 0, this.params.showPercent * this.width, this.height);
+                    this.setCrop(0, 0, (this.params.showPercent / 100) * this.width, this.height);
                     this.x -= 1;
                 }
                 else {
                     this.isCropped = false;
                     game.levelParams.changingLevel = false;
-                    this.kid.params.exiting = false;
-                    this.wanderTimer.paused = false;
+                    this.params.exiting = false;
+                    this.scene.wanderTimer.paused = false;
+                    game.levelParams.changingLevel = false;
                 }
             },
             callbackScope: this,
-            repeat: 99,
+            repeat: 100,
+            paused: true,
         });
     }
 
