@@ -27,7 +27,7 @@ class Loading extends Phaser.Scene {
 
 		// the more images you load, the longer the load time
 		this.load.image('background', 'images/tut/background.png');
-		for(var i = 0;i<50;i++) {
+		for(var i = 0;i<20;i++) {
 			this.load.image('background_' + i, 'images/tut/background.png');
 		}
 
