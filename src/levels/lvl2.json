@@ -21,6 +21,7 @@
       "texture": "clock",
       "sound": "chime",
       "scale": 1,
+      "collision": false,
       "position": {
         "x": 900,
         "y": 270
@@ -36,6 +37,7 @@
       "texture": "light_OFF",
       "sound": "lightSwitch",
       "scale": 1,
+      "collision": false,
       "position": {
         "x": 200,
         "y": 100
@@ -54,6 +56,7 @@
       "texture": "radio",
       "sound": "radioBite",
       "scale": 1,
+      "collision": false,
       "position": {
         "x": 340,
         "y": 216

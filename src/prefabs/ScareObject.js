@@ -1,6 +1,6 @@
 // ScareObject prefab, for any object that can scare child
 class ScareObject extends Phaser.Physics.Matter.Sprite {
-    constructor(scene, x, y, texture, scale, range, visual, auditory, powerGain, scareGain, name, sound, animation, animation_fCount, animation_fRate, collisionBody) {
+    constructor(scene, x, y, texture, scale, collision, range, visual, auditory, powerGain, scareGain, name, sound, animation, animation_fCount, animation_fRate, collisionBody) {
         // console.log(name);
         // console.log(collisionBody);
         super(scene.matter.world, x, y, texture, 0, collisionBody);
@@ -42,9 +42,15 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
             this.anims.load('_anims_'+name);
         }
 
-        // set collision group and mask (scare objects do not collide with anything, so no mask needed)
-        this.setCollisionGroup(this.scene.scareCollision);
-        this.setCollidesWith();
+        // set collision group and mask if collision is set
+        if(collision) {
+            this.setCollisionCategory(this.scene.scareCollision);
+            this.setCollidesWith([this.scene.moveCollision, this.kidCollision]);
+        }
+        else if(collision !== undefined) {
+            this.setCollisionGroup(this.scene.scareCollision);
+            this.setCollidesWith();
+        }
 
         // make static
         this.setStatic(true);

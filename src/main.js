@@ -19,7 +19,7 @@ let config = {
             gravity: {
                 y: 4,
             },
-            debug: true, // show bounding boxes
+            debug: false, // show bounding boxes
         }
     }
 };

@@ -20,7 +20,10 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
 
         // set collision group and mask (ghost does not collide with anything, so no mask needed)
         this.setCollisionGroup(this.scene.ghostCollision);
-        this.setCollidesWith(this.scene.wallCollision);
+        this.setCollidesWith([]);
+
+        // don't allow rotation
+        this.setFixedRotation();
 
         // add level bounding box
         this.setIgnoreGravity(true);
