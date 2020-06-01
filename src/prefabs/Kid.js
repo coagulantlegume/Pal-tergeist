@@ -170,17 +170,24 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             
             if(!this.params.exiting) { // level complete but path not yet set)
                 this.params.distance = currLevel.params.exit.x + currLevel.params.x0 - this.x;
-                if(this.params.distance > 0) { // exit to right of kid
-                    this.setFlipX(false);
-                    this.params.direction = "right";
-                    this.params.exiting = true;
-                }
-                else { // exit to left of kid
-                    this.setFlipX(true);
-                    this.params.direction = "left";
-                    this.params.distance = -this.params.distance;
-                    this.params.exiting = true;
-                }
+                this.scene.time.addEvent({ // wait 1 second, then turn to exit
+                    delay: 1000,
+                    callback: () => {
+                        if(this.params.distance > 0) { // exit to right of kid
+                            this.setFlipX(false);
+                            this.params.direction = "right";
+                            this.params.exiting = true;
+                        }
+                        else { // exit to left of kid
+                            this.setFlipX(true);
+                            this.params.direction = "left";
+                            this.params.distance = -this.params.distance;
+                            this.params.exiting = true;
+                        }
+                    },
+                    callbackScope: this,
+                })
+                
                 this.params.isMoving = true;
                 this.params.exiting = true;
                 this.scene.wanderTimer.paused = true;
@@ -238,15 +245,16 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
     // kid wandering around randomly
     moveKid() {
+        let rightPercent = Math.floor(100 * (this.params.walkAreaRBound - this.x) / (this.params.walkAreaRBound - this.params.walkAreaLBound)); // percentage of walkable area to right of kid
         let randNumber;
         if(this.params.scareLevelCurr >= this.params.scareLevelHigh) {
-            randNumber = Math.floor((Math.random() * 3) + 1);
+            randNumber = Math.floor((Math.random() * 75) + 1);
         }
         else {
-            randNumber = Math.floor((Math.random() * 5) + 1);
+            randNumber = Math.floor((Math.random() * 100) + 1);
         }
-        switch(randNumber) {
-            case 1: // move right
+        switch(true) {
+            case (randNumber < rightPercent / 2): // move right (0 to rightPercentage / 2)
                 this.scene.wanderTimer.paused = true;
                 this.params.direction = "right";
                 this.setFlipX(false);
@@ -254,7 +262,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 // calculate random location between kid and right bound
                 this.params.distance = Math.random() * (this.params.walkAreaRBound - this.x - this.width / 2);
                 break;
-            case 2: // move left
+            case (randNumber < 50): // move left (rightPercentage / 2 to 50)
                 this.scene.wanderTimer.paused = true;
                 this.params.direction = "left";
                 this.setFlipX(true);
@@ -262,14 +270,14 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 // calculate random location between kid and left bound
                 this.params.distance = Math.random() * (this.x - this.width / 2 - this.params.walkAreaLBound);
                 break;
-            case 3: // idle turn
+            case (randNumber < 75): // idle turn (50 to 75)
                 this.params.direction = (this.params.direction == "left") ? "right" : "left";
                 this.setFlip(this.params.direction == "left");
                 this.params.isMoving = false;
                 this.scene.wanderTimer.elapsed = 0;
                 this.scene.wanderTimer.paused = false;
                 break;
-            case 4: // idle no turn
+            case (randNumber < 100): // idle no turn ( 75 to 100)
                 this.params.isMoving = false;
                 this.scene.wanderTimer.elapsed = 0;
                 this.scene.wanderTimer.paused = false;
@@ -339,13 +347,13 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 callback: () => {
                     this.params.direction = (this.x - obj.x > 0) ? "right":"left"; // which way to run away from it
                     if(this.params.direction == "right") {
-                        this.params.distance = Math.random() * (this.params.walkAreaRBound - this.x - this.width / 2);
+                        this.params.distance = this.params.walkAreaRBound - this.x - this.width / 2;
                         this.scene.wanderTimer.elapsed = 0;
                         this.params.speed = 4;
                         console.log("right");
                     }
                     if(this.params.direction == "left") {
-                        this.params.distance = Math.random() * (this.x - this.width / 2 - this.params.walkAreaLBound);
+                        this.params.distance = this.x - this.width / 2 - this.params.walkAreaLBound;
                         this.scene.wanderTimer.elapsed = 0;
                         this.params.speed = 4;
                         console.log("left");
