@@ -61,6 +61,10 @@ class Play extends Phaser.Scene {
         });
         this.music.play(); */
 
+        // make black rectangle for fading out playable area
+        this.blackScreen = this.add.image(0, 0, 'blackBox').setScale(game.config.width, game.config.height).
+                                                                        setDepth(4).setOrigin(0,0).setAlpha(0);
+
         // make collision groups
         this.kidCollision = this.matter.world.nextGroup();
         this.ghostCollision = this.matter.world.nextGroup();

@@ -120,31 +120,52 @@ class Level {
 
     // reset all parameters and positions
     reset() {
-        // Read original level JSON file
-        let rawData = this.scene.cache.json.get(this.params.name);
+        this.scene.tweens.add({
+            targets: this.scene.blackScreen,
+            alpha: { from: 0, to: 1},
+            ease: 'Linear',
+            duration: 500,
+            repeat: 0,
+            yoyo: false,
+            onComplete: () => { 
+                // Read original level JSON file, reset level
+                let rawData = this.scene.cache.json.get(this.params.name);
 
-        // reset ghost
-        if(this.scene.ghost.isPossessing) {
-            this.scene.ghost.unpossess();
-        }
-        this.scene.ghost.paranormalStrengthCurr = 50;
+                // reset ghost
+                if(this.scene.ghost.isPossessing) {
+                    this.scene.ghost.unpossess();
+                }
+                this.scene.ghost.paranormalStrengthCurr = 50;
+            
+                // reset kid
+                this.scene.kid.setPosition(this.params.x0 + rawData.params.entrance.x, this.params.y0 + this.background.height - 2 * this.params.borderWidth);
+                this.scene.kid.params.scareLevelCurr = 25;
+                this.scene.kid.params.isMoving = false;
+            
+                // reset scare objects
+                for(let i = 0; i < this.scareGroup.length; ++i ) {
+                    this.scareGroup[i].cooldown = false;
+                }
+            
+                // reset move objects
+                for(let i = 0; i < rawData.moveObjects.length; ++i ) {
+                    this.moveGroup[i].setPosition(this.params.x0 + rawData.moveObjects[i].position.x, 
+                                                  this.params.y0 + rawData.moveObjects[i].position.y);
+                    this.moveGroup[i].setScale(rawData.moveObjects[i].scale);
+                    this.moveGroup[i].setRotation(0);
+                }
 
-        // reset kid
-        this.scene.kid.setPosition(this.params.x0 + rawData.params.entrance.x, this.params.y0 + this.background.height - 2 * this.params.borderWidth);
-        this.scene.kid.params.scareLevelCurr = 25;
-        this.scene.kid.params.isMoving = false;
-
-        // reset scare objects
-        for(let i = 0; i < this.scareGroup.length; ++i ) {
-            this.scareGroup[i].cooldown = false;
-        }
-
-        // reset move objects
-        for(let i = 0; i < rawData.moveObjects.length; ++i ) {
-            this.moveGroup[i].setPosition(this.params.x0 + rawData.moveObjects[i].position.x, 
-                                          this.params.y0 + rawData.moveObjects[i].position.y);
-            this.moveGroup[i].setScale(rawData.moveObjects[i].scale);
-            this.moveGroup[i].setRotation(0);
-        }
+                // fade back in after .5 seconds
+                this.scene.tweens.add({
+                    delay: 500,
+                    targets: this.scene.blackScreen,
+                    alpha: 0,
+                    ease: 'Linear',
+                    duration: 500,
+                    repeat: 0,
+                    yoyo: false,
+                });
+            }
+        });
     }
 }

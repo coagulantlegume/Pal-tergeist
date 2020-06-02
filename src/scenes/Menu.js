@@ -18,6 +18,10 @@ class Menu extends Phaser.Scene {
         this.load.image('tutorialMenu', './assets/textures/TutorialMenu.png');
         this.load.image('creditsMenu', './assets/textures/CreditsMenu.png');
 
+        // make the multi-use black box texture (From: https://github.com/nathanaltice/YasTween/blob/master/src/scenes/SonicTitle.js)
+        let gfx = this.make.graphics().fillStyle(0x000000).fillRect(0,0,1,1);
+        gfx.generateTexture('blackBox', 1, 1);
+        gfx.destroy();
     }
 
     create(){
