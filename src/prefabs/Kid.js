@@ -88,6 +88,9 @@ class Kid extends Phaser.Physics.Matter.Sprite {
     }
 
     update(delta) {
+        // constrain delta minimum framerate
+        delta = Math.max(delta, 20);
+
         // calculate the slowly decreasing scare level
         if(this.params.scareLevelCurr > 0){
             this.params.scareLevelCurr -=0.02;
@@ -371,13 +374,18 @@ class Kid extends Phaser.Physics.Matter.Sprite {
     // sets up animation for entering new level
     enterLevel() {
         let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
+
         // set position with left side against entrance coordinates
         this.x = currLevel.params.x0 + currLevel.params.entrance.x + this.width;
         this.y = currLevel.params.y0 + currLevel.background.height - 2 * currLevel.params.borderWidth;
+
         // set initial crop of 0% visible
         this.params.showPercent = 0;
         this.setCrop(0, 0, this.params.showPercent, this.height);
         this.alpha = 1;
+
+        // stop wander movement (so kid doesn't walk off level if in movement already)
+        this.params.isMoving = false;
 
         // wait 1 seconds before entering level
         this.scene.time.addEvent({
@@ -392,7 +400,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 if(this.params.showPercent < 100) {
                     this.params.showPercent += 1;
                     this.setCrop(0, 0, (this.params.showPercent / 100) * this.width, this.height);
-                    this.x -= 1;
+                    this.x -= this.width / 100;
                 }
                 else {
                     this.isCropped = false;
@@ -407,8 +415,4 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             paused: true,
         });
     }
-
-    // TODO: runFrom({Object}, distance) function for when scare amount is
-    // above a given threshhold, with distance -1 for running out of level
-    // if level failed.
 }

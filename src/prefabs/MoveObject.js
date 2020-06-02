@@ -46,10 +46,12 @@ class MoveObject extends ScareObject {
     }
     
     update(keyToggle) {
+        // constrain delta minimum framerate
+        let delta = Math.max(game.loop.rawDelta, 20);
+        
         // TODO: drain ghost power with when actions taken
         let moved = false; // used to see if we need subtract from paranormal bar
         let resized = false; // used to see if we need subtract from paranormal bar
-        let delta = game.loop.rawDelta;
         // set mass based on size
         this.setMass(this.scale * this.width * this.height);
 

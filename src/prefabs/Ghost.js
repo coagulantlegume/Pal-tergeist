@@ -56,6 +56,9 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
     }
 
     update(delta) {
+        // constrain delta minimum framerate
+        delta = Math.max(delta, 20);
+        
         // change target format if item to possess
         let targetPos = this.target;
         if(this.target !== game.input.mousePointer) {
