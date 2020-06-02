@@ -19,8 +19,8 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
         scene.add.existing(this);
 
         // set collision group and mask (ghost does not collide with anything, so no mask needed)
-        this.setCollisionGroup(this.scene.ghostCollision);
-        this.setCollidesWith([]);
+        this.setCollisionCategory(this.scene.ghostCollision);
+        this.setCollidesWith([1, this.scene.wallCollision]);
 
         // don't allow rotation
         this.setFixedRotation();
@@ -58,7 +58,7 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
     update(delta) {
         // constrain delta minimum framerate
         delta = Math.max(delta, 20);
-        
+
         // change target format if item to possess
         let targetPos = this.target;
         if(this.target !== game.input.mousePointer) {

@@ -13,8 +13,8 @@ class MoveObject extends ScareObject {
         this.inputGiven = false;
 
         // set collision group and mask
-        this.setCollisionGroup(this.scene.moveCollision);
-        this.setCollidesWith([this.scene.kidCollision, this.scene.wallCollision]);
+        this.setCollisionCategory(this.scene.moveCollision);
+        this.setCollidesWith([1, this.scene.kidCollision, this.scene.wallCollision, this.scene.scareCollision]);
 
         // set density and friction
         this.setDensity(1);
@@ -48,7 +48,7 @@ class MoveObject extends ScareObject {
     update(keyToggle) {
         // constrain delta minimum framerate
         let delta = Math.max(game.loop.rawDelta, 20);
-        
+
         // TODO: drain ghost power with when actions taken
         let moved = false; // used to see if we need subtract from paranormal bar
         let resized = false; // used to see if we need subtract from paranormal bar

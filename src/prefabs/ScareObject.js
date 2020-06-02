@@ -45,11 +45,11 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
         // set collision group and mask if collision is set
         if(collision) {
             this.setCollisionCategory(this.scene.scareCollision);
-            this.setCollidesWith([this.scene.moveCollision, this.kidCollision]);
+            this.setCollidesWith([this.scene.moveCollision, this.scene.kidCollision]);
         }
         else if(collision !== undefined) {
-            this.setCollisionGroup(this.scene.scareCollision);
-            this.setCollidesWith();
+            this.setCollisionCategory(this.scene.scareCollision);
+            this.setCollidesWith([]);
         }
 
         // make static

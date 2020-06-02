@@ -136,11 +136,14 @@ class Level {
                     this.scene.ghost.unpossess();
                 }
                 this.scene.ghost.paranormalStrengthCurr = 50;
+                this.scene.ghost.setPosition(rawData.params.center.x + this.params.x0, rawData.params.center.y + this.params.y0);
             
                 // reset kid
                 this.scene.kid.setPosition(this.params.x0 + rawData.params.entrance.x, this.params.y0 + this.background.height - 2 * this.params.borderWidth);
                 this.scene.kid.params.scareLevelCurr = 25;
                 this.scene.kid.params.isMoving = false;
+                this.scene.kid.isCropped = false;
+                this.scene.kid.alpha = 1;
             
                 // reset scare objects
                 for(let i = 0; i < this.scareGroup.length; ++i ) {

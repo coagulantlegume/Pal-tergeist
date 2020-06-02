@@ -26,8 +26,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.setStatic(true);
 
         // set collision group and mask 
-        this.setCollisionGroup(this.scene.kidCollision);
-        this.setCollidesWith([this.scene.moveCollision]);
+        this.setCollisionCategory(this.scene.kidCollision);
+        this.setCollidesWith([1, this.scene.moveCollision, this.scene.scareCollision, this.scene.wallCollision]);
 
         // set center
         this.setOrigin(0.5, 0.5);
@@ -408,6 +408,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                     this.params.exiting = false;
                     this.scene.wanderTimer.paused = false;
                     game.levelParams.changingLevel = false;
+                    this.body.collisionFilter += 1; // turn on world bounds collision
                 }
             },
             callbackScope: this,

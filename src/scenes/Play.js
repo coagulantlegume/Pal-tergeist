@@ -66,11 +66,11 @@ class Play extends Phaser.Scene {
                                                                         setDepth(4).setOrigin(0,0).setAlpha(0);
 
         // make collision groups
-        this.kidCollision = this.matter.world.nextGroup();
-        this.ghostCollision = this.matter.world.nextGroup();
-        this.scareCollision = this.matter.world.nextGroup(true);
-        this.moveCollision = this.matter.world.nextGroup();
-        this.wallCollision = this.matter.world.nextGroup();
+        this.kidCollision = this.matter.world.nextCategory();
+        this.ghostCollision = this.matter.world.nextCategory();
+        this.scareCollision = this.matter.world.nextCategory(true);
+        this.moveCollision = this.matter.world.nextCategory();
+        this.wallCollision = this.matter.world.nextCategory();
 
         // set additional level params
         game.levelParams.changingLevel = false;
@@ -80,7 +80,7 @@ class Play extends Phaser.Scene {
 
         // make initial floor collision box
         this.floor = this.matter.add.image(0,0,0);
-        this.floor.setStatic(true).setCollisionGroup(this.wallCollision).setCollidesWith(this.moveCollision, this.ghostCollision).setOrigin(0.5,0.5).setAlpha(0);
+        this.floor.setStatic(true).setCollisionCategory(this.wallCollision).setCollidesWith([0, this.moveCollision, this.ghostCollision]).setOrigin(0.5,0.5).setAlpha(0);
         this.floor.body.friction = 4;
 
         // Inital level setup
@@ -196,6 +196,7 @@ class Play extends Phaser.Scene {
         // set passive
         game.levelParams.renderedLevels[0].makePassive();
         game.levelParams.changingLevel = true;
+        this.kid.body.collisionFilter -= 1; // turn off world bounds collision
 
         let step = 1; // current step on movement (out of 100)
 
