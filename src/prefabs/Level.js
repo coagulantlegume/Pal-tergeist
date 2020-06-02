@@ -122,7 +122,7 @@ class Level {
     reset() {
         this.scene.tweens.add({
             targets: this.scene.blackScreen,
-            alpha: { from: 0, to: 1},
+            alpha: 1,
             ease: 'Linear',
             duration: 500,
             repeat: 0,

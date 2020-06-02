@@ -96,6 +96,11 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             this.params.scareLevelCurr -=0.02;
         }
 
+        // account for random borked distance
+        if(this.params.distance < 0) {
+            this.isMoving = false;
+        }
+
         let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
 
         // calculate walkable area

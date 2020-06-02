@@ -33,6 +33,14 @@ class Play extends Phaser.Scene {
         this.load.image('resizeToggle', './assets/textures/resizeToggleB.png');
         this.load.image('moveToggle', './assets/textures/moveToggleB.png');
 
+        // pause menu assets
+        this.load.image('menuButton', './assets/textures/menuButton.png');
+        this.load.image('menuButtonHover', './assets/textures/menuButtonHover.png');
+        this.load.image('restartButton', './assets/textures/restartButton.png');
+        this.load.image('restartButtonHover', './assets/textures/restartButtonHover.png');
+        this.load.image('resumeButton', './assets/textures/resumeButton.png');
+        this.load.image('resumeButtonHover', './assets/textures/resumeButtonHover.png');
+
         // load characters' images
         this.load.image('ghost', './assets/textures/ghost.png');
         this.load.image('kid', './assets/textures/kid.png');
@@ -65,6 +73,10 @@ class Play extends Phaser.Scene {
         this.blackScreen = this.add.image(0, 0, 'blackBox').setScale(game.config.width, game.config.height).
                                                                         setDepth(4).setOrigin(0,0).setAlpha(0);
 
+        // pause menu parameters
+        this.pauseMenu = new PauseMenu(this);
+        this.isPaused = false;
+
         // make collision groups
         this.kidCollision = this.matter.world.nextCategory();
         this.ghostCollision = this.matter.world.nextCategory();
@@ -86,7 +98,7 @@ class Play extends Phaser.Scene {
         // Inital level setup
         game.levelParams.renderedLevels.push(new Level(this, 1));
         game.levelParams.renderedLevels.push(new Level(this, 2));
-        game.levelParams.currLevel = 1;
+        game.levelParams.currLevel = game.levelParams.renderedLevels[0];
         game.levelParams.currLevelIndex = 0;
         game.levelParams.renderedLevels[0].makeActive();
 
@@ -97,6 +109,7 @@ class Play extends Phaser.Scene {
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        keyEscape = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyReset = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -131,23 +144,35 @@ class Play extends Phaser.Scene {
             this.nextLevel(this.count % 3 + 1);
             ++this.count;
         }
-        // update ghost
-        this.ghost.update(game.loop.rawDelta);
 
-        // update kid
-        if(!game.levelParams.changingLevel) {
-            this.kid.update(game.loop.rawDelta);
+        if(!this.isPaused) {
+            // update ghost
+            this.ghost.update(game.loop.rawDelta);
+
+            // update kid
+            if(!game.levelParams.changingLevel) {
+                this.kid.update(game.loop.rawDelta);
+            }
+            this.scareBar.update(this.kid.x, this.kid.y-(18+this.kid.height/2), this.kid.params.scareLevelCurr/this.kid.params.scareLevelMax);
+
+
+            // if possessing, move active object, and set the paranormal bar to the object
+            if(this.ghost.isPossessing) {
+                this.ghost.target.update(keyToggle);
+                this.paranormalBar.update(this.ghost.target.x, this.ghost.target.y, this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
+            }
+            else {
+                this.paranormalBar.update(this.ghost.x, this.ghost.y-(18+this.ghost.height/2), this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
+            }
         }
-        this.scareBar.update(this.kid.x, this.kid.y-(18+this.kid.height/2), this.kid.params.scareLevelCurr/this.kid.params.scareLevelMax);
 
-
-        // if possessing, move active object, and set the paranormal bar to the object
-        if(this.ghost.isPossessing) {
-            this.ghost.target.update(keyToggle);
-            this.paranormalBar.update(this.ghost.target.x, this.ghost.target.y, this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
-        }
-        else {
-            this.paranormalBar.update(this.ghost.x, this.ghost.y-(18+this.ghost.height/2), this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
+        if(Phaser.Input.Keyboard.JustDown(keyEscape) && !game.levelParams.changingLevel) {
+            if(this.pauseMenu.isOpen) {
+                this.pauseMenu.close();
+            }
+            else {
+                this.pauseMenu.open();
+            }
         }
 
         // PROGRAM SCENE DEBUGGING
@@ -273,7 +298,7 @@ class Play extends Phaser.Scene {
         });
 
         // change current level
-        game.levelParams.currLevel = level;
+        game.levelParams.currLevel = game.levelParams.renderedLevels[1];
         game.levelParams.currLevelIndex = 1;
     }
 }

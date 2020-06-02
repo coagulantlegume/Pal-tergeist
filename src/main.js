@@ -41,6 +41,6 @@ game.levelParams = {
 };
 
 // reserve keyboard vars
-let keyLevelUp, keyToggle, keyRight, keyLeft, keyUp, keyDown;
+let keyLevelUp, keyToggle, keyRight, keyLeft, keyUp, keyDown, keyEscape;
 
 let keySpace, keyReset;
