@@ -28,9 +28,12 @@ class Credit extends Phaser.Scene {
         var foreground = this.add.sprite(centerX, centerY, 'titleForeground');
         var creditTitle = this.add.sprite(centerX, centerY - 300, 'creditsMenu');
 
+        // credits
         this.alecCredit = this.add.bitmapText(centerX - 700, centerY - 200, 'myfont', 'Alec Wolf: main programmer, clutch programming wizard, master of physics management', 30).setOrigin(0);
         this.danCredit = this.add.bitmapText(centerX - 700, centerY - 100, 'myfont', 'Daniel Liao: artist, programming, UI, level design', 30).setOrigin(0);
         this.nateCredit = this.add.bitmapText(centerX - 700, centerY, 'myfont', 'Nathan Huynh: audio producer, title/credits, programming, UI', 30).setOrigin(0);
+
+        this.spaceExit = this.add.bitmapText(centerX, centerY + 200, 'myfont', 'Press Space to continue', 30).setOrigin(0.5);
 
         //const names = this.add.text(100, 100, 'Alec Wolf, Daniel Liao, Nathan Huynh', { fill: '#0f0' })
     }
