@@ -33,10 +33,16 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.setOrigin(0.5, 0.5);
 
         // add walkable area debug rectangle
-        // this.walkAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
-        // this.walkAreaRect.alpha = 0.5;
-        // this.walkAreaRect.setOrigin(0, 0.5);
-        // this.walkAreaRect.setDepth(3);
+        this.walkAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
+        this.walkAreaRect.alpha = 0.5;
+        this.walkAreaRect.setOrigin(0, 0.5);
+        this.walkAreaRect.setDepth(3);
+
+        // add walkable area debug rectangle
+        this.exitAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
+        this.exitAreaRect.alpha = 0.5;
+        this.exitAreaRect.setOrigin(0, 0.5);
+        this.exitAreaRect.setDepth(3);
         
         // add to scene and physics
         scene.add.existing(this);
@@ -122,8 +128,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.params.walkAreaRBound -= 5;
 
         // draw debug walkable area rectangle
-        // this.walkAreaRect.setPosition(this.params.walkAreaLBound, this.y - this.height / 2);
-        // this.walkAreaRect.setSize((this.params.walkAreaRBound - this.params.walkAreaLBound), this.height);
+        this.walkAreaRect.setPosition(this.params.walkAreaLBound, this.y - this.height / 2);
+        this.walkAreaRect.setSize((this.params.walkAreaRBound - this.params.walkAreaLBound), this.height);
 
         // test for exit condition
         if(!game.levelParams.changingLevel && !this.params.isScared) {
@@ -144,6 +150,9 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 game.levelParams.complete = false;
                 this.params.exiting = false;
             }
+            // draw debug exit area rectangle
+            this.exitAreaRect.setPosition(exitLeft, this.y - this.height / 2);
+            this.exitAreaRect.setSize((exitRight - exitLeft), this.height);
         }
 
         // if barrier moved, readjust distance and cancel exiting and complete 
