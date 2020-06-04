@@ -35,6 +35,8 @@ class Play extends Phaser.Scene {
         this.load.image('lampHover', './assets/textures/lampHover.png');
         this.load.image('mirror', './assets/textures/mirror.png');
         this.load.image('mirrorHover', './assets/textures/mirrorHover.png');
+        this.load.image('shelf', './assets/textures/shelf.png');
+        this.load.image('shelfHover', './assets/textures/shelf.png');
         
 
         // UI
