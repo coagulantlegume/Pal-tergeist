@@ -12,8 +12,9 @@ class Play extends Phaser.Scene {
 
         // Load level backgrounds
         this.load.image('lvl1Background', './assets/textures/level1BG.png');
-        this.load.image('lvl2Background', './assets/textures/tb2.png');
+        this.load.image('lvl2Background', './assets/textures/level2BG.png');
         this.load.image('lvl3Background', './assets/textures/tb3.png');
+        console.log('hi');
 
         // Load level asset images
         this.load.image('radio', './assets/textures/radio.png');
@@ -26,6 +27,15 @@ class Play extends Phaser.Scene {
         this.load.image('tub', './assets/textures/tub.png');
         this.load.image('tubHover', './assets/textures/tubHover.png');
         this.load.json('tubCollision', './assets/textures/tub.xml.json');
+        this.load.image('box', './assets/textures/box.png');
+        this.load.image('boxHover', './assets/textures/boxHover.png');
+        this.load.image('cabinet', './assets/textures/cabinet.png');
+        this.load.image('cabinetHover', './assets/textures/cabinetHover.png');
+        this.load.image('lamp', './assets/textures/lamp.png');
+        this.load.image('lampHover', './assets/textures/lampHover.png');
+        this.load.image('mirror', './assets/textures/mirror.png');
+        this.load.image('mirrorHover', './assets/textures/mirrorHover.png');
+        
 
         // UI
         this.load.image('barBorder', './assets/textures/barBorder.png');

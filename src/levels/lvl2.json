@@ -1,5 +1,5 @@
 {
-  "backgroundTexture": "lvl1Background",
+  "backgroundTexture": "lvl2Background",
   "params": {
     "name": "lvl2",
     "borderWidth": 50,
@@ -17,36 +17,41 @@
   },
   "scareObjects": [
     {
-      "name": "clock",
-      "texture": "clock",
-      "sound": "chime",
-      "scale": 1,
-      "collision": false,
-      "position": {
-        "x": 900,
-        "y": 270
-      },
-      "visual": false,
-      "auditory": true,
-      "range": 800,
-      "powerGain": 5,
-      "scareGain": 3
-    },
-    {
       "name": "light",
-      "texture": "light_OFF",
+      "texture": "light",
+      "hoverTexture": "lightHover",
       "sound": "lightSwitch",
       "scale": 1,
-      "collision": false,
+      "collision": true,
       "position": {
-        "x": 200,
+        "x": 950,
         "y": 100
       },
       "visual": true,
       "auditory": true,
       "range": 200,
-      "powerGain": 5,
-      "scareGain": 3,
+      "powerGain": 15,
+      "scareGain": 10,
+      "anims": "anims_light",
+      "anims_fCount": 30,
+      "anims_fRate": 12
+    },
+    {
+      "name": "light",
+      "texture": "light",
+      "hoverTexture": "lightHover",
+      "sound": "lightSwitch",
+      "scale": 1,
+      "collision": true,
+      "position": {
+        "x": 130,
+        "y": 100
+      },
+      "visual": true,
+      "auditory": true,
+      "range": 200,
+      "powerGain": 15,
+      "scareGain": 10,
       "anims": "anims_light",
       "anims_fCount": 30,
       "anims_fRate": 12
@@ -54,36 +59,114 @@
     {
       "name": "radio",
       "texture": "radio",
+      "hoverTexture": "radioHover",
       "sound": "radioBite",
       "scale": 1,
-      "collision": false,
+      "collision": true,
       "position": {
-        "x": 340,
+        "x": 500,
         "y": 216
       },
       "visual": false,
       "auditory": true,
       "range": 800,
-      "powerGain": 5,
-      "scareGain": 3
+      "powerGain": 20,
+      "scareGain": 15
+    },
+    {
+      "name": "shelf",
+      "texture": "shelf",
+      "hoverTexture": "shelf",
+      "sound": "",
+      "scale": 1,
+      "collision": true,
+      "position": {
+        "x": 450,
+        "y": 216
+      },
+      "visual": false,
+      "auditory": false,
+      "range": 800,
+      "powerGain": 20,
+      "scareGain": 15
     }
+
 
   ],
   "moveObjects": [
     {
-      "name": "tub",
-      "texture": "tub",
+      "name": "box",
+      "texture": "box",
+      "hoverTexture": "boxHover",
+      "collision": "",
       "sound": "possession",
       "scale": 1,
-      "scaleMax": 2,
+      "scaleMax": 1.5,
       "position": {
-        "x": 600,
-        "y": 380
+        "x": 550,
+        "y": 300
       },
       "visual": true,
       "auditory": false,
       "range": 50,
-      "powerGain": 5,
+      "powerGain": 0,
+      "scareGain": 3,
+      "powerLossRate": 1
+    },
+    {
+      "name": "lamp",
+      "texture": "lamp",
+      "hoverTexture": "lampHover",
+      "collision": "",
+      "sound": "possession",
+      "scale": 1,
+      "scaleMax": 1.5,
+      "position": {
+        "x": 350,
+        "y": 280
+      },
+      "visual": true,
+      "auditory": false,
+      "range": 50,
+      "powerGain": 0,
+      "scareGain": 3,
+      "powerLossRate": 1
+    },
+    {
+      "name": "cabinet",
+      "texture": "cabinet",
+      "hoverTexture": "cabinetHover",
+      "collision": "",
+      "sound": "possession",
+      "scale": 1,
+      "scaleMax": 1.5,
+      "position": {
+        "x": 860,
+        "y": 300
+      },
+      "visual": true,
+      "auditory": false,
+      "range": 50,
+      "powerGain": 0,
+      "scareGain": 3,
+      "powerLossRate": 1
+    },
+    {
+      "name": "mirror",
+      "texture": "mirror",
+      "hoverTexture": "mirrorHover",
+      "collision": "",
+      "sound": "possession",
+      "scale": 1,
+      "scaleMax": 1.5,
+      "position": {
+        "x": 850,
+        "y": 300
+      },
+      "visual": true,
+      "auditory": false,
+      "range": 50,
+      "powerGain": 0,
       "scareGain": 3,
       "powerLossRate": 1
     }
