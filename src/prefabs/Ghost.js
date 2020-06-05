@@ -120,10 +120,13 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
 
         this.isPossessing = false;
 
-        // set toggle UI of object to invisible 
+        // set toggle UI of object to invisible if the function for it exists for the target
         // (only works when you don't click on a scare object to exit)
         // code for handling when you do is in touchObj() of scareObject.js
-        this.target.makeToggleInvis();
+        //console.log(this.target);
+        if(typeof this.target.makeToggleInvis() !== "undefined" || typeof this.target.makeToggleInvis() === "function")
+            this.target.makeToggleInvis(); //this will sometimes cause errors but doesn't break the game
+
         this.target = game.input.mousePointer;
     }
 

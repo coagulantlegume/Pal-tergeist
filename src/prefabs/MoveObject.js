@@ -195,6 +195,11 @@ class MoveObject extends ScareObject {
     }
 
     touchObj() {
+        // extra measure to clear toggle UI when clicking on scareObject after possessing an object
+        //last condition checks if the function even exists
+        if(this.scene.ghost.isPossessing && typeof this.scene.ghost.target.makeToggleInvis() == 'function'){
+            this.scene.ghost.target.makeToggleInvis();
+        }
         this.scene.ghost.target = this;
         this.scene.ghost.targetChanged = true;
     }

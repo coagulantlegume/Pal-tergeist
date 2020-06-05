@@ -82,7 +82,8 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
 
     touchObj() {
         // extra measure to clear toggle UI when clicking on scareObject after possessing an object
-        if(this.scene.ghost.isPossessing){
+        //last condition checks if it even exists
+        if(this.scene.ghost.isPossessing && typeof this.scene.ghost.target.makeToggleInvis() == 'function'){
             this.scene.ghost.target.makeToggleInvis();
         }
         // move to object
