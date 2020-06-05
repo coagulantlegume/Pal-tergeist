@@ -3,12 +3,16 @@ class Intro extends Phaser.Scene {
     constructor() {
         super("introScene");
     }
+
+    preload(){
+        this.load.image('titleBackground', './assets/textures/TitleMenuBackground.png');        
+        // font load    
+        this.load.bitmapFont('myfont', 'assets/font/font.png', 'assets/font/font.fnt');        
+    }
+
     create(){
         console.log("intro");
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-
-
 
         let menuConfig = {
             fontFamily: 'Courier',
@@ -27,6 +31,8 @@ class Intro extends Phaser.Scene {
         let centerX = game.config.width/2;
         let centerY = game.config.height/2;
         let textSpacer = 64;
+
+        var background = this.add.sprite(centerX, centerY, 'titleBackground');
 
         this.add.text(centerX, centerY - textSpacer*3, 'Paltergeist', menuConfig).setOrigin(0.5);
         this.add.text(centerX, centerY- textSpacer*2, 'Click on objects with a glow to interact with them.', menuConfig).setOrigin(0.5);
