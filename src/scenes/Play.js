@@ -13,8 +13,7 @@ class Play extends Phaser.Scene {
         // Load level backgrounds
         this.load.image('lvl1Background', './assets/textures/level1BG.png');
         this.load.image('lvl2Background', './assets/textures/level2BG.png');
-        this.load.image('lvl3Background', './assets/textures/tb3.png');
-        console.log('hi');
+        this.load.image('atticBackground', './assets/textures/atticBG.png');
 
         // Load level asset images
         this.load.image('radio', './assets/textures/radio.png');
@@ -37,6 +36,8 @@ class Play extends Phaser.Scene {
         this.load.image('mirrorHover', './assets/textures/mirrorHover.png');
         this.load.image('shelf', './assets/textures/shelf.png');
         this.load.image('shelfHover', './assets/textures/shelf.png');
+        this.load.image('balloon', './assets/textures/balloon.png');
+        this.load.image('balloonHover', './assets/textures/balloonHover.png');
         
 
         // UI

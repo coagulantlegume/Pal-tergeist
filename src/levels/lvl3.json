@@ -1,5 +1,5 @@
 {
-  "backgroundTexture": "lvl1Background",
+  "backgroundTexture": "atticBackground",
   "params": {
     "name": "lvl3",
     "borderWidth": 50,
@@ -15,78 +15,48 @@
       "width": 167 
     }
   },
-  "scareObjects": [
-    {
-      "name": "clock",
-      "texture": "clock",
-      "sound": "chime",
-      "scale": 1,
-      "collision": false,
-      "position": {
-        "x": 900,
-        "y": 270
-      },
-      "visual": false,
-      "auditory": true,
-      "range": 800,
-      "range": 800,
-      "powerGain": 5,
-      "scareGain": 3
-    },
+  "scareObjects": [ 
     {
       "name": "light",
-      "texture": "light_OFF",
+      "texture": "light",
+      "hoverTexture": "lightHover",
       "sound": "lightSwitch",
       "scale": 1,
-      "collision": false,
+      "collision": true,
       "position": {
-        "x": 600,
+        "x": 950,
         "y": 100
       },
       "visual": true,
       "auditory": true,
       "range": 200,
-      "powerGain": 5,
-      "scareGain": 3,
+      "powerGain": 30,
+      "scareGain": 10,
       "anims": "anims_light",
       "anims_fCount": 30,
       "anims_fRate": 12
-    },
-    {
-      "name": "radio",
-      "texture": "radio",
-      "sound": "radioBite",
-      "scale": 1,
-      "collision": false,
-      "position": {
-        "x": 378,
-        "y": 216
-      },
-      "visual": false,
-      "auditory": true,
-      "range": 800,
-      "powerGain": 5,
-      "scareGain": 3
     }
 
   ],
   "moveObjects": [
     {
-      "name": "tub",
-      "texture": "tub",
+      "name": "balloon",
+      "texture": "balloon",
+      "hoverTexture": "balloonHover",
+      "collision": "",
       "sound": "possession",
       "scale": 1,
-      "scaleMax": 2,
+      "scaleMax": 1,
       "position": {
-        "x": 600,
-        "y": 380
+        "x": 700,
+        "y": 300
       },
-      "visual": true,
+      "visual": false,
       "auditory": false,
       "range": 50,
-      "powerGain": 5,
-      "scareGain": 3,
-      "powerLossRate": 1
+      "powerGain": 0,
+      "scareGain": 0,
+      "powerLossRate": 0
     }
   ]
 }
