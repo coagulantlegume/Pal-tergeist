@@ -386,7 +386,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         // set position with left side against entrance coordinates
         this.x = currLevel.params.x0 + currLevel.params.entrance.x + this.width;
-        this.y = currLevel.params.y0 + currLevel.background.height - 2 * currLevel.params.borderWidth;
+        this.y = currLevel.params.y0 + currLevel.background.height - 2 * currLevel.params.borderWidth - 65;
 
         // set initial crop of 0% visible
         this.params.showPercent = 0;
@@ -403,6 +403,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             callbackScope: this,
         });
 
+        // slide enter into level from stairway
         this.enterNextLevel = this.scene.time.addEvent({
             delay: 10,
             callback: () => {
@@ -412,12 +413,22 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                     this.x -= this.width / 100;
                 }
                 else {
-                    this.isCropped = false;
-                    game.levelParams.changingLevel = false;
-                    this.params.exiting = false;
-                    this.scene.wanderTimer.paused = false;
-                    game.levelParams.changingLevel = false;
-                    this.body.collisionFilter.mask = 57; // turn on world bounds collision
+                    this.scene.tweens.add({
+                        targets: this,
+                        x: game.levelParams.currLevel.params.x0 + game.levelParams.currLevel.params.entrance.x - 30,
+                        y: currLevel.params.y0 + currLevel.background.height - 2 * currLevel.params.borderWidth,
+                        ease: 'Linear',
+                        duration: 1000,
+                        repeat: 0,
+                        onComplete: () => {
+                            this.isCropped = false;
+                            game.levelParams.changingLevel = false;
+                            this.params.exiting = false;
+                            this.scene.wanderTimer.paused = false;
+                            game.levelParams.changingLevel = false;
+                            this.body.collisionFilter.mask = 57; // turn on world bounds collision
+                        }
+                    });
                 }
             },
             callbackScope: this,
