@@ -84,40 +84,20 @@ class MoveObject extends ScareObject {
             //this.body.allowGravity = false; //disable gravity so object can float
             if(keyRight.isDown){
                 if(Math.abs(this.body.position.y - this.body.positionPrev.y) < 0.001) {// essentially on the ground
-                    if(!game.settings.breakpointFriendly) {
-                        this.applyForce({x: this.horizontalForce * 2.5, y: 0});
-                    }
-                    else {
-                        this.applyForce({x: this.horizontalForce * 2.5 * (delta / 40), y: 0});
-                    }
+                    this.applyForce({x: this.horizontalForce * 2.5, y: 0});
                 }
                 else { // off of the ground (no friction)
-                    if(!game.settings.breakpointFriendly) {
-                        this.applyForce({x: this.horizontalForce, y: 0});
-                    }
-                    else {
-                        this.applyForce({x: this.horizontalForce * (delta / 40), y: 0});
-                    }
+                    this.applyForce({x: this.horizontalForce, y: 0});
                 }
                 moved = true;
             }
 
             else if(keyLeft.isDown){
                 if(Math.abs(this.body.position.y - this.body.positionPrev.y) < 0.001) {// essentially on the ground
-                    if(game.settings.breakpointFriendly) {
-                        this.applyForce({x: -this.horizontalForce * 2.5, y: 0});
-                    }
-                    else {
-                        this.applyForce({x: -this.horizontalForce * 2.5 * (delta / 40), y: 0});
-                    }
+                    this.applyForce({x: -this.horizontalForce * 2.5, y: 0});
                 }
                 else {
-                    if(game.settings.breakpointFriendly) {
-                        this.applyForce({x: -this.horizontalForce, y: 0});
-                    }
-                    else {
-                        this.applyForce({x: -this.horizontalForce * (delta / 40), y: 0});
-                    }
+                    this.applyForce({x: -this.horizontalForce, y: 0});
                 }
                 moved = true;
             }

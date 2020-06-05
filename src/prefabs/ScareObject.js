@@ -69,6 +69,9 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
         // make interactable
         this.setInteractive().on('pointerdown', this.touchObj).on('pointerover', this.hoverObj).on('pointerout', this.unhoverObj);
         this.setActive(true);
+
+        // set friction
+        this.body.friction = 10;
     }
 
     makePassive() {

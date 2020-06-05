@@ -95,7 +95,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
     update(delta) {
         // constrain delta minimum framerate
-        delta = Math.max(delta, 20);
+        delta = Math.min(delta, 20);
 
         // calculate the slowly decreasing scare level
         if(this.params.scareLevelCurr > 0){
@@ -115,10 +115,10 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         Phaser.Actions.Call(currLevel.moveGroup, (obj) => {
             if(obj.y + obj.scale * obj.height / 2 >= this.y - this.height / 2) { // on the correct y plane
                 if(obj.x > this.params.walkAreaLBound && obj.x < this.x) { // closer than current left bound
-                    this.params.walkAreaLBound = obj.x + (obj.width * obj.scale) / 2;
+                    this.params.walkAreaLBound = obj.body.bounds.max.x;
                 }
                 else if(obj.x < this.params.walkAreaRBound && obj.x > this.x) { // closer than current right bound
-                    this.params.walkAreaRBound = obj.x - (obj.width * obj.scale) / 2;
+                    this.params.walkAreaRBound = obj.body.bounds.min.x;
                 }
             }
         });
@@ -223,27 +223,12 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         // calculate movement TODO: lerp
         if(this.params.isMoving) {
             if(this.params.direction == "right") {
-                if(!game.settings.breakpointFriendly) {
-                    this.x +=this.params.speed * delta / 40;
-                }
-                else {
-                    this.x += this.params.speed;
-                }
+                this.x +=this.params.speed * delta / 40;
             }
             else {
-                if(!game.settings.breakpointFriendly) {
-                    this.x -=this.params.speed * delta / 40;
-                }
-                else {
-                    this.x -= this.params.speed;
-                }
+                this.x -=this.params.speed * delta / 40;
             }
-            if(!game.settings.breakpointFriendly) {
-                this.params.distance -= this.params.speed * delta / 40;
-            }
-            else {
-                this.params.distance -= this.params.speed;
-            }
+            this.params.distance -= this.params.speed * delta / 40;
         }
         // set scaredEmote position
         this.scaredEmote.setPosition(this.x-(this.width/4)-10, this.y-(this.height/4));
@@ -422,7 +407,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                     this.params.exiting = false;
                     this.scene.wanderTimer.paused = false;
                     game.levelParams.changingLevel = false;
-                    this.body.collisionFilter += 1; // turn on world bounds collision
+                    this.body.collisionFilter.mask = 57; // turn on world bounds collision
                 }
             },
             callbackScope: this,

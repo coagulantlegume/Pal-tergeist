@@ -105,7 +105,7 @@ class Play extends Phaser.Scene {
 
         // make initial floor collision box
         this.floor = this.matter.add.image(0,0,0);
-        this.floor.setStatic(true).setCollisionCategory(this.wallCollision).setCollidesWith([0, this.moveCollision, this.ghostCollision]).setOrigin(0.5,0.5).setAlpha(0);
+        this.floor.setStatic(true).setCollisionCategory(this.wallCollision).setCollidesWith([0, this.moveCollision, this.ghostCollision, this.kidCollision]).setOrigin(0.5,0.5).setAlpha(0);
         this.floor.body.friction = 4;
 
         // Inital level setup
@@ -134,6 +134,7 @@ class Play extends Phaser.Scene {
         // make kid
         this.kid = new Kid(this, game.config.width / 4, (game.config.height / 2) + 250, 'kid', 0);
         this.scareBar = new UIBar(this, this.kid.x, this.kid.y-(18+this.kid.height/2),0xffa100,3);
+        this.kid.body.friction = 4;
         
         // TODO: remove, just here for testing level generating
         this.count = 2;
@@ -239,7 +240,8 @@ class Play extends Phaser.Scene {
         // set passive
         game.levelParams.renderedLevels[0].makePassive();
         game.levelParams.changingLevel = true;
-        this.kid.body.collisionFilter -= 1; // turn off world bounds collision
+        this.kid.body.collisionFilter.mask = 0; // turn off world bounds collision
+        this.kid.setStatic(true);
 
         let step = 1; // current step on movement (out of 100)
 

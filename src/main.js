@@ -31,7 +31,6 @@ game.settings = {
     // top of highest currently drawn level
     ceiling: config.height,
     wanderSpeed: 30, // walking speed when kid wanders around
-    breakpointFriendly: false,
 };
 game.levelParams = {
     // dynamic array of all currently rendered levels

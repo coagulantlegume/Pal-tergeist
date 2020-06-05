@@ -57,7 +57,7 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
 
     update(delta) {
         // constrain delta minimum framerate
-        delta = Math.max(delta, 20);
+        delta = Math.min(delta, 20);
 
         // change target format if item to possess
         let targetPos = this.target;
@@ -83,14 +83,8 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
                 //    newVelocity = direction.scale(this.maxSpeed);
                 // }
 
-                if(!game.settings.breakpointFriendly) { 
-                    newVelocity.x *= delta / 30;
-                    newVelocity.y *= delta / 30;
-                }
-                else {
-                    newVelocity.x *= 0.70;
-                    newVelocity.y *= 0.70;
-                }
+                newVelocity.x *= delta / 30;
+                newVelocity.y *= delta / 30;
                 this.setVelocity(newVelocity.x, newVelocity.y);
             }
         }
