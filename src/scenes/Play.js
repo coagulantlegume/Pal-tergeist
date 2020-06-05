@@ -194,6 +194,11 @@ class Play extends Phaser.Scene {
             this.scene.start("outroScene");
         }
 
+        // rest the level if the kid reaches max scare
+        if(this.kid.params.scareLevelCurr === this.kid.params.scareLevelMax) {
+            game.levelParams.renderedLevels[game.levelParams.currLevelIndex].reset();
+        }
+
         // Debugging reset level
         if(Phaser.Input.Keyboard.JustDown(keyReset)) {
             game.levelParams.renderedLevels[game.levelParams.currLevelIndex].reset();
