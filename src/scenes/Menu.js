@@ -29,7 +29,7 @@ class Menu extends Phaser.Scene {
         if(game.music == undefined) {
             game.music = this.sound.add('bgmLoop', {
                 loop: true,
-                volume: 0.1
+                volume: 0.08
             });
             game.music.play();
         }

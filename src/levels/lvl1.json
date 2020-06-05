@@ -30,7 +30,7 @@
       "visual": false,
       "auditory": true,
       "range": 900,
-      "powerGain": 30,
+      "powerGain": 50,
       "scareGain": 25
     },
     {
@@ -47,7 +47,7 @@
       "visual": true,
       "auditory": true,
       "range": 200,
-      "powerGain": 15,
+      "powerGain": 30,
       "scareGain": 10,
       "anims": "anims_light",
       "anims_fCount": 30,
@@ -67,7 +67,7 @@
       "visual": false,
       "auditory": true,
       "range": 800,
-      "powerGain": 20,
+      "powerGain": 40,
       "scareGain": 15
     }
 

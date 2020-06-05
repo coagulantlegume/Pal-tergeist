@@ -26,9 +26,9 @@ class MoveObject extends ScareObject {
 
         // sfx
         this.possessSFX = scene.sound.add('possession');
-        this.possessSFX.setVolume(0.5);
+        this.possessSFX.setVolume(0.1);
         this.toggleSFX = scene.sound.add('toggle');
-        this.toggleSFX.setVolume(0.5);
+        this.toggleSFX.setVolume(0.1);
 
         // posessesion mode (move/resize)
         this.mode = "move";
@@ -78,79 +78,6 @@ class MoveObject extends ScareObject {
                 this.mode = "move";
             }
         }
-
-        // // Movement amount based on how big the object is.
-        // // Resizing up and down from 1 / scaleMax to scaleMax
-        // if(keyRight.isDown && this.scene.ghost.paranormalStrengthCurr > 0){
-        //     if("move" === this.mode){
-        //         if(Math.abs(this.body.position.y - this.body.positionPrev.y) < 0.001) {// essentially on the ground
-        //             if(!game.settings.breakpointFriendly) {
-        //                 this.applyForce({x: this.horizontalForce * 2.5, y: 0});
-        //             }
-        //             else {
-        //                 this.applyForce({x: this.horizontalForce * 2.5 * (delta / 40), y: 0});
-        //             }
-        //         }
-        //         else { // off of the ground (no friction)
-        //             if(!game.settings.breakpointFriendly) {
-        //                 this.applyForce({x: this.horizontalForce, y: 0});
-        //             }
-        //             else {
-        //                 this.applyForce({x: this.horizontalForce * (delta / 40), y: 0});
-        //             }
-        //         }
-        //         moved = true;
-        //     }
-        //     else if("resize" === this.mode){
-        //         // only increase to scaleMax value
-        //         if(this.scale < this.scaleMax){
-        //             this.setScale(this.scale + .01);
-        //             resized = true;
-        //         }
-        //     }
-        // }
-        // if(keyLeft.isDown && this.scene.ghost.paranormalStrengthCurr > 0){
-        //     if("move" === this.mode){
-        //         if(Math.abs(this.body.position.y - this.body.positionPrev.y) < 0.001) {// essentially on the ground
-        //             if(game.settings.breakpointFriendly) {
-        //                 this.applyForce({x: -this.horizontalForce * 2.5, y: 0});
-        //             }
-        //             else {
-        //                 this.applyForce({x: -this.horizontalForce * 2.5 * (delta / 40), y: 0});
-        //             }
-        //         }
-        //         else {
-        //             if(game.settings.breakpointFriendly) {
-        //                 this.applyForce({x: -this.horizontalForce, y: 0});
-        //             }
-        //             else {
-        //                 this.applyForce({x: -this.horizontalForce * (delta / 40), y: 0});
-        //             }
-        //         }
-        //         moved = true;
-        //     }
-        //     else if("resize" === this.mode){
-        //         if(this.scale > 1 / this.scaleMax){
-        //             this.setScale(this.scale - .01);
-        //             resized = true;
-        //         }
-        //     }
-        // }
-
-        // UP/DOWN Controls
-        // if("move" === this.mode && this.scene.ghost.paranormalStrengthCurr > 0){
-        //     //this.body.allowGravity = false; //disable gravity so object can float
-        //     if(keyUp.isDown){
-        //         let verticalForce = 32 * Math.pow(1.9, this.scale + 2);
-        //         this.applyForce({x: 0,y: -verticalForce});
-        //         moved = true; 
-        //     }
-        //     else if(keyDown.isDown){
-        //         this.applyForce({x: 0,y: 300});
-        //         moved = true;
-        //     }
-        // }
-
 
         // Left/Right Controls
         if("move" === this.mode && this.scene.ghost.paranormalStrengthCurr > 0){

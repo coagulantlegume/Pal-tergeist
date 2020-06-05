@@ -22,7 +22,7 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
         //Set sound effect
         if(this.params.sfx){
             this.params.sfx = scene.sound.add(sound);
-            this.params.sfx.setVolume(0.5);
+            this.params.sfx.setVolume(0.1);
         }
 
         // set animation
