@@ -36,13 +36,20 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.walkAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
         this.walkAreaRect.alpha = 0.5;
         this.walkAreaRect.setOrigin(0, 0.5);
-        this.walkAreaRect.setDepth(3);
+        this.walkAreaRect.setDepth(4);
 
         // add walkable area debug rectangle
         this.exitAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
         this.exitAreaRect.alpha = 0.5;
         this.exitAreaRect.setOrigin(0, 0.5);
-        this.exitAreaRect.setDepth(3);
+        this.exitAreaRect.setDepth(4);
+
+        // add target position debug point
+        this.targetPoint = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
+        this.targetPoint.setSize(10,10);
+        this.targetPoint.alpha = 0.5;
+        this.targetPoint.setOrigin(0, 0.5);
+        this.targetPoint.setDepth(4);
         
         // add to scene and physics
         scene.add.existing(this);
@@ -102,11 +109,6 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             this.params.scareLevelCurr -=0.02;
         }
 
-        // account for random borked distance
-        if(this.params.distance < 0) {
-            this.isMoving = false;
-        }
-
         let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
 
         // calculate walkable area
@@ -159,17 +161,17 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         if(this.params.direction == "right") {
             this.params.distance = Math.min(this.params.distance, this.params.walkAreaRBound - this.x - this.width / 2);
         }
-        else if(this.direction == "left") {
+        else if(this.params.direction == "left") {
             this.params.distance = Math.min(this.params.distance, this.x - this.width / 2 - this.params.walkAreaLBound);
         }
         
         // if just stopped moving, reset timer
-        if(this.params.distance <= 0 && this.params.isMoving == true && !this.params.exiting) { // end of calculated walk distance (or within 1 pixel)
+        if(this.params.distance <= 0 && this.params.isMoving == true) { // end of calculated walk distance (or within 1 pixel)
             this.scene.wanderTimer.paused = false; // take another move immediately
             this.params.isMoving = false;
             if(this.params.isScared) { // turn kid back around
                 this.cowerLookBackTimer = this.scene.time.addEvent({
-                    delay: 1000,
+                    delay: 500,
                     callback: () => {
                         this.params.direction = (this.params.direction == "left") ? "right" : "left";
                         this.setFlip(this.params.direction == "left");
@@ -243,6 +245,14 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 this.shiverTimer.paused = true;
                 this.params.speed = 1;
             }
+        }
+
+        // draw target point debug
+        if(this.params.direction == "left") {
+            this.targetPoint.setPosition(this.x - this.params.distance, this.y);
+        }
+        else {
+            this.targetPoint.setPosition(this.x + this.params.distance, this.y);
         }
     }
 
@@ -351,13 +361,13 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                     this.params.direction = (this.x - obj.x > 0) ? "right":"left"; // which way to run away from it
                     if(this.params.direction == "right") {
                         this.params.distance = this.params.walkAreaRBound - this.x - this.width / 2;
-                        this.scene.wanderTimer.elapsed = 0;
+                        this.scene.wanderTimer.paused = true;
                         this.params.speed = 4;
                         console.log("right");
                     }
                     if(this.params.direction == "left") {
                         this.params.distance = this.x - this.width / 2 - this.params.walkAreaLBound;
-                        this.scene.wanderTimer.elapsed = 0;
+                        this.scene.wanderTimer.paused = true;
                         this.params.speed = 4;
                         console.log("left");
                     }
