@@ -156,6 +156,7 @@ class Play extends Phaser.Scene {
           this.initLoadingGame = true;
           this.initCounter = 1;
           this.startPlay = false;
+          this.initAlpha = 0;
     }
 
     update() {
@@ -166,14 +167,29 @@ class Play extends Phaser.Scene {
         }
         // if on first level and when the game first loads, have the ghost spawn from portrait
         if(this.initLoadingGame && game.levelParams.currLevelIndex === 0){
-            this.ghost.alpha = 0;
             this.initLoadingGame = false;
-            //portait location (x,y)
+            // fade in from opening
+            this.blackScreen.setAlpha(1);
+            this.tweens.add({
+                delay: 0,
+                targets: this.blackScreen,
+                alpha: 0,
+                ease: 'Linear',
+                duration: 2500,
+                repeat: 0,
+                yoyo: false,
+            });
+
+            this.ghost.alpha = 0;
             this.ghost.x = 1065;
             this.ghost.y = 448;
+            this.paranormalBar.alpha = 0;
+            this.paranormalBar.update(this.ghost.x, this.ghost.y-(18+this.ghost.height/2), this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
             this.spawnInTimer = this.time.addEvent({
                 delay: 0,
-                callback: () => {this.ghost.alpha += .0125;
+                callback: () => {this.initAlpha += .0125;
+                                 this.ghost.alpha = this.initAlpha;
+                                 this.paranormalBar.setAlpha(this.initAlpha);
                                  this.initCounter++;
                                  if(this.initCounter == 80){
                                     this.startPlay = true;
@@ -181,6 +197,9 @@ class Play extends Phaser.Scene {
                 callbackScope: this,
                 repeat: 80
             });
+            
+            
+            
         }
         //if not then load as usual
         else if (this.startPlay){

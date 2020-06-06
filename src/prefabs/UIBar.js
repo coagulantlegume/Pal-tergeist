@@ -23,4 +23,10 @@ class UIBar {
 
        this.border.setPosition(x,y);
     }
+
+    setAlpha(alphaNum){
+        this.backfill.setAlpha(alphaNum);
+        this.fill.setAlpha(alphaNum);
+        this.border.setAlpha(alphaNum);
+    }
 }
