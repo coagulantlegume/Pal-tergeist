@@ -34,7 +34,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 speed: {
                     base: 1,
                     highScare: 2.5
-                }
+                },
             },
             {
                 // required
@@ -153,6 +153,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             paused: true,
             loop: true,
         });
+
+        this.turnExitTimer = undefined; // timer to be declared for not immediately turning to exit
     }
 
     update(delta) {
@@ -605,6 +607,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         // set speed
         let speed = this.kid.params.scareLevelCurr > this.kid.params.scareLevelHigh ? this.speed.highScare : this.speed.base;
+        this.kid.shiverTimer.paused = this.kid.params.scareLevelCurr > this.kid.params.scareLevelHigh ? false : true;
 
         // update walkable area
         this.kid.walkableAreaUpdate();
@@ -620,6 +623,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         // if kid outside walkable area, reset target to closest walkable point
         if(this.kid.x > this.kid.params.walkAreaRBound || this.kid.x < this.kid.params.walkAreaLBound) {
             this.target = this.kid.x > this.kid.params.walkAreaRBound ? this.kid.params.walkAreaRBound - 1 : this.kid.params.walkAreaLBound;
+            this.kid.params.isMoving = true;
+            this.kid.scene.wanderTimer.paused = true;
         }
 
         // either move or stop depending on relative position to goal point
@@ -646,7 +651,30 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         // test if must change states to exit
         if(this.kid.canExit()) {
-            this.kid._state.setState("exiting");
+            this.kid.params.isMoving = false;
+            this.kid.scene.wanderTimer.paused = true;
+
+            // if facing away from exit, wait 1 second before turning to exit
+            if(this.turnExitTimer === undefined && this.kid.params.direction != (this.kid.x - game.levelParams.currLevel.params.exit.x > 0 ? "left" : "right")) {
+                console.log("making exit turn timer");
+                this.turnExitTimer = this.kid.scene.time.addEvent({
+                    delay: 500,
+                    callback: () => {
+                        if(this.kid.canExit()) { // only exit if can exit
+                            this.kid._state.setState("exiting");
+                        }
+                        else {
+                            this.kid.scene.wanderTimer.paused = false;
+                        }
+                        this.turnExitTimer = undefined;
+                    },
+                    callbackScope: this,
+                    loop: false,
+                });
+            }
+            else if (this.turnExitTimer === undefined) {
+                this.kid._state.setState("exiting");
+            }
         }
 
         // set scaredEmote position
@@ -694,12 +722,18 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         else { // if no viable path, return to idle state
             this.kid._state.setState("idle");
         }
+
+        // if stuck in limbo, cry for help and hope for the best
+        if(this.kid.params.direction != (this.kid.x - game.levelParams.currLevel.params.exit.x > 0 ? "left" : "right")) {
+            console.log("halp plz");
+            this.kid._state.setState("idle");
+        }
     }
 
     exitingSwitchTo() {
         this.kid.scene.wanderTimer.paused = true;
         this.kid.params.isMoving = true;
-        this.kid.params.direction = this.kid.x - game.levelParams.currLevel.params.exit.x > 0 ? "left" : "right";
+        this.kid.params.direction = (this.kid.x - game.levelParams.currLevel.params.exit.x > 0 ? "left" : "right");
         this.kid.setFlipX(this.kid.params.direction == "left");
         this.kid.setTarget(game.levelParams.currLevel.params.exit.x + game.levelParams.currLevel.params.x0);
 
