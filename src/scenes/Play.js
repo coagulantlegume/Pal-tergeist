@@ -81,6 +81,9 @@ class Play extends Phaser.Scene {
             volume: 0.2
         });
         this.music.play(); */
+        for(let frameNum = 0; frameNum < 8; frameNum++){
+            console.log('intro_f'+frameNum);
+        }
 
         // make black rectangle for fading out playable area
         this.blackScreen = this.add.image(0, 0, 'blackBox').setScale(game.config.width, game.config.height).

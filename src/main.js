@@ -12,7 +12,7 @@ let config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    scene: [Loading, Intro, Play, Outro, Menu, Credit],
+    scene: [Loading, Cutscene, Intro, Play, Outro, Menu, Credit],
     physics: {
         default: 'matter',
         matter: {
