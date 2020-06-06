@@ -142,8 +142,11 @@ class Level {
                 this.scene.kid.setPosition(this.params.x0 + rawData.params.entrance.x, this.params.y0 + this.background.height - 2 * this.params.borderWidth);
                 this.scene.kid.params.scareLevelCurr = 25;
                 this.scene.kid.params.isMoving = false;
+                this.scene.kid.params.isScared = false;
+                this.scene.kid.params.distance = 0;
                 this.scene.kid.isCropped = false;
                 this.scene.kid.alpha = 1;
+                this.scene.kid.shiverTimer.paused = true;
             
                 // reset scare objects
                 for(let i = 0; i < this.scareGroup.length; ++i ) {
