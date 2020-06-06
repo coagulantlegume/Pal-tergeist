@@ -82,9 +82,6 @@ class Play extends Phaser.Scene {
             volume: 0.2
         });
         this.music.play(); */
-        for(let frameNum = 0; frameNum < 8; frameNum++){
-            console.log('intro_f'+frameNum);
-        }
 
         // make black rectangle for fading out playable area
         this.blackScreen = this.add.image(0, 0, 'blackBox').setScale(game.config.width, game.config.height).
@@ -154,6 +151,11 @@ class Play extends Phaser.Scene {
             callbackScope: this.kid,
             loop: true,
           });
+
+          //set params for initial ghost loading on first level
+          this.initLoadingGame = true;
+          this.initCounter = 1;
+          this.startPlay = false;
     }
 
     update() {
@@ -162,51 +164,71 @@ class Play extends Phaser.Scene {
             this.nextLevel(this.count % 3 + 1);
             ++this.count;
         }
-
-        if(!this.isPaused) {
-            // update ghost
-            this.ghost.update(game.loop.rawDelta);
-
-            // update kid
-            if(!game.levelParams.changingLevel) {
-                this.kid.update(game.loop.rawDelta);
-            }
-            this.scareBar.update(this.kid.x, this.kid.y-(18+this.kid.height/2), this.kid.params.scareLevelCurr/this.kid.params.scareLevelMax);
-
-
-            // if possessing, move active object, and set the paranormal bar to the object
-            if(this.ghost.isPossessing) {
-                this.ghost.target.update(keyToggle);
-                this.paranormalBar.update(this.ghost.target.x, this.ghost.target.y, this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
-            }
-            else {
-                this.paranormalBar.update(this.ghost.x, this.ghost.y-(18+this.ghost.height/2), this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
-            }
+        // if on first level and when the game first loads, have the ghost spawn from portrait
+        if(this.initLoadingGame && game.levelParams.currLevelIndex === 0){
+            this.ghost.alpha = 0;
+            this.initLoadingGame = false;
+            //portait location (x,y)
+            this.ghost.x = 1065;
+            this.ghost.y = 448;
+            this.spawnInTimer = this.time.addEvent({
+                delay: 0,
+                callback: () => {this.ghost.alpha += .0125;
+                                 this.initCounter++;
+                                 if(this.initCounter == 80){
+                                    this.startPlay = true;
+                                 }},
+                callbackScope: this,
+                repeat: 80
+            });
         }
-
-        if(Phaser.Input.Keyboard.JustDown(keyEscape) && !game.levelParams.changingLevel) {
-            if(this.pauseMenu.isOpen) {
-                this.pauseMenu.close();
+        //if not then load as usual
+        else if (this.startPlay){
+            if(!this.isPaused) {
+                // update ghost
+                this.ghost.update(game.loop.rawDelta);
+    
+                // update kid
+                if(!game.levelParams.changingLevel) {
+                    this.kid.update(game.loop.rawDelta);
+                }
+                this.scareBar.update(this.kid.x, this.kid.y-(18+this.kid.height/2), this.kid.params.scareLevelCurr/this.kid.params.scareLevelMax);
+    
+    
+                // if possessing, move active object, and set the paranormal bar to the object
+                if(this.ghost.isPossessing) {
+                    this.ghost.target.update(keyToggle);
+                    this.paranormalBar.update(this.ghost.target.x, this.ghost.target.y, this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
+                }
+                else {
+                    this.paranormalBar.update(this.ghost.x, this.ghost.y-(18+this.ghost.height/2), this.ghost.paranormalStrengthCurr/this.ghost.paranormalStrengthMax);
+                }
             }
-            else {
-                this.pauseMenu.open();
+    
+            if(Phaser.Input.Keyboard.JustDown(keyEscape) && !game.levelParams.changingLevel) {
+                if(this.pauseMenu.isOpen) {
+                    this.pauseMenu.close();
+                }
+                else {
+                    this.pauseMenu.open();
+                }
             }
-        }
-
-        // PROGRAM SCENE DEBUGGING
-        if (Phaser.Input.Keyboard.JustDown(keySpace)) {
-            game.levelParams.renderedLevels = [];
-            this.scene.start("outroScene");
-        }
-
-        // rest the level if the kid reaches max scare
-        if(this.kid.params.scareLevelCurr === this.kid.params.scareLevelMax) {
-            game.levelParams.renderedLevels[game.levelParams.currLevelIndex].reset();
-        }
-
-        // Debugging reset level
-        if(Phaser.Input.Keyboard.JustDown(keyReset)) {
-            game.levelParams.renderedLevels[game.levelParams.currLevelIndex].reset();
+    
+            // PROGRAM SCENE DEBUGGING
+            if (Phaser.Input.Keyboard.JustDown(keySpace)) {
+                game.levelParams.renderedLevels = [];
+                this.scene.start("outroScene");
+            }
+    
+            // reset the level if the kid reaches max scare
+            if(this.kid.params.scareLevelCurr === this.kid.params.scareLevelMax) {
+                game.levelParams.renderedLevels[game.levelParams.currLevelIndex].reset();
+            }
+    
+            // Debugging reset level
+            if(Phaser.Input.Keyboard.JustDown(keyReset)) {
+                game.levelParams.renderedLevels[game.levelParams.currLevelIndex].reset();
+            }
         }
     }
 

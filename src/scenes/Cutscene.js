@@ -72,7 +72,6 @@ class Cutscene extends Phaser.Scene {
     
     changePicture() {
         this.current++;
-        console.log('changed pictures '+this.current);
         if (this.current < 7){
             this.pictureA = this.animationFrames[this.current]
             this.pictureB = this.animationFrames[this.current+1]
@@ -80,8 +79,6 @@ class Cutscene extends Phaser.Scene {
         else{
             this.scene.start("introScene");
         }
-
-    
         //  And set a new TimerEvent to occur after 3 seconds
         this.timer = this.time.addEvent({
             delay: 3000,
