@@ -5,7 +5,7 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        firstPlay = false;
+        played = true;
         // Load level data
         this.load.json('lvl1','./src/levels/lvl1.json');
         this.load.json('lvl2','./src/levels/lvl2.json');
@@ -150,7 +150,7 @@ class Play extends Phaser.Scene {
             callback: this.kid.moveKid,
             callbackScope: this.kid,
             loop: true,
-          });
+        });
 
           //set params for initial ghost loading on first level
           this.initLoadingGame = true;

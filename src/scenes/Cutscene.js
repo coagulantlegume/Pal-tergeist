@@ -77,6 +77,7 @@ class Cutscene extends Phaser.Scene {
             this.pictureB = this.animationFrames[this.current+1]
         }
         else{
+            fromCutscene = true;
             this.scene.start("introScene");
         }
         //  And set a new TimerEvent to occur after 3 seconds

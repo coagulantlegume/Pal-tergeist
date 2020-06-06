@@ -57,7 +57,7 @@ class Intro extends Phaser.Scene {
 
         // creates text assets
         this.shortLore = this.add.bitmapText(centerX, centerY - 220, 'myfont', 'A sudden gust of wind takes the balloon away from Pal as it flies into the attic of an abandoned manor!', 35).setOrigin(0.5);
-        if(firstPlay){
+        if(!played && fromCutscene){
             this.startText = this.add.bitmapText(centerX, centerY + 300, 'myfont', 'Press SPACE to Play', 40).setOrigin(0.5);
         }
         else{
@@ -77,8 +77,9 @@ class Intro extends Phaser.Scene {
     update(){
         // PROGRAM SCENE DEBUGGING
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
-            if(firstPlay){
+            if(!played && fromCutscene){
                 this.scene.start("playScene");
+                fromCutscene = false;
             }
             else{
                 this.scene.start("menuScene");

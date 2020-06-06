@@ -45,4 +45,5 @@ let keyLevelUp, keyToggle, keyRight, keyLeft, keyUp, keyDown, keyEscape;
 let keySpace, keyReset;
 
 //Used to see if we play the intro cutscene before game starts
-let firstPlay = true;
+let played = false;
+let fromCutscene = false;
