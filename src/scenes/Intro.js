@@ -57,7 +57,13 @@ class Intro extends Phaser.Scene {
 
         // creates text assets
         this.shortLore = this.add.bitmapText(centerX, centerY - 220, 'myfont', 'A sudden gust of wind takes the balloon away from Pal as it flies into the attic of an abandoned manor!', 35).setOrigin(0.5);
-        this.startText = this.add.bitmapText(centerX, centerY + 300, 'myfont', 'Press SPACE to return to the Menu', 40).setOrigin(0.5);
+        if(firstPlay){
+            this.startText = this.add.bitmapText(centerX, centerY + 300, 'myfont', 'Press SPACE to Play', 40).setOrigin(0.5);
+        }
+        else{
+            this.startText = this.add.bitmapText(centerX, centerY + 300, 'myfont', 'Press SPACE to return to the Menu', 40).setOrigin(0.5);
+        }
+           
 
        // this.add.text(centerX, centerY- textSpacer*2, 'Click on objects with a glow to interact with them.', menuConfig).setOrigin(0.5);
        // this.add.text(centerX, centerY - textSpacer, 'Blue glow = can be possessed. Orange glow = can scare with audio and/or visual', menuConfig).setOrigin(0.5);
@@ -71,7 +77,12 @@ class Intro extends Phaser.Scene {
     update(){
         // PROGRAM SCENE DEBUGGING
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
-            this.scene.start("menuScene");
+            if(firstPlay){
+                this.scene.start("playScene");
+            }
+            else{
+                this.scene.start("menuScene");
+            }
         }
     }
 }

@@ -78,7 +78,7 @@ class Cutscene extends Phaser.Scene {
             this.pictureB = this.animationFrames[this.current+1]
         }
         else{
-            this.scene.start("playScene");
+            this.scene.start("introScene");
         }
 
     
