@@ -1,6 +1,6 @@
 // ScareObject prefab, for any object that can scare child
 class ScareObject extends Phaser.Physics.Matter.Sprite {
-    constructor(scene, x, y, texture, scale, collision, range, visual, auditory, powerGain, scareGain, name, sound, animation, animation_fCount, animation_fRate, collisionBody) {
+    constructor(scene, x, y, texture, scale, collision, range, visual, auditory, powerGain, scareGain, name, sound, animation, animation_fCount, animation_fRate, collisionBody, disabled) {
         // console.log(name);
         // console.log(collisionBody);
         super(scene.matter.world, x, y, texture, 0, collisionBody);
@@ -63,15 +63,23 @@ class ScareObject extends Phaser.Physics.Matter.Sprite {
 
         // set cooldown 
         this.cooldown = false;
+
+        this.disabled = disabled;
     }
 
     makeActive() {
-        // make interactable
-        this.setInteractive().on('pointerdown', this.touchObj).on('pointerover', this.hoverObj).on('pointerout', this.unhoverObj);
-        this.setActive(true);
+        if(!this.disabled){
+            // make interactable
+            this.setInteractive().on('pointerdown', this.touchObj).on('pointerover', this.hoverObj).on('pointerout', this.unhoverObj);
+            this.setActive(true);
 
-        // set friction
-        this.body.friction = 10;
+            // set friction
+            this.body.friction = 10;
+        }
+        else{
+            this.disableInteractive();
+        }
+
     }
 
     makePassive() {

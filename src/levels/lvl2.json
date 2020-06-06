@@ -71,7 +71,8 @@
       "auditory": false,
       "range": 0,
       "powerGain": 0,
-      "scareGain": 0
+      "scareGain": 0,
+      "disabled": true
     }, 
     {
       "name": "shelf",
@@ -88,7 +89,8 @@
       "auditory": false,
       "range": 0,
       "powerGain": 0,
-      "scareGain": 0
+      "scareGain": 0,
+      "disabled": true
     },
     {
       "name": "shelf",
@@ -105,7 +107,8 @@
       "auditory": false,
       "range": 0,
       "powerGain": 0,
-      "scareGain": 0
+      "scareGain": 0,
+      "disabled": true
     },
     {
       "name": "radio",

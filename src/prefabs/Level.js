@@ -26,7 +26,7 @@ class Level {
         Phaser.Actions.Call(rawData.scareObjects, (obj) => {
             let newObj = new ScareObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 
                                          obj.texture, obj.scale, obj.collision, obj.range, obj.visual, obj.auditory, obj.powerGain, obj.scareGain, obj.name, obj.sound, 
-                                         obj.anims, obj.anims_fCount, obj.anims_fRate);
+                                         obj.anims, obj.anims_fCount, obj.anims_fRate, undefined, obj.disabled);
             newObj.setScale(obj.scale);
             this.scareGroup.push(newObj);
         });
