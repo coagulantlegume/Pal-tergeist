@@ -4,8 +4,7 @@ class Intro extends Phaser.Scene {
         super("introScene");
     }
 
-    preload(){
-        this.load.image('titleBackground', './assets/textures/TitleMenuBackground.png');        
+    preload(){       
         // font load    
         this.load.bitmapFont('myfont', 'assets/font/font.png', 'assets/font/font.fnt');        
     }
@@ -32,9 +31,13 @@ class Intro extends Phaser.Scene {
         let centerY = game.config.height/2;
         let textSpacer = 64;
 
+        // creates visual assets + tutorial title 
         var background = this.add.sprite(centerX, centerY, 'titleBackground');
+        var tutorialTitle = this.add.sprite(centerX, centerY - 300, 'tutorialMenu');
 
-        this.add.text(centerX, centerY - textSpacer*3, 'Paltergeist', menuConfig).setOrigin(0.5);
+        // creates text assets
+        this.shortLore = this.add.bitmapText(centerX, centerY - 200, 'myfont', 'A sudden gust of wind takes the ballon away from Pal as it flies into the attic of an abandoned manor!', 35).setOrigin(0.5);
+
         this.add.text(centerX, centerY- textSpacer*2, 'Click on objects with a glow to interact with them.', menuConfig).setOrigin(0.5);
         this.add.text(centerX, centerY - textSpacer, 'Blue glow = can be possessed. Orange glow = can scare with audio and/or visual', menuConfig).setOrigin(0.5);
         this.add.text(centerX, centerY, "Possessed obj's can move/resize. Press 'Q' to toggle between. You start in move mode.", menuConfig).setOrigin(0.5);
