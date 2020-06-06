@@ -95,7 +95,7 @@ class Play extends Phaser.Scene {
         this.kidCollision = this.matter.world.nextCategory();
         this.ghostCollision = this.matter.world.nextCategory();
         this.scareCollision = this.matter.world.nextCategory(true);
-        this.moveCollision = this.matter.world.nextCategory();
+        this.moveCollision = this.matter.world.nextCategory(true);
         this.wallCollision = this.matter.world.nextCategory();
 
         // set additional level params
