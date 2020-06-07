@@ -165,6 +165,9 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
 
+        // update texture and direction
+        this.setFlipX(this.params.direction == "left");
+
         // draw debug walkable area rectangle
         // this.walkAreaRect.setPosition(this.params.walkAreaLBound, this.y - this.height / 2);
         // this.walkAreaRect.setSize((this.params.walkAreaRBound - this.params.walkAreaLBound), this.height);
@@ -191,7 +194,6 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             case (randNumber < rightPercent / 2): // move right (0 to rightPercentage / 2)
                 this.scene.wanderTimer.paused = true;
                 this.params.direction = "right";
-                this.setFlipX(false);
                 this.params.isMoving = true;
                 // calculate random location between kid and right bound
                 this.setTarget(Phaser.Math.Between(this.x, this.params.walkAreaRBound));
@@ -199,14 +201,12 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             case (randNumber < 50): // move left (rightPercentage / 2 to 50)
                 this.scene.wanderTimer.paused = true;
                 this.params.direction = "left";
-                this.setFlipX(true);
                 this.params.isMoving = true;
                 // calculate random location between kid and left bound
                 this.setTarget(Phaser.Math.Between(this.params.walkAreaLBound, this.x));
                 break;
             case (randNumber < 75): // idle turn (50 to 75)
                 this.params.direction = (this.params.direction == "left") ? "right" : "left";
-                this.setFlip(this.params.direction == "left");
                 this.params.isMoving = false;
                 this.scene.wanderTimer.elapsed = 0;
                 this.scene.wanderTimer.paused = false;
@@ -510,7 +510,6 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 delay: 500,
                 callback: () => {
                     this.kid.params.direction = this.kid.params.direction == "left" ? "right" : "left";
-                    this.kid.setFlipX(this.kid.params.direction == "left");
                     this.kid._state.setState("idle");
                     this.cowerTimer === undefined;
                 },
@@ -539,15 +538,13 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         // run away after .5 seconds
         this.kid.params.isMoving = false;
-        this.kid.params.direction = (this.kid.x - this.scarePoint > 0) ? "right" : "left"; // face scare object and freeze
-        this.kid.setFlipX(this.kid.params.direction == "left");
+        this.kid.params.direction = (this.kid.x - this.scarePoint > 0) ? "left" : "right"; // face scare object and freeze
         this.target = this.kid.x;
         this.runAwayTimer = this.kid.scene.time.addEvent({
             delay: 500,
             callback: () => {
                 this.kid.params.isMoving = true;
                 this.kid.params.direction = (this.kid.x - this.scarePoint > 0) ? "right" : "left"; // which way to run away from it
-                this.kid.setFlipX(this.kid.params.direction == "left");
 
                 this.target = (this.kid.x - this.scarePoint > 0) ? this.kid.params.walkAreaRBound : this.kid.params.walkAreaLBound;
                 this.kid.shiverTimer.paused = true;
@@ -591,7 +588,6 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.kid.scene.wanderTimer.paused = true;
         this.kid.params.isMoving = true;
         this.kid.params.direction = (this.kid.x - (game.levelParams.currLevel.params.exit.x + game.levelParams.currLevel.params.x0) > 0 ? "left" : "right");
-        this.kid.setFlipX(this.kid.params.direction == "left");
         this.kid.setTarget(game.levelParams.currLevel.params.exit.x + game.levelParams.currLevel.params.x0);
 
         console.log("switched to exiting");
