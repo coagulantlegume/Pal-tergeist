@@ -37,6 +37,7 @@ game.levelParams = {
     renderedLevels: [],
     currLevel: 0,
     currLevelIndex: -1,
+    numLevels: 3,
 };
 
 // reserve keyboard vars

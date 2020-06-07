@@ -175,8 +175,7 @@ class Play extends Phaser.Scene {
     update() {
         // debug changing level
         if(!game.levelParams.changingLevel && Phaser.Input.Keyboard.JustDown(keyLevelUp)) {
-            this.nextLevel(this.count % 3 + 1);
-            ++this.count;
+            this.kid._state.setState("changinglevel");
         }
         // if on first level and when the game first loads, have the ghost spawn from portrait
         if(this.initLoadingGame && game.levelParams.currLevelIndex === 0){
@@ -221,9 +220,7 @@ class Play extends Phaser.Scene {
                 this.ghost.update(game.loop.rawDelta);
     
                 // update kid
-                if(!game.levelParams.changingLevel) {
-                    this.kid.update(game.loop.rawDelta);
-                }
+                this.kid.update(game.loop.rawDelta);
                 this.scareBar.update(this.kid.x, this.kid.y-(18+this.kid.height/2), this.kid.params.scareLevelCurr/this.kid.params.scareLevelMax);
     
     

@@ -159,6 +159,7 @@ class Level {
                                                   this.params.y0 + rawData.moveObjects[i].position.y);
                     this.moveGroup[i].setScale(rawData.moveObjects[i].scale);
                     this.moveGroup[i].setRotation(0);
+                    this.moveGroup[i].setVelocity(0);
                 }
 
                 // fade back in after .5 seconds

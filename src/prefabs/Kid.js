@@ -291,9 +291,6 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.setCrop(0, 0, this.params.showPercent, this.height);
         this.alpha = 1;
 
-        // stop wander movement (so kid doesn't walk off level if in movement already)
-        this.params.isMoving = false;
-
         // wait 1 seconds before entering level
         this.scene.time.addEvent({
             delay: 1000,
@@ -561,25 +558,12 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         // check if overlapping exit enough to leave level
         if(this.kid.atExit()) {
-            this.kid.scene.nextLevel(this.kid.scene.count % 3 + 1);
-            ++this.kid.scene.count;
-            this.kid.params.isMoving = false;
-            this.kid.scaredEmote.setAlpha(0); //reset scared emote since kid is exiting
-            console.log("leaving level");
-            this.kid._state.setState("idle");
+            this.kid._state.setState("changinglevel");
         }
-
-        // move toward exit, if exit still accessable
-        if(this.kid.canExit()) {
+        else if(this.kid.canExit()) {// move toward exit, if exit still accessable
             this.kid.x += this.speed * (this.kid.params.direction == "left" ? -1 : 1);
         }
         else { // if no viable path, return to idle state
-            this.kid._state.setState("idle");
-        }
-
-        // if stuck in limbo, cry for help and hope for the best
-        if(this.kid.params.direction != (this.kid.x - (game.levelParams.currLevel.params.exit.x + game.levelParams.currLevel.params.x0) > 0 ? "left" : "right")) {
-            console.log("halp plz");
             this.kid._state.setState("idle");
         }
     }
@@ -595,10 +579,19 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
     // handle changing level
     changingLevelUpdate() { 
-        return;
+        if(!game.levelParams.changingLevel) { // entered new level
+            this.kid.scene.scareBar.setAlpha(1);
+            this.kid._state.setState("idle");
+        }
     }
 
     changingLevelSwitchTo() {
+        this.kid.scene.nextLevel(this.kid.scene.count % game.levelParams.numLevels + 1);
+        ++this.kid.scene.count;
+        this.kid.params.isMoving = false;
+        this.kid.scaredEmote.setAlpha(0); //reset scared emote since kid is exiting
+        this.kid.scene.scareBar.setAlpha(0);
+
         console.log("switched to changing level");
     }
 }
