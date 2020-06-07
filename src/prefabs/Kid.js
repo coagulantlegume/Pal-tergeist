@@ -11,13 +11,11 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             walkAreaRBound: undefined,  // right (max) y value of walkable area
             direction: "right",         // direction kid is walking in
             isMoving: false,            // whether kid is currently walking or standing still
-            exiting: false,             // if kid currently walking to exit (calculated path)
             scareLevelMax: 100,
             scareLevelHigh: 75,
             scareLevelCurr: 25,
             shiverAmount: .75,          // the distance in each direction that the kid shivers in
             showPercent: 100,           // the percentage of the sprite visible(from left side)
-            isScared: false,            // whether kid is currently being scared/running away
         }
 
         // set up rudimentary state machine
