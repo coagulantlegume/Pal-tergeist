@@ -14,7 +14,7 @@ class MoveObject extends ScareObject {
 
         // set collision group and mask
         this.setCollisionCategory(this.scene.moveCollision);
-        this.setCollidesWith([1, this.scene.kidCollision, this.scene.wallCollision, this.scene.scareCollision]);
+        this.setCollidesWith([1, this.scene.kidCollision, this.scene.wallCollision, this.scene.scareCollision, this.scene.moveCollision]);
 
         // set density and friction
         this.setDensity(1);
