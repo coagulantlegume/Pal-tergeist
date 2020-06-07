@@ -21,6 +21,13 @@ class MoveObject extends ScareObject {
         this.setMass(this.scale * this.width * this.height);
         this.body.frictionAir = 0.008;
 
+        // if balloon, reverse gravity
+        if(name === "balloon") {
+            this.body.gravityScale.y = -2;
+            this.body.centerOfMass.y = 0.1;
+            this.body.frictionAir = 0.1;
+        }
+
         // possession force values
         this.horizontalForce = 110;
 
