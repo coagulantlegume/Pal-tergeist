@@ -89,20 +89,20 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         // add walkable area debug rectangle
         this.walkAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
-        this.walkAreaRect.alpha = 0.5;
+        this.walkAreaRect.alpha = 0;
         this.walkAreaRect.setOrigin(0, 0.5);
         this.walkAreaRect.setDepth(4);
 
         // add walkable area debug rectangle
         this.exitAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
-        this.exitAreaRect.alpha = 0.5;
+        this.exitAreaRect.alpha = 0;
         this.exitAreaRect.setOrigin(0.5, 0.5);
         this.exitAreaRect.setDepth(4);
 
         // add target position debug point
         this.targetPoint = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
         this.targetPoint.setSize(10,10);
-        this.targetPoint.alpha = 0.5;
+        this.targetPoint.alpha = 0;
         this.targetPoint.setOrigin(0, 0.5);
         this.targetPoint.setDepth(4);
         
@@ -166,15 +166,15 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
 
         // draw debug walkable area rectangle
-        this.walkAreaRect.setPosition(this.params.walkAreaLBound, this.y - this.height / 2);
-        this.walkAreaRect.setSize((this.params.walkAreaRBound - this.params.walkAreaLBound), this.height);
+        // this.walkAreaRect.setPosition(this.params.walkAreaLBound, this.y - this.height / 2);
+        // this.walkAreaRect.setSize((this.params.walkAreaRBound - this.params.walkAreaLBound), this.height);
 
         // draw target point debug
-        this.targetPoint.setPosition(this._state.currState.target, this.y);
+        // this.targetPoint.setPosition(this._state.currState.target, this.y);
 
         // draw debug exit area rectangle
-        this.exitAreaRect.setPosition(currLevel.params.x0 + currLevel.params.exit.x - currLevel.params.exit.width / 2, this.y - this.height / 2);
-        this.exitAreaRect.setSize(currLevel.params.exit.width, this.height);
+        // this.exitAreaRect.setPosition(currLevel.params.x0 + currLevel.params.exit.x - currLevel.params.exit.width / 2, this.y - this.height / 2);
+        // this.exitAreaRect.setSize(currLevel.params.exit.width, this.height);
     }
 
     // kid wandering around randomly
