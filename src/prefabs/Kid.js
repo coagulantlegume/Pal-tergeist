@@ -45,6 +45,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
                 // additional
                 speed: 4,
+                target: 0,
+                scarePoint: 0,
             },
             {
                 // required
@@ -96,7 +98,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         // add walkable area debug rectangle
         this.exitAreaRect = this.scene.add.rectangle(this.scene,0,0,0,0,0xFACADE);
         this.exitAreaRect.alpha = 0.5;
-        this.exitAreaRect.setOrigin(0, 0.5);
+        this.exitAreaRect.setOrigin(0.5, 0.5);
         this.exitAreaRect.setDepth(4);
 
         // add target position debug point
@@ -163,6 +165,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         this._state.update();
 
+        let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
+
         // draw debug walkable area rectangle
         this.walkAreaRect.setPosition(this.params.walkAreaLBound, this.y - this.height / 2);
         this.walkAreaRect.setSize((this.params.walkAreaRBound - this.params.walkAreaLBound), this.height);
@@ -170,186 +174,9 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         // draw target point debug
         this.targetPoint.setPosition(this._state.currState.target, this.y);
 
-        // // calculate the slowly decreasing scare level
-        // if(this.params.scareLevelCurr > 0){
-        //     this.params.scareLevelCurr -=0.02;
-        // }
-
-        // let currLevel = game.levelParams.renderedLevels[game.levelParams.currLevelIndex];
-
-        // // calculate walkable area
-        // this.params.walkAreaLBound = currLevel.params.x0 + currLevel.params.borderWidth; // left wall of level
-        // this.params.walkAreaRBound = this.params.walkAreaLBound + currLevel.background.width - 2 * currLevel.params.borderWidth; // right wall of level
-        // Phaser.Actions.Call(currLevel.moveGroup, (obj) => {
-        //     if(obj.y + obj.scale * obj.height / 2 >= this.y - this.height / 2) { // on the correct y plane
-        //         if(obj.x > this.params.walkAreaLBound && obj.x < this.x) { // closer than current left bound
-        //             this.params.walkAreaLBound = obj.body.bounds.max.x;
-        //         }
-        //         else if(obj.x < this.params.walkAreaRBound && obj.x > this.x) { // closer than current right bound
-        //             this.params.walkAreaRBound = obj.body.bounds.min.x;
-        //         }
-        //     }
-        // });
-
-        // // add safety buffer to walkable area
-        // this.params.walkAreaLBound += 5;
-        // this.params.walkAreaRBound -= 5;
-
-        // // draw debug walkable area rectangle
-        // this.walkAreaRect.setPosition(this.params.walkAreaLBound, this.y - this.height / 2);
-        // this.walkAreaRect.setSize((this.params.walkAreaRBound - this.params.walkAreaLBound), this.height);
-
-        // // if barrier moved, readjust distance and cancel exiting and complete 
-        // if(this.params.direction == "right" && Math.floor(this.params.distance - (this.params.walkAreaRBound - this.x - this.width / 2)) > 1) {
-        //     if(this.params.isMoving) {
-        //         this.params.distance = this.params.walkAreaRBound - this.x - this.width / 2;
-        //     }
-        //     else {
-        //         this.params.distance = 0;
-        //     }
-        //     this.params.exiting = false;
-        //     game.levelParams.complete = false;
-        //     console.log("path readjusted " + Math.floor(this.params.distance - (this.params.walkAreaRBound - this.x - this.width / 2)));
-        // }
-        // else if(this.params.direction == "left" && Math.floor(this.params.distance - (this.x - this.width / 2 - this.params.walkAreaLBound)) > 1) {
-        //     if(this.params.isMoving) {
-        //         this.params.distance = this.x - this.width / 2 - this.params.walkAreaLBound;
-        //     }
-        //     else {
-        //         this.params.distance = 0;
-        //     }
-        //     this.params.exiting = false;
-        //     game.levelParams.complete = false;
-        //     console.log("path readjusted " + Math.floor(this.params.distance - (this.x - this.width / 2 - this.params.walkAreaLBound)));
-        // }
-
-        // // test for exit condition
-        // if(!game.levelParams.changingLevel && !this.params.isScared) {
-        //     let exitLeft = Math.ceil(currLevel.params.x0 + (currLevel.params.exit.x - currLevel.params.exit.width / 2));
-        //     let exitRight = Math.floor(currLevel.params.x0 + (currLevel.params.exit.x + currLevel.params.exit.width / 2));
-        //     if(exitLeft >= this.params.walkAreaLBound && exitLeft <= this.params.walkAreaRBound && 
-        //        this.params.walkAreaRBound -exitLeft > this.width) {
-        //         game.levelParams.complete = true;
-        //         console.log("level complete");
-        //     }
-        //     else if(exitRight <= this.params.walkAreaRBound && exitRight >= this.params.walkAreaLBound &&
-        //             exitRight - this.params.walkAreaLBound > this.width) {
-        //         game.levelParams.complete = true;
-        //         console.log("level complete");
-        //     }
-        //     else {
-        //         if(this.params.exiting) { // if kid is on previous exit path, but no longer viable exit
-        //             this.moveKid();
-        //         }
-        //         game.levelParams.complete = false;
-        //         this.params.exiting = false;
-        //     }
-        //     // draw debug exit area rectangle
-        //     this.exitAreaRect.setPosition(exitLeft, this.y - this.height / 2);
-        //     this.exitAreaRect.setSize((exitRight - exitLeft), this.height);
-        // }
-        
-        // // if just stopped moving, reset timer
-        // if(this.params.distance <= 0 && this.params.isMoving == true) { // end of calculated walk distance (or within 1 pixel)
-        //     this.scene.wanderTimer.elapsed = 0;
-        //     this.scene.wanderTimer.paused = false;
-        //     this.params.isMoving = false;
-        //     if(this.params.isScared) { // turn kid back around
-        //         this.cowerLookBackTimer = this.scene.time.addEvent({
-        //             delay: 500,
-        //             callback: () => {
-        //                 this.params.direction = (this.params.direction == "left") ? "right" : "left";
-        //                 this.setFlip(this.params.direction == "left");
-        //                 this.params.isScared = false;
-        //             },
-        //             callbackScope: this,
-        //         });
-        //     }
-        // }
-        // else if(this.params.distance > 0 && this.params.isMoving == false) {
-        //     this.params.distance = 0;
-        // }
-        
-        // // handle exiting
-        // if(game.levelParams.complete && !this.params.isScared) {
-        //     // get rid of toggle UI
-        //     //if(this.scene.ghost.isPossessing){
-        //     //    this.scene.ghost.target.makeToggleInvis();
-        //     //}
-            
-        //     if(!this.params.exiting) { // level complete but path not yet set)
-        //         this.scene.time.addEvent({ // wait 1 second, then turn to exit
-        //             delay: 1000,
-        //             callback: () => {
-        //                 if(this.params.distance > 0) { // exit to right of kid
-        //                     this.setFlipX(false);
-        //                     this.params.direction = "right";
-        //                     this.params.exiting = true;
-        //                 }
-        //                 else { // exit to left of kid
-        //                     this.setFlipX(true);
-        //                     this.params.direction = "left";
-        //                     this.params.distance = -this.params.distance;
-        //                     this.params.exiting = true;
-        //                 }
-        //                 this.params.distance = currLevel.params.exit.x + currLevel.params.x0 - this.x;
-        //                 console.log("exiting");
-        //             },
-        //             callbackScope: this,
-        //         });
-                
-        //         this.params.isMoving = true;
-        //         this.params.exiting = true;
-        //         this.scene.wanderTimer.paused = true;
-        //         this.params.speed = 3;
-        //         console.log("exit path set");
-        //     }
-        //     else if(Math.floor(currLevel.params.exit.x - (this.x + (this.params.direction == "left" ? -1 : 1) * this.params.distance) > 0)) { // if exiting but path borked
-        //         this.params.exiting = false;
-        //     }
-        //     else if(this.x - this.width / 2 > currLevel.params.x0 + (currLevel.params.exit.x - currLevel.params.exit.width / 2) &&
-        //             this.x + this.width / 2 < currLevel.params.x0 + (currLevel.params.exit.x + currLevel.params.exit.width / 2)) { // if completely overlapping with exit
-        //         this.scene.nextLevel(this.scene.count % 3 + 1);
-        //         ++this.scene.count;
-        //         this.params.isMoving = false;
-        //         this.scaredEmote.setAlpha(0); //reset scared emote since kid is exiting
-        //         console.log("leaving level");
-        //     }
-        // }
-
-        // // calculate movement
-        // if(this.params.isMoving) {
-        //     if(this.params.direction == "right") {
-        //         this.x +=this.params.speed * delta / 40;
-        //     }
-        //     else {
-        //         this.x -=this.params.speed * delta / 40;
-        //     }
-        //     this.params.distance -= this.params.speed * delta / 40;
-        // }
-
-        // // set scaredEmote position
-        // this.scaredEmote.setPosition(this.x-(this.width/4)-10, this.y-(this.height/4));
-
-        // // set high scare effects
-        // if(!this.params.exiting && !this.params.isScared) {
-        //     if(this.params.scareLevelCurr >= this.params.scareLevelHigh) {
-        //         this.shiverTimer.paused = false;
-        //         this.params.speed = 2.5;
-        //     }
-        //     else {
-        //         this.shiverTimer.paused = true;
-        //         this.params.speed = 1;
-        //     }
-        // }
-
-        // // draw target point debug
-        // if(this.params.direction == "left") {
-        //     this.targetPoint.setPosition(this.x - this.params.distance, this.y);
-        // }
-        // else {
-        //     this.targetPoint.setPosition(this.x + this.params.distance, this.y);
-        // }
+        // draw debug exit area rectangle
+        this.exitAreaRect.setPosition(currLevel.params.x0 + currLevel.params.exit.x - currLevel.params.exit.width / 2, this.y - this.height / 2);
+        this.exitAreaRect.setSize(currLevel.params.exit.width, this.height);
     }
 
     // kid wandering around randomly
@@ -417,6 +244,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
                 //console.log("scared by: " + obj.params.name);
                 this.scene.ghost.paranormalStrengthCurr += powerAmount;
                 scared = true;
+                this._state.setState("scared");
+                this._state.currState.scarePoint = obj.x;
             }
         }
         //check auditory scares
@@ -424,6 +253,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             this.params.scareLevelCurr += scareAmount;
             this.scene.ghost.paranormalStrengthCurr += powerAmount;
             scared = true;
+            this._state.setState("scared");
+            this._state.currState.scarePoint = obj.x;
             //console.log("scared by: " + obj.params.name);
         }
         
@@ -446,35 +277,6 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         // if paranormalStrengthCurr exceeds the max then set it to the max
         if(this.scene.ghost.paranormalStrengthCurr > this.scene.ghost.paranormalStrengthMax){
             this.scene.ghost.paranormalStrengthCurr = this.scene.ghost.paranormalStrengthMax;
-        }
-
-        // run away after .5 seconds
-        if(scared && !this.params.isScared) { // if just scared
-            this.scene.wanderTimer.paused = true;
-            this.params.isScared = true;
-            this.params.isMoving = false;
-            this.runAwayTimer = this.scene.time.addEvent({
-                delay: 500,
-                callback: () => {
-                    this.params.direction = (this.x - obj.x > 0) ? "right":"left"; // which way to run away from it
-                    if(this.params.direction == "right") {
-                        this.params.distance = this.params.walkAreaRBound - this.x - this.width / 2;
-                        this.scene.wanderTimer.paused = true;
-                        this.params.speed = 4;
-                        //console.log("right");
-                    }
-                    if(this.params.direction == "left") {
-                        this.params.distance = this.x - this.width / 2 - this.params.walkAreaLBound;
-                        this.scene.wanderTimer.paused = true;
-                        this.params.speed = 4;
-                        //console.log("left");
-                    }
-                    this.setFlipX(this.params.direction == "left");
-                    this.params.isMoving = true;
-                    this.params.exiting = false;
-                },
-                callbackScope: this,
-            });
         }
     }
 
@@ -693,10 +495,67 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
     // handle scared state
     scaredUpdate() {
-        return;
+        this.kid.walkableAreaUpdate();
+
+        if(this.kid.params.isMoving) { // move, if not stunned
+            this.kid.x += this.speed * (this.kid.params.direction == "left" ? -1 : 1);
+        }
+
+        // if kid has ran as far as possible, stop and cower
+        if(this.kid.params.isMoving && this.cowerTimer === undefined && // if not already cowering
+          ((this.kid.x > this.kid.params.walkAreaRBound - this.speed && this.kid.params.direction == "right") ||  // running right and at edge
+          (this.kid.x < this.kid.params.walkAreaLBound + this.speed && this.kid.params.direction == "left"))) {   // running left and at edge
+            this.kid.params.isMoving = false;
+
+            // cower for .5 seconds, then turn to face object and continue idle
+            this.cowerTimer = this.kid.scene.time.addEvent({
+                delay: 500,
+                callback: () => {
+                    this.kid.params.direction = this.kid.params.direction == "left" ? "right" : "left";
+                    this.kid.setFlipX(this.kid.params.direction == "left");
+                    this.kid._state.setState("idle");
+                    this.cowerTimer === undefined;
+                },
+                callbackScope: this,
+                loop: false,
+            });
+        }
+
+        // set scaredEmote position
+        this.kid.scaredEmote.setPosition(this.kid.x-(this.kid.width/4)-10, this.kid.y-(this.kid.height/4));
     }
 
     scaredSwitchTo() {
+        // reset previous scared state, in case scared when already scared
+        if(this.runAwayTimer !== undefined) {
+            this.runAwayTimer.destroy();
+            this.runAwayTimer = undefined;
+        }
+        if(this.cowerTimer !== undefined) {
+            this.cowerTimer.destroy();
+            this.cowerTimer = undefined;
+        }
+
+        // start shivering
+        this.kid.shiverTimer.paused = false;
+
+        // run away after .5 seconds
+        this.kid.params.isMoving = false;
+        this.kid.params.direction = (this.kid.x - this.scarePoint > 0) ? "right" : "left"; // face scare object and freeze
+        this.kid.setFlipX(this.kid.params.direction == "left");
+        this.target = this.kid.x;
+        this.runAwayTimer = this.kid.scene.time.addEvent({
+            delay: 500,
+            callback: () => {
+                this.kid.params.isMoving = true;
+                this.kid.params.direction = (this.kid.x - this.scarePoint > 0) ? "right" : "left"; // which way to run away from it
+                this.kid.setFlipX(this.kid.params.direction == "left");
+
+                this.target = (this.kid.x - this.scarePoint > 0) ? this.kid.params.walkAreaRBound : this.kid.params.walkAreaLBound;
+                this.kid.shiverTimer.paused = true;
+            },
+            callbackScope: this,
+        });
         console.log("switched to scared");
     }
 
@@ -724,7 +583,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         }
 
         // if stuck in limbo, cry for help and hope for the best
-        if(this.kid.params.direction != (this.kid.x - game.levelParams.currLevel.params.exit.x > 0 ? "left" : "right")) {
+        if(this.kid.params.direction != (this.kid.x - (game.levelParams.currLevel.params.exit.x + game.levelParams.currLevel.params.x0) > 0 ? "left" : "right")) {
             console.log("halp plz");
             this.kid._state.setState("idle");
         }
@@ -733,7 +592,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
     exitingSwitchTo() {
         this.kid.scene.wanderTimer.paused = true;
         this.kid.params.isMoving = true;
-        this.kid.params.direction = (this.kid.x - game.levelParams.currLevel.params.exit.x > 0 ? "left" : "right");
+        this.kid.params.direction = (this.kid.x - (game.levelParams.currLevel.params.exit.x + game.levelParams.currLevel.params.x0) > 0 ? "left" : "right");
         this.kid.setFlipX(this.kid.params.direction == "left");
         this.kid.setTarget(game.levelParams.currLevel.params.exit.x + game.levelParams.currLevel.params.x0);
 
@@ -741,7 +600,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
     }
 
     // handle changing level
-    changingLevelUpdate() {
+    changingLevelUpdate() { 
         return;
     }
 
