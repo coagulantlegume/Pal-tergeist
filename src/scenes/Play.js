@@ -19,24 +19,33 @@ class Play extends Phaser.Scene {
         // Load level asset images
         this.load.image('radio', './assets/textures/radio.png');
         this.load.image('radioHover', './assets/textures/radioHover.png');
+        
         this.load.image('clock', './assets/textures/clock.png');
         this.load.image('clockHover', './assets/textures/clockHover.png');
+        
         this.load.image('light', './assets/textures/light_OFF.png');
         this.load.image('lightHover', './assets/textures/light_OFFHover.png');
         this.load.atlas('anims_light', './assets/textures/anims_light.png', './assets/textures/anims_light.json');
+        
         this.load.image('tub', './assets/textures/tub.png');
         this.load.image('tubHover', './assets/textures/tubHover.png');
         this.load.json('tubCollision', './assets/textures/tub.xml.json');
+        
         this.load.image('box', './assets/textures/box.png');
         this.load.image('boxHover', './assets/textures/boxHover.png');
+        
         this.load.image('cabinet', './assets/textures/cabinet.png');
         this.load.image('cabinetHover', './assets/textures/cabinetHover.png');
+        
         this.load.image('lamp', './assets/textures/lamp.png');
         this.load.image('lampHover', './assets/textures/lampHover.png');
+        
         this.load.image('mirror', './assets/textures/mirror.png');
         this.load.image('mirrorHover', './assets/textures/mirrorHover.png');
+        
         this.load.image('shelf', './assets/textures/shelf.png');
         this.load.image('shelfHover', './assets/textures/shelf.png');
+        
         this.load.image('balloon', './assets/textures/balloon.png');
         this.load.image('balloonHover', './assets/textures/balloonHover.png');
         
@@ -57,7 +66,9 @@ class Play extends Phaser.Scene {
 
         // load characters' images
         this.load.image('ghost', './assets/textures/ghost.png');
+
         this.load.image('kid', './assets/textures/kid.png');
+        this.load.json('kidCollision', './assets/textures/kid_collision.json');
         this.load.atlas('anims_kid', './assets/textures/anims_kid.png', './assets/textures/anims_kid.json');
         this.load.image('scaredEmote', './assets/textures/scaredEmote.png');
 
@@ -133,7 +144,9 @@ class Play extends Phaser.Scene {
         this.paranormalBar = new UIBar(this, this.ghost.x, this.ghost.y-(18+this.ghost.height/2),0x7bfff6,2); 
 
         // make kid
-        this.kid = new Kid(this, game.config.width / 4, (game.config.height / 2) + 250, 'kid', 0);
+        let kid_collisionJson = this.cache.json.get('kidCollision');
+        this.kid = new Kid(this, game.config.width / 4, (game.config.height / 2) + 250, 'kid', 0, {shape: kid_collisionJson.kid});
+
         this.scareBar = new UIBar(this, this.kid.x, this.kid.y-(18+this.kid.height/2),0xffa100,3);
         this.kid.body.friction = 4;
         

@@ -1,7 +1,7 @@
 // Kid prefab
 class Kid extends Phaser.Physics.Matter.Sprite {
-    constructor(scene, x, y, texture, frame) {
-        super(scene.matter.world, x, y, texture, frame);
+    constructor(scene, x, y, texture, frame, collisionBody) {
+        super(scene.matter.world, x, y, texture, frame, collisionBody);
 
         this.setDepth(2);
         this._crop = this.resetCropObject();
