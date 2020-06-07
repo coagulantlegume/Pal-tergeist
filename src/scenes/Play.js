@@ -274,8 +274,13 @@ class Play extends Phaser.Scene {
             this.ghost.unpossess();
         }
 
-        // make new level
-        game.levelParams.renderedLevels.push(new Level(this, level));
+        // make new level, if more defined levels
+        if(this.count <= game.levelParams.numLevels) {
+            game.levelParams.renderedLevels.push(new Level(this, level));
+        }
+        else {
+            game.levelParams.renderedLevels.push(undefined);
+        }
 
         let offscreenLevel = game.levelParams.renderedLevels[0];
         let isOffscreen = false;
@@ -338,7 +343,9 @@ class Play extends Phaser.Scene {
                 ++step;
 
                 Phaser.Actions.Call(game.levelParams.renderedLevels, (level) => {
-                    level.shift(dx, dy);
+                    if(level !== undefined) {
+                        level.shift(dx, dy);
+                    }
                 });
                 if(isOffscreen) {
                     offscreenLevel.shift(dx, dy);

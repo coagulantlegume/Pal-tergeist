@@ -420,8 +420,11 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         // if kid outside walkable area, reset target to closest walkable point
         if(this.kid.x > this.kid.params.walkAreaRBound || this.kid.x < this.kid.params.walkAreaLBound) {
             this.target = this.kid.x > this.kid.params.walkAreaRBound ? this.kid.params.walkAreaRBound - 1 : this.kid.params.walkAreaLBound;
-            this.kid.params.isMoving = true;
-            this.kid.scene.wanderTimer.paused = true;
+            if(this.kid.params.walkAreaRBound - this.kid.params.walkAreaLBound > this.kid.width) { // account for squishing kid, so kid cannot be pushed off level
+                this.kid.params.direction = this.kid.target - this.kid.x > 0 ? "right" : "left";
+                this.kid.params.isMoving = true;
+                this.kid.scene.wanderTimer.paused = true;
+            }
         }
 
         // either move or stop depending on relative position to goal point
@@ -586,8 +589,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
     }
 
     changingLevelSwitchTo() {
-        this.kid.scene.nextLevel(this.kid.scene.count % game.levelParams.numLevels + 1);
-        ++this.kid.scene.count;
+        this.kid.scene.nextLevel(++this.kid.scene.count);
         this.kid.params.isMoving = false;
         this.kid.scaredEmote.setAlpha(0); //reset scared emote since kid is exiting
         this.kid.scene.scareBar.setAlpha(0);
