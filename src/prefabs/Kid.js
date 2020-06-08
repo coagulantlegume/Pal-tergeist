@@ -168,6 +168,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
     update(delta) {
         // constrain delta minimum framerate
         delta = Math.min(delta, 20);
+        this.delta = delta / 20;
 
         this._state.update();
 
@@ -364,8 +365,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         });
 
         // add safety buffer to walkable area + kid width
-        this.params.walkAreaLBound += 5 + this.width / 2;
-        this.params.walkAreaRBound -= 5 + this.width / 2;
+        this.params.walkAreaLBound += 10 + this.width / 2;
+        this.params.walkAreaRBound -= 10 + this.width / 2;
     }
 
     // test if viable path to exit
@@ -412,6 +413,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         // set speed
         let speed = this.kid.params.scareLevelCurr > this.kid.params.scareLevelHigh ? this.speed.highScare : this.speed.base;
+        speed *= this.kid.delta;
         this.kid.shiverTimer.paused = this.kid.params.scareLevelCurr > this.kid.params.scareLevelHigh ? false : true;
 
         // update walkable area
@@ -427,9 +429,9 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         // if kid outside walkable area, reset target to closest walkable point
         if(this.kid.x > this.kid.params.walkAreaRBound || this.kid.x < this.kid.params.walkAreaLBound) {
-            this.target = this.kid.x > this.kid.params.walkAreaRBound ? this.kid.params.walkAreaRBound - 1 : this.kid.params.walkAreaLBound;
+            this.target = this.kid.x > this.kid.params.walkAreaRBound ? this.kid.params.walkAreaRBound - 1 : this.kid.params.walkAreaLBound + 1;
             if(this.kid.params.walkAreaRBound - this.kid.params.walkAreaLBound > this.kid.width) { // account for squishing kid, so kid cannot be pushed off level
-                this.kid.params.direction = this.kid.target - this.kid.x > 0 ? "right" : "left";
+                this.kid.params.direction = this.target - this.kid.x > 0 ? "right" : "left";
                 this.kid.params.isMoving = true;
                 this.kid.scene.wanderTimer.paused = true;
             }
@@ -504,7 +506,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.kid.walkableAreaUpdate();
 
         if(this.kid.params.isMoving) { // move, if not stunned
-            this.kid.x += this.speed * (this.kid.params.direction == "left" ? -1 : 1);
+            this.kid.x += this.speed * this.kid.delta * (this.kid.params.direction == "left" ? -1 : 1);
         }
 
         // if kid has ran as far as possible, stop and cower
@@ -572,7 +574,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             this.kid._state.setState("changinglevel");
         }
         else if(this.kid.canExit()) {// move toward exit, if exit still accessable
-            this.kid.x += this.speed * (this.kid.params.direction == "left" ? -1 : 1);
+            this.kid.x += this.speed * this.kid.delta * (this.kid.params.direction == "left" ? -1 : 1);
         }
         else { // if no viable path, return to idle state
             this.kid._state.setState("idle");
