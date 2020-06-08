@@ -13,7 +13,7 @@ class Ghost extends Phaser.Physics.Matter.Sprite {
         this.paranormalStrengthCurr = 50;
 
         this.unpossessSFX = scene.sound.add('unpossession');
-        this.unpossessSFX.setVolume(0.5);
+        this.unpossessSFX.setVolume(0.1);
 
         // add to scene
         scene.add.existing(this);
