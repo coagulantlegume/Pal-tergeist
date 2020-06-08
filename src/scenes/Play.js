@@ -48,6 +48,7 @@ class Play extends Phaser.Scene {
         
         this.load.image('balloon', './assets/textures/balloon.png');
         this.load.image('balloonHover', './assets/textures/balloonHover.png');
+        this.load.json('balloonCollision', './assets/textures/balloon_collision.json');
         
 
         // UI

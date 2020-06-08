@@ -43,7 +43,7 @@
       "name": "balloon",
       "texture": "balloon",
       "hoverTexture": "balloonHover",
-      "collision": "",
+      "collision": "balloonCollision",
       "sound": "possession",
       "scale": 1,
       "scaleMax": 1,
