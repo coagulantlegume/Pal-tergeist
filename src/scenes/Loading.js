@@ -148,12 +148,12 @@ class Loading extends Phaser.Scene {
                 
         percentage = percentage * 100;
         this.loadingText.setText("Loading: " + percentage.toFixed(2) + "%");
-        console.log("P:" + percentage);
+        //console.log("P:" + percentage);
         
     }
 
     complete() {
-		console.log("COMPLETE!");
+		//console.log("COMPLETE!");
 		this.scene.start("menuScene");
 	}
 
