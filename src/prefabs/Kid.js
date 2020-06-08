@@ -365,8 +365,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         });
 
         // add safety buffer to walkable area + kid width
-        this.params.walkAreaLBound += 8 + this.width / 2;
-        this.params.walkAreaRBound -= 8 + this.width / 2;
+        this.params.walkAreaLBound += 6 + this.width / 2;
+        this.params.walkAreaRBound -= 6 + this.width / 2;
     }
 
     // test if viable path to exit
