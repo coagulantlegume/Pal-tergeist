@@ -1,5 +1,9 @@
 /*
-    
+    Pal-tergeist
+    Contributors:
+        Alec Wolf: programming level management, structuring code, physics implementation, event management, and kid ‘AI’
+        Daniel Liao: artist, programming, UI, level design
+        Nathan Huynh: audio producer, title/credits, programming, UI
 */
 
 "use strict";
