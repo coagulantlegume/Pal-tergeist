@@ -59,7 +59,7 @@ class MoveObject extends ScareObject {
     
     update(keyToggle) {
         // constrain delta minimum framerate
-        let delta = Math.max(game.loop.rawDelta, 20);
+        let delta = Math.max(game.loop.rawDelta, 20) / 20;
 
         // TODO: drain ghost power with when actions taken
         let moved = false; // used to see if we need subtract from paranormal bar
@@ -96,20 +96,20 @@ class MoveObject extends ScareObject {
             //this.body.allowGravity = false; //disable gravity so object can float
             if(keyRight.isDown){
                 if(Math.abs(this.body.position.y - this.body.positionPrev.y) < 0.001) {// essentially on the ground
-                    this.applyForce({x: this.horizontalForce * 2.5, y: 0});
+                    this.applyForce({x: this.horizontalForce * 2.5 * delta, y: 0});
                 }
                 else { // off of the ground (no friction)
-                    this.applyForce({x: this.horizontalForce, y: 0});
+                    this.applyForce({x: this.horizontalForce * delta, y: 0});
                 }
                 moved = true;
             }
 
             else if(keyLeft.isDown){
                 if(Math.abs(this.body.position.y - this.body.positionPrev.y) < 0.001) {// essentially on the ground
-                    this.applyForce({x: -this.horizontalForce * 2.5, y: 0});
+                    this.applyForce({x: -this.horizontalForce * 2.5 * delta, y: 0});
                 }
                 else {
-                    this.applyForce({x: -this.horizontalForce, y: 0});
+                    this.applyForce({x: -this.horizontalForce * delta, y: 0});
                 }
                 moved = true;
             }
@@ -119,12 +119,12 @@ class MoveObject extends ScareObject {
         // Resizing up and down from 1 / scaleMax to scaleMax
         if(keyDown.isDown && this.scene.ghost.paranormalStrengthCurr > 0){
             if("move" === this.mode){
-                this.applyForce({x: 0,y: 300});
+                this.applyForce({x: 0,y: 300 * delta});
                 moved = true;
             }
             else if("resize" === this.mode){
                 if(this.scale > 1 / this.scaleMax){
-                    this.setScale(this.scale - .01);
+                    this.setScale(this.scale - (.01 * delta));
                     resized = true;
                 }
             }
@@ -133,13 +133,13 @@ class MoveObject extends ScareObject {
         if(keyUp.isDown && this.scene.ghost.paranormalStrengthCurr > 0){
             if("move" === this.mode){
                 let verticalForce = 32 * Math.pow(1.9, this.scale + 2);
-                this.applyForce({x: 0,y: -verticalForce});
+                this.applyForce({x: 0,y: -verticalForce * delta});
                 moved = true; 
             }
             else if("resize" === this.mode){
                  // only increase to scaleMax value
                  if(this.scale < this.scaleMax){
-                    this.setScale(this.scale + .01);
+                    this.setScale(this.scale + (.01 * delta));
                     resized = true;
                 }
             }
@@ -168,7 +168,7 @@ class MoveObject extends ScareObject {
         // update kid's scare effect if object is moving
         if(Math.floor(Math.abs(this.body.position.y - this.prevPosY) + 0.8) != 0 || Math.floor(Math.abs(this.body.velocity.x)) != 0) {
             let typeMultiplier = ("move" === this.mode) ? 0.25:0.5; // multiplier based on type of manipulation (1 for move, 1.5 for scale)
-            this.scene.kid.scaredBy(this, this.params.scare * typeMultiplier,  this.params.power);
+            this.scene.kid.scaredBy(this, this.params.scare * typeMultiplier * delta,  this.params.power * delta);
         }
         this.prevPosY = this.body.position.y;
 
