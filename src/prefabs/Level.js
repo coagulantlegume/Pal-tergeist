@@ -24,9 +24,15 @@ class Level {
         // make scare objects
         this.scareGroup = [];
         Phaser.Actions.Call(rawData.scareObjects, (obj) => {
+            // Prep collision body vertices
+            let collisionBody;
+            if(obj.collisionFile){
+                let collisionJson = scene.cache.json.get(obj.collisionFile);
+                eval('collisionBody = {shape: collisionJson.' + obj.name + '};'); 
+            }
             let newObj = new ScareObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 
                                          obj.texture, obj.scale, obj.collision, obj.range, obj.visual, obj.auditory, obj.powerGain, obj.scareGain, obj.name, obj.sound, 
-                                         obj.anims, obj.anims_fCount, obj.anims_fRate, undefined, obj.disabled);
+                                         obj.anims, obj.anims_fCount, obj.anims_fRate, collisionBody, obj.disabled);
             newObj.setScale(obj.scale);
             this.scareGroup.push(newObj);
         });
@@ -36,8 +42,8 @@ class Level {
         Phaser.Actions.Call(rawData.moveObjects, (obj) => {
             // Prep collision body vertices
             let collisionBody;
-            if(obj.collision){
-                let collisionJson = scene.cache.json.get(obj.collision);
+            if(obj.collisionFile){
+                let collisionJson = scene.cache.json.get(obj.collisionFile);
                 eval('collisionBody = {shape: collisionJson.' + obj.name + '};'); 
             }
             let newObj = new MoveObject(scene, obj.position.x + this.params.x0, obj.position.y + this.params.y0, 

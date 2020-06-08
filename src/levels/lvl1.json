@@ -38,8 +38,9 @@
       "texture": "light",
       "hoverTexture": "lightHover",
       "sound": "lightSwitch",
+      "collisionFile": "lightCollision",
       "scale": 1,
-      "collision": false,
+      "collision": true,
       "position": {
         "x": 726,
         "y": 100
@@ -77,7 +78,7 @@
       "name": "tub",
       "texture": "tub",
       "hoverTexture": "tubHover",
-      "collision": "tubCollision",
+      "collisionFile": "tubCollision",
       "sound": "possession",
       "scale": 1,
       "scaleMax": 1.5,

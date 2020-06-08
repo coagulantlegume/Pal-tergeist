@@ -26,6 +26,7 @@ class Play extends Phaser.Scene {
         this.load.image('light', './assets/textures/light_OFF.png');
         this.load.image('lightHover', './assets/textures/light_OFFHover.png');
         this.load.atlas('anims_light', './assets/textures/anims_light.png', './assets/textures/anims_light.json');
+        this.load.json('lightCollision', './assets/textures/lights_collision.json');
         
         this.load.image('tub', './assets/textures/tub.png');
         this.load.image('tubHover', './assets/textures/tubHover.png');
@@ -39,6 +40,8 @@ class Play extends Phaser.Scene {
         
         this.load.image('lamp', './assets/textures/lamp.png');
         this.load.image('lampHover', './assets/textures/lampHover.png');
+        this.load.json('lampCollision', './assets/textures/lamp_collision.json');
+        
         
         this.load.image('mirror', './assets/textures/mirror.png');
         this.load.image('mirrorHover', './assets/textures/mirrorHover.png');
