@@ -48,10 +48,10 @@ class Intro extends Phaser.Scene {
         var tub = this.add.sprite(centerX - 580, centerY + 175, 'tubTut');
         var light = this.add.sprite(centerX - 350, centerY + 175, 'lightTut');
         var textboxTut1 = this.add.sprite(centerX - 510, centerY + 300, 'textboxTut1');
-        var textboxTut2 = this.add.sprite(centerX + 580, centerY - 10, 'textboxTut2');
+        var textboxTut2 = this.add.sprite(centerX + 580, centerY + 40, 'textboxTut2');
         var ghost = this.add.sprite(centerX - 380 , centerY - 15, 'ghostTut');
-        var kid = this.add.sprite(centerX + 360 , centerY - 15, 'kidTut');
-        var exclamation = this.add.sprite(centerX + 390, centerY - 70, 'exclamation');
+        var kid = this.add.sprite(centerX + 360 , centerY + 30, 'kidTut');
+        var exclamation = this.add.sprite(centerX + 390, centerY - 25, 'exclamation');
         var dialogue = this.add.sprite(centerX - 580 , centerY - 70, 'dialogueTut1');
         var controls = this.add.sprite(centerX , centerY + 150, 'controls');
 
