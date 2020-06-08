@@ -18,6 +18,14 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             showPercent: 100,           // the percentage of the sprite visible(from left side)
         }
 
+        // set up sensor body and make collision body
+        let sensorBody = Phaser.Physics.Matter.Matter.Bodies.rectangle(this.x,this.y,this.width,this.height,{isSensor:true});
+        let compoundBody = Phaser.Physics.Matter.Matter.Body.create({
+            parts: [this.body, sensorBody],
+        });
+
+        this.setExistingBody(compoundBody);
+
         // set up rudimentary state machine
         this.states = [ // definition of states
             {

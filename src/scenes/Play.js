@@ -121,6 +121,13 @@ class Play extends Phaser.Scene {
         this.floor.setStatic(true).setCollisionCategory(this.wallCollision).setCollidesWith([0, this.moveCollision, this.ghostCollision, this.kidCollision]).setOrigin(0.5,0.5).setAlpha(0);
         this.floor.body.friction = 4;
 
+        // make kid
+        let kid_collisionJson = this.cache.json.get('kidCollision');
+        this.kid = new Kid(this, game.config.width / 4, (game.config.height / 2) + 250, 'kid', 0, {shape: kid_collisionJson.kid});
+
+        this.scareBar = new UIBar(this, this.kid.x, this.kid.y-(18+this.kid.height/2),0xffa100,3);
+        this.kid.body.friction = 4;
+
         // Inital level setup
         game.levelParams.renderedLevels.push(new Level(this, 1));
         game.levelParams.renderedLevels.push(new Level(this, 2));
@@ -143,13 +150,6 @@ class Play extends Phaser.Scene {
         // make ghost
         this.ghost = new Ghost(this, game.config.width / 2, game.config.height / 2, 'ghost', 0);
         this.paranormalBar = new UIBar(this, this.ghost.x, this.ghost.y-(18+this.ghost.height/2),0x7bfff6,2); 
-
-        // make kid
-        let kid_collisionJson = this.cache.json.get('kidCollision');
-        this.kid = new Kid(this, game.config.width / 4, (game.config.height / 2) + 250, 'kid', 0, {shape: kid_collisionJson.kid});
-
-        this.scareBar = new UIBar(this, this.kid.x, this.kid.y-(18+this.kid.height/2),0xffa100,3);
-        this.kid.body.friction = 4;
         
         // TODO: remove, just here for testing level generating
         this.count = 2;
@@ -171,6 +171,24 @@ class Play extends Phaser.Scene {
           this.initCounter = 1;
           this.startPlay = false;
           this.initAlpha = 0;
+
+        // set up kid/move object collision events (following https://labs.phaser.io/view.html?src=src\physics\matterjs\compound%20sensors.js)
+        this.matter.world.on('collisionactive', (event) => {
+            let pairs = event.pairs;
+            Phaser.Actions.Call(pairs, (obj) => {
+                let bodyA = obj.bodyA;
+                let bodyB = obj.bodyB;
+
+                if(obj.isSensor) {
+                    if(bodyA.isSensor) {
+                        bodyB.gameObject.bumpKid();
+                    }
+                    else {
+                        bodyA.gameObject.bumpKid();
+                    }
+                }
+            }) 
+        })
     }
 
     update() {
@@ -383,5 +401,22 @@ class Play extends Phaser.Scene {
         // change current level
         game.levelParams.currLevel = game.levelParams.renderedLevels[1];
         game.levelParams.currLevelIndex = 1;
+    }
+
+    endGame() {
+        this.isPaused = true;
+        this.matter.world.enabled = false;
+        this.tweens.add({
+            targets: this.blackScreen,
+            alpha: { from: 0, to: 1},
+            ease: 'Linear',
+            duration: 750,
+            repeat: 0,
+            yoyo: false,
+            onComplete: () => { 
+                game.levelParams.renderedLevels = [];
+                this.scene.start("outroScene");
+            }
+        });
     }
 }

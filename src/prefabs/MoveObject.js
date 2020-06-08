@@ -28,6 +28,11 @@ class MoveObject extends ScareObject {
             this.body.frictionAir = 0.1;
         }
 
+        // add collision with kid event
+        this.body.setOnCollideWith(this.scene.kid.body, () => {
+            this.bumpKid();
+        });
+
         // possession force values
         this.horizontalForce = 110;
 
@@ -222,5 +227,18 @@ class MoveObject extends ScareObject {
     makeToggleInvis(){
         this.resizeUI.setAlpha(0);
         this.moveUI.setAlpha(0);
+    }
+
+    // for when object bumps into kid
+    bumpKid() {
+        if(this.params.name === "balloon") {
+            this.scene.endGame();
+        }
+        else {
+            this.scene.kid.params.scareLevelCurr = Math.min(this.scene.kid.params.scareLevelCurr + 2, this.scene.kid.params.scareLevelMax);
+            if(this.scene.kid.params.scareLevelCurr >= this.scene.kid.params.scareLevelMax) {
+                game.levelParams.currLevel.reset();
+            }
+        }
     }
 }
