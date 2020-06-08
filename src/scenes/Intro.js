@@ -21,7 +21,7 @@ class Intro extends Phaser.Scene {
     }
 
     create(){
-        console.log("intro");
+        // console.log("intro");
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         let menuConfig = {

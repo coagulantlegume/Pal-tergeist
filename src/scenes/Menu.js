@@ -52,7 +52,7 @@ class Menu extends Phaser.Scene {
         tutorialMenu.setInteractive({ useHandCursor: true });
         creditsMenu.setInteractive({ useHandCursor: true });
 
-        console.log("menu");
+        //console.log("menu");
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // detects when mouse pointer is over the options

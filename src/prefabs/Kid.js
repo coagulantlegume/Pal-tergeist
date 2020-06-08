@@ -230,7 +230,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         // when scare level is 75%+, kid starts with more erratic wandering
         // STILL IN TESTING
         if(this.params.scareLevelCurr >= this.params.scareLevelHigh) {
-            console.log("kid is very scared");
+            //console.log("kid is very scared");
             this.scene.wanderTimer.delay = Math.floor((Math.random() * 1500) + 700);
         }
         else {
@@ -241,7 +241,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
     // checks if object is perceivable by kid
     scaredBy(obj, scareAmount, powerAmount) {
         //check visual scares
-        console.log(obj.cooldown);
+        //console.log(obj.cooldown);
         let scared = false;
         if(obj.params.visual && !obj.cooldown) {
             let side = (this.x - obj.x > 0) ? "left":"right"; // which side of the kid the object is on
@@ -464,7 +464,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
             // if facing away from exit, wait 1 second before turning to exit
             if(this.turnExitTimer === undefined && this.kid.params.direction != (this.kid.x - game.levelParams.currLevel.params.exit.x > 0 ? "left" : "right")) {
-                console.log("making exit turn timer");
+                //console.log("making exit turn timer");
                 this.turnExitTimer = this.kid.scene.time.addEvent({
                     delay: 500,
                     callback: () => {
@@ -496,7 +496,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
 
         this.target = this.kid.x;
         
-        console.log("switched to idle");
+        //console.log("switched to idle");
     }
 
     // handle scared state
@@ -559,7 +559,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
             },
             callbackScope: this,
         });
-        console.log("switched to scared");
+        //console.log("switched to scared");
     }
 
     // handle exiting state
@@ -585,7 +585,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.kid.params.direction = (this.kid.x - (game.levelParams.currLevel.params.exit.x + game.levelParams.currLevel.params.x0) > 0 ? "left" : "right");
         this.kid.setTarget(game.levelParams.currLevel.params.exit.x + game.levelParams.currLevel.params.x0);
 
-        console.log("switched to exiting");
+        //console.log("switched to exiting");
     }
 
     // handle changing level
@@ -602,6 +602,6 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.kid.scaredEmote.setAlpha(0); //reset scared emote since kid is exiting
         this.kid.scene.scareBar.setAlpha(0);
 
-        console.log("switched to changing level");
+        //console.log("switched to changing level");
     }
 }
