@@ -365,8 +365,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         });
 
         // add safety buffer to walkable area + kid width
-        this.params.walkAreaLBound += 10 + this.width / 2;
-        this.params.walkAreaRBound -= 10 + this.width / 2;
+        this.params.walkAreaLBound += 8 + this.width / 2;
+        this.params.walkAreaRBound -= 8 + this.width / 2;
     }
 
     // test if viable path to exit
@@ -603,6 +603,8 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         this.kid.params.isMoving = false;
         this.kid.scaredEmote.setAlpha(0); //reset scared emote since kid is exiting
         this.kid.scene.scareBar.setAlpha(0);
+        this.kid.params.scareLevelCurr = 25;
+        this.kid.scene.ghost.paranormalStrengthCurr = 50;
 
         //console.log("switched to changing level");
     }
