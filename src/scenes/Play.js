@@ -195,9 +195,9 @@ class Play extends Phaser.Scene {
             }
     
             // Debugging reset level
-            if(Phaser.Input.Keyboard.JustDown(keyReset)) {
-                game.levelParams.renderedLevels[game.levelParams.currLevelIndex].reset();
-            }
+            // if(Phaser.Input.Keyboard.JustDown(keyReset)) {
+            //     game.levelParams.renderedLevels[game.levelParams.currLevelIndex].reset();
+            // }
         }
     }
 
