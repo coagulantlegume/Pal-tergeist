@@ -200,7 +200,7 @@ class MoveObject extends ScareObject {
     }
 
     possess() {
-        console.log("ooOOoo possess " + this.params.name);
+        //console.log("ooOOoo possess " + this.params.name);
         //sfx
         this.possessSFX.play();
 
