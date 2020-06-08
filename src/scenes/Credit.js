@@ -16,7 +16,7 @@ class Credit extends Phaser.Scene {
     }
 
     create(){
-        console.log("credit");
+        // console.log("credit");
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // center alignments for canvas

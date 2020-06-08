@@ -9,7 +9,7 @@ class Outro extends Phaser.Scene {
     }
 
     create(){
-        console.log("outro");
+        //console.log("outro");
         keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.bg = this.add.image(game.config.width/2, game.config.height/2, 'outro');
