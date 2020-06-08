@@ -19,7 +19,7 @@ class Kid extends Phaser.Physics.Matter.Sprite {
         }
 
         // set up sensor body and make collision body
-        let sensorBody = Phaser.Physics.Matter.Matter.Bodies.rectangle(this.x,this.y,this.width,this.height,{isSensor:true});
+        let sensorBody = Phaser.Physics.Matter.Matter.Bodies.rectangle(this.x + 2,this.y,this.width,this.height,{isSensor:true});
         let compoundBody = Phaser.Physics.Matter.Matter.Body.create({
             parts: [this.body, sensorBody],
         });
