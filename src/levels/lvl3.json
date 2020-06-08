@@ -86,7 +86,7 @@
         "x": 150,
         "y": 100
       },
-      "visual": true,
+      "visual": false,
       "auditory": false,
       "range": 50,
       "powerGain": 10,

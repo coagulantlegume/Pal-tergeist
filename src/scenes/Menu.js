@@ -81,8 +81,8 @@ class Menu extends Phaser.Scene {
 
     update(){
         // PROGRAM SCENE DEBUGGING
-        if (Phaser.Input.Keyboard.JustDown(keySpace)) {
-            this.scene.start("introScene");
-        }
+        // if (Phaser.Input.Keyboard.JustDown(keySpace)) {
+        //     this.scene.start("introScene");
+        // }
     }
 }
